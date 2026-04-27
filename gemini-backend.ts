@@ -184,7 +184,7 @@ ${langInstruction}`;
 
     } catch (error: any) {
       const errMsg = error?.message || String(error);
-      console.warn(\`[Backend Rotador] Intento \${attempt + 1} | Clave \${keyIndex} | \${errMsg.substring(0, 70)}\`);
+      console.warn(`[Backend Rotador] Intento ${attempt + 1} | Clave ${keyIndex} | ${errMsg.substring(0, 70)}`);
       markKeyFailed(keyIndex);
       if (errMsg.includes("429") || errMsg.includes("RESOURCE_EXHAUSTED")) {
         await new Promise(r => setTimeout(r, 300));
