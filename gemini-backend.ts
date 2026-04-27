@@ -124,13 +124,13 @@ export async function handleChatStream(req: any, res: any) {
                           language === 'pt' ? "Sempre responda em português." : 
                           "Toujours répondre en français.";
 
-  const themeContext = themeName ? \`Tema de esta lección: "\${themeName}"\` : \`Tema N° \${lessonProgress}\`;
-  const prompt = \`Grado: \${currentGrade}/13 | Lección: \${lessonProgress}/\${totalLessonsInGrade} | \${isRegistered ? "Estudiante registrado" : "Visitante"}
-\${themeContext}
+  const themeContext = themeName ? `Tema de esta lección: "${themeName}"` : `Tema N° ${lessonProgress}`;
+  const prompt = `Grado: ${currentGrade}/13 | Lección: ${lessonProgress}/${totalLessonsInGrade} | ${isRegistered ? "Estudiante registrado" : "Visitante"}
+${themeContext}
 
-\${message}
+${message}
 
-\${langInstruction}\`;
+${langInstruction}`;
 
   const contents = [
     ...history.slice(-6).map((msg: any) => ({
