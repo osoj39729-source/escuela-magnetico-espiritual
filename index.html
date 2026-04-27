@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="es" translate="no">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Profesor Trincado" />
+    <meta name="theme-color" content="#f59e0b" />
+    <meta name="description" content="Escuela Magnetico-Espiritual de la Comuna Universal - Cátedra digital del Maestro Joaquín Trincado" />
+    <meta name="google" content="notranslate" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+    <title>Cátedra Maestro Joaquín Trincado - EMECU</title>
+  </head>
+  <body>
+    <svg width="0" height="0" style="position:absolute; width:0; height:0;">
+      <filter id="hyper-realistic-pencil">
+        <!-- 1. Convert to pure grayscale -->
+        <feColorMatrix type="saturate" values="0" result="gray"/>
+        <!-- 2. Boost contrast for deep graphite blacks and bright paper whites -->
+        <feComponentTransfer in="gray" result="graphite">
+          <feFuncR type="table" tableValues="0 0.05 0.2 0.5 0.8 0.95 1"/>
+          <feFuncG type="table" tableValues="0 0.05 0.2 0.5 0.8 0.95 1"/>
+          <feFuncB type="table" tableValues="0 0.05 0.2 0.5 0.8 0.95 1"/>
+        </feComponentTransfer>
+        <!-- 3. Add a very subtle warm paper tint (off-white/cream) -->
+        <feColorMatrix type="matrix" values="
+          1.02 0 0 0 0.02
+          0 1.00 0 0 0.01
+          0 0 0.96 0 0
+          0 0 0 1 0" in="graphite"/>
+      </filter>
+      <filter id="pale-skin-colorize">
+        <!-- Convert to grayscale first to ensure consistent mapping -->
+        <feColorMatrix type="matrix" values="
+          0.33 0.33 0.33 0 0
+          0.33 0.33 0.33 0 0
+          0.33 0.33 0.33 0 0
+          0    0    0    1 0" result="gray"/>
+        <!-- Map grayscale to pale skin tones -->
+        <feComponentTransfer in="gray" result="colorized">
+          <feFuncR type="table" tableValues="0.06 0.24 0.88 0.99 1"/>
+          <feFuncG type="table" tableValues="0.06 0.17 0.70 0.94 1"/>
+          <feFuncB type="table" tableValues="0.06 0.14 0.64 0.92 1"/>
+        </feComponentTransfer>
+        <!-- Blend with original to keep some original texture, but mostly use colorized -->
+        <feBlend mode="overlay" in="colorized" in2="SourceGraphic" result="blended"/>
+        <feColorMatrix type="matrix" values="
+          1.1 0   0   0 0
+          0   1.1 0   0 0
+          0   0   1.1 0 0
+          0   0   0   1 0" in="blended"/>
+      </filter>
+    </svg>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // Registrar Service Worker para PWA (funciona offline y se puede instalar en celular)
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then(reg => console.log('[PWA] Service Worker registrado:', reg.scope))
+            .catch(err => console.warn('[PWA] Error al registrar SW:', err));
+        });
+      }
+    </script>
+  </body>
+</html>
+

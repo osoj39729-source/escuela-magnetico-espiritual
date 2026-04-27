@@ -1,0 +1,5 @@
+{
+  "name": "Profesor Joaquín Trincado",
+  "description": "Una plataforma educativa avanzada basada en la doctrina de Joaquín Trincado, utilizando inteligencia artificial para guiar al estudiante a través de un currículo estructurado y personalizado.",
+  "requestFramePermissions": ["microphone"]
+}

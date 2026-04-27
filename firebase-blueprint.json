@@ -1,0 +1,77 @@
+{
+  "entities": {
+    "Student": {
+      "title": "Student",
+      "description": "A student registered in the Escuela Magnético-Espiritual de la Comuna Universal.",
+      "type": "object",
+      "properties": {
+        "fullName": { "type": "string", "description": "Full name of the student" },
+        "address": { "type": "string", "description": "Physical address" },
+        "phone": { "type": "string", "description": "Phone number" },
+        "email": { "type": "string", "description": "Email address" },
+        "economicActivity": { "type": "string", "description": "Economic activity" },
+        "educationLevel": { "type": "string", "description": "Education level" },
+        "idNumber": { "type": "string", "description": "Identification number" },
+        "nationality": { "type": "string", "description": "Nationality" },
+        "registrationDate": { "type": "string", "format": "date-time", "description": "Date of registration" },
+        "lastInteraction": { "type": "string", "format": "date-time", "description": "Last time the student interacted with the professor" },
+        "currentGrade": { "type": "integer", "description": "Current grade (1-13)" },
+        "currentLesson": { "type": "integer", "description": "Current lesson in the current grade" },
+        "intelligenceScore": { "type": "number", "description": "Calculated intelligence score based on evaluations" },
+        "isVerified": { "type": "boolean", "description": "Whether the email is verified" },
+        "verificationCode": { "type": "string", "description": "Short code for email verification" },
+        "faculties": {
+          "type": "object",
+          "properties": {
+            "perceptiveIntelligence": { "type": "number" },
+            "memory": { "type": "number" },
+            "imagination": { "type": "number" },
+            "attention": { "type": "number" },
+            "judgment": { "type": "number" },
+            "reason": { "type": "number" },
+            "will": { "type": "number" }
+          }
+        },
+        "role": { "type": "string", "enum": ["student", "admin"], "description": "User role" }
+      },
+      "required": ["fullName", "email", "idNumber"]
+    },
+    "Certificate": {
+      "title": "Certificate",
+      "description": "A certificate issued to a student for completing a grade.",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string" },
+        "grade": { "type": "integer" },
+        "issueDate": { "type": "string", "format": "date-time" },
+        "pdfUrl": { "type": "string" }
+      }
+    },
+    "Interaction": {
+      "title": "Interaction",
+      "description": "A single chat interaction between the student and the professor.",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "message": { "type": "string" },
+        "response": { "type": "string" },
+        "evaluation": { "type": "object", "description": "Professor's hidden evaluation of this interaction" }
+      }
+    }
+  },
+  "firestore": {
+    "/students/{studentId}": {
+      "schema": "Student",
+      "description": "Collection of student profiles"
+    },
+    "/students/{studentId}/interactions/{interactionId}": {
+      "schema": "Interaction",
+      "description": "Sub-collection of interactions for a specific student"
+    },
+    "/certificates/{certificateId}": {
+      "schema": "Certificate",
+      "description": "Collection of issued certificates"
+    }
+  }
+}

@@ -1,0 +1,126 @@
+// ===============================================================
+// Assumed Data Model
+// ===============================================================
+//
+// Collection: students
+// Document ID: {studentId} (Firebase Auth UID)
+// Fields:
+//   - fullName: string (required)
+//   - address: string
+//   - phone: string
+//   - email: string (required)
+//   - economicActivity: string
+//   - educationLevel: string
+//   - idNumber: string (required)
+//   - nationality: string
+//   - registrationDate: timestamp (required)
+//   - lastInteraction: timestamp
+//   - currentGrade: number (1-13)
+//   - currentLesson: number
+//   - intelligenceScore: number
+//   - isVerified: bool
+//   - verificationCode: string
+//   - faculties: map (perceptiveIntelligence, memory, imagination, attention, judgment, reason, will)
+//   - role: string (student, admin)
+//
+// Collection: students/{studentId}/interactions
+// Document ID: {interactionId}
+// Fields:
+//   - studentId: string
+//   - timestamp: timestamp
+//   - message: string
+//   - response: string
+//   - evaluation: map
+//
+// Collection: certificates
+// Document ID: {certificateId}
+// Fields:
+//   - studentId: string
+//   - grade: number
+//   - issueDate: timestamp
+//   - studentName: string
+//
+// ===============================================================
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() &&
+        (get(/databases/$(database)/documents/students/$(request.auth.uid)).data.role == 'admin' ||
+         (request.auth.token.email == "nelsonosoriogarcia@gmail.com" && request.auth.token.email_verified == true));
+    }
+
+    function isValidEmail(email) {
+      return email is string && email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+    }
+
+    function isValidStudent(data) {
+      return data.keys().hasAll(['fullName', 'email', 'idNumber']) &&
+             data.fullName is string && data.fullName.size() > 0 && data.fullName.size() < 100 &&
+             isValidEmail(data.email) &&
+             data.idNumber is string && data.idNumber.size() > 0 && data.idNumber.size() < 50 &&
+             (!('isVerified' in data) || data.isVerified is bool) &&
+             (!('verificationCode' in data) || (data.verificationCode is string && data.verificationCode.size() < 10));
+    }
+
+    function isValidCertificate(data) {
+      return data.keys().hasAll(['studentId', 'grade', 'issueDate', 'studentName']) &&
+             data.studentId is string &&
+             data.grade is number &&
+             data.issueDate is timestamp &&
+             data.studentName is string;
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+
+    match /students/{studentId} {
+      // Students can read their own profile, Admins can read all
+      allow read: if isOwner(studentId) || isAdmin();
+      
+      // Students can create their own profile (initial registration)
+      // Admins can also create
+      allow create: if (isOwner(studentId) && isValidStudent(request.resource.data) && request.resource.data.role == 'student') || isAdmin();
+      
+      // Students can update their own profile (but not their role)
+      // Admins can update anything
+      allow update: if (isOwner(studentId) && isValidStudent(request.resource.data) && request.resource.data.role == resource.data.role) || isAdmin();
+      
+      // Only admins can delete
+      allow delete: if isAdmin();
+
+      match /interactions/{interactionId} {
+        allow read: if isOwner(studentId) || isAdmin();
+        allow create: if isOwner(studentId) || isAdmin();
+        allow update, delete: if isAdmin();
+      }
+    }
+
+    match /certificates/{certificateId} {
+      // Students can read their own certificates, Admins can read all
+      allow read: if (isAuthenticated() && request.auth.uid == resource.data.studentId) || isAdmin();
+      
+      // Only admins or the system (via student profile check) can create
+      // For simplicity in this demo, we allow the student to create their own certificate record
+      // if they are authenticated and the studentId matches.
+      allow create: if isAuthenticated() && request.auth.uid == request.resource.data.studentId && isValidCertificate(request.resource.data);
+      
+      // Only admins can update or delete certificates
+      allow update, delete: if isAdmin();
+    }
+  }
+}
