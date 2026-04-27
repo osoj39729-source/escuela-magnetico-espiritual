@@ -99,7 +99,6 @@ const RegistrationForm = ({ t, onSubmit, onLogin, onSkip, onBack, user, language
       if (language === 'fr') return c.code === '+33'; // Default to France for FR
       return c.code === '+1';
     })?.code || '+1',
-    phone: '',
     email: user?.email || '',
     password: '',
     confirmPassword: '',
