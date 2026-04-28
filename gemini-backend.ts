@@ -108,11 +108,13 @@ function buildConfig(useTools: boolean) {
 
 export async function handleChatStream(req: any, res: any) {
   const { message, history, language, currentGrade, lessonProgress, totalLessonsInGrade, themeName, isRegistered } = req.body;
+  console.log(`[Backend] Petición recibida de: ${message?.substring(0, 50)}...`);
   
   res.writeHead(200, {
     'Content-Type': 'text/event-stream',
     'Cache-Control': 'no-cache',
     'Connection': 'keep-alive',
+    'X-Accel-Buffering': 'no'
   });
 
   const sendEvent = (data: any) => {
