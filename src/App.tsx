@@ -825,6 +825,7 @@ function App() {
   // Voice Loading and Selection
   useEffect(() => {
     const loadVoices = () => {
+      if (!window.speechSynthesis) return;
       const allVoices = window.speechSynthesis.getVoices();
       setAvailableVoices(allVoices);
       
@@ -851,10 +852,11 @@ function App() {
       }
     };
 
+    if (!window.speechSynthesis) return;
     loadVoices();
     window.speechSynthesis.onvoiceschanged = loadVoices;
     return () => {
-      window.speechSynthesis.onvoiceschanged = null;
+      if (window.speechSynthesis) window.speechSynthesis.onvoiceschanged = null;
     };
   }, [language, selectedVoiceURI]);
 
@@ -864,6 +866,7 @@ function App() {
       const testText = language === 'es' ? "Probando voz." : 
                        language === 'en' ? "Testing voice." : 
                        language === 'pt' ? "Testando voz." : "Test de voix.";
+      if (!window.speechSynthesis) return;
       const utterance = new SpeechSynthesisUtterance(testText);
       const voices = window.speechSynthesis.getVoices();
       const voice = voices.find(v => v.voiceURI === selectedVoiceURI);
@@ -897,6 +900,7 @@ function App() {
       
       const speakGreeting = () => {
         if (!isMounted) return;
+        if (!window.speechSynthesis) return;
         const utterance = new SpeechSynthesisUtterance(fullText);
         utterance.rate = 0.9;
         utterance.pitch = 0.4;
@@ -1136,6 +1140,7 @@ function App() {
   };
 
   const processSpeechQueue = () => {
+    if (!window.speechSynthesis) return;
     if (ttsQueueRef.current.length === 0 || !shouldContinueSpeakingRef.current) {
       isSpeakingQueueRef.current = false;
       setIsAudioPlaying(false);
@@ -1180,7 +1185,7 @@ function App() {
       processSpeechQueue();
     };
 
-    window.speechSynthesis.speak(utterance);
+    if (window.speechSynthesis) window.speechSynthesis.speak(utterance);
   };
 
   const speak = (text: string) => {
@@ -1198,6 +1203,11 @@ function App() {
     shouldContinueSpeakingRef.current = false;
     ttsQueueRef.current = []; // Clear queue
     isSpeakingQueueRef.current = false;
+    if (!window.speechSynthesis) {
+      setIsAudioPlaying(false);
+      setIsAudioPaused(false);
+      return;
+    }
     // Known fix for Chromium/Edge: pause, resume, then cancel
     try {
       window.speechSynthesis.pause();
@@ -1211,6 +1221,7 @@ function App() {
   };
 
   const togglePauseResumeAudio = () => {
+    if (!window.speechSynthesis) return;
     if (isAudioPaused) {
       window.speechSynthesis.resume();
       setIsAudioPaused(false);
