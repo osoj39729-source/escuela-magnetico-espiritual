@@ -923,8 +923,10 @@ function App() {
           utterance.lang = language === 'es' ? 'es-ES' : language;
         }
         
-        window.speechSynthesis.cancel();
-        window.speechSynthesis.speak(utterance);
+        if (window.speechSynthesis) {
+          window.speechSynthesis.cancel();
+          window.speechSynthesis.speak(utterance);
+        }
       };
 
       greetingTimeout = setTimeout(() => speakGreeting(), 300);
@@ -940,7 +942,7 @@ function App() {
       isMounted = false;
       clearTimeout(greetingTimeout);
       clearTimeout(choiceTimeout);
-      window.speechSynthesis.cancel();
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
     };
   }, [introStep, language, selectedVoiceURI]);
   
@@ -1158,10 +1160,14 @@ function App() {
     utterance.volume = 1;
     
     const voices = window.speechSynthesis.getVoices();
-    const federicoVoice = voices.find(v => v.name.toLowerCase().includes('federico')) || 
-                         voices.find(v => v.name.toLowerCase().includes('microsoft') && v.lang.startsWith('es') && v.name.toLowerCase().includes('male'));
+    // Priorizar voces masculinas en el idioma seleccionado
+    const maleVoices = voices.filter(v => v.lang.startsWith(language) && 
+      (v.name.toLowerCase().includes('male') || 
+       v.name.toLowerCase().includes('hombre') || 
+       v.name.toLowerCase().includes('federico') ||
+       v.name.toLowerCase().includes('natural')));
     
-    let preferredVoice = voices.find(v => v.voiceURI === selectedVoiceURI) || federicoVoice;
+    let preferredVoice = voices.find(v => v.voiceURI === selectedVoiceURI) || maleVoices[0];
     
     if (!preferredVoice) {
       preferredVoice = voices.find(v => v.lang.startsWith(language) && (v.name.toLowerCase().includes('male') || v.name.toLowerCase().includes('hombre'))) || 
@@ -1780,8 +1786,8 @@ function App() {
                     <p className="text-sm md:text-lg lg:text-xl font-serif text-amber-50 leading-relaxed italic">{currentPrompt}</p>
                     {showChoiceButtons && (
                       <div className="flex flex-col sm:flex-row gap-3 mt-6">
-                        <button onClick={() => { window.speechSynthesis.cancel(); setShowIntro(false); setIntroStep('chat'); fetchGreeting(); }} className="flex-1 px-5 py-3 bg-gradient-to-r from-amber-600 to-amber-500 text-slate-950 font-bold rounded-2xl shadow-lg hover:shadow-amber-500/30 transition-all text-sm flex items-center justify-center gap-2"><PlayCircle className="w-5 h-5" />{language === 'es' ? 'Entrar al Aula' : language === 'pt' ? 'Entrar na Aula' : 'Enter Classroom'}</button>
-                        <button onClick={() => { window.speechSynthesis.cancel(); setIntroStep('registration'); }} className="flex-1 px-5 py-3 bg-transparent border-2 border-amber-500/40 text-amber-400 font-bold rounded-2xl hover:bg-amber-500/10 transition-all text-sm flex items-center justify-center gap-2"><GraduationCap className="w-5 h-5" />{language === 'es' ? 'Registrarse' : language === 'pt' ? 'Registrar' : 'Register'}</button>
+                        <button onClick={() => { if (window.speechSynthesis) window.speechSynthesis.cancel(); setShowIntro(false); setIntroStep('chat'); fetchGreeting(); }} className="flex-1 px-5 py-3 bg-gradient-to-r from-amber-600 to-amber-500 text-slate-950 font-bold rounded-2xl shadow-lg hover:shadow-amber-500/30 transition-all text-sm flex items-center justify-center gap-2"><PlayCircle className="w-5 h-5" />{language === 'es' ? 'Entrar al Aula' : language === 'pt' ? 'Entrar na Aula' : 'Enter Classroom'}</button>
+                        <button onClick={() => { if (window.speechSynthesis) window.speechSynthesis.cancel(); setIntroStep('registration'); }} className="flex-1 px-5 py-3 bg-transparent border-2 border-amber-500/40 text-amber-400 font-bold rounded-2xl hover:bg-amber-500/10 transition-all text-sm flex items-center justify-center gap-2"><GraduationCap className="w-5 h-5" />{language === 'es' ? 'Registrarse' : language === 'pt' ? 'Registrar' : 'Register'}</button>
                       </div>
                     )}
                   </div>
