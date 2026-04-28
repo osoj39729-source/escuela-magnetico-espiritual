@@ -1,4 +1,4 @@
-import { GoogleGenAI, Type } from "@google/genai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const loadApiKeys = (): string[] => {
   // LLAVE MAESTRA CONFIRMADA Y FUNCIONAL
@@ -11,29 +11,23 @@ const API_KEYS: string[] = loadApiKeys();
 let currentKeyIndex = 0;
 let lastKeyFailTime: Record<number, number> = {};
 
-// Inspector Automático de Llaves al iniciar
+// Inspector Automático de Llaves al iniciar (Corregido para nueva SDK)
 (async () => {
   console.log("--------------------------------------------------");
-  console.log("[INSPECTOR] Iniciando diagnóstico de llaves...");
+  console.log("[INSPECTOR] Iniciando diagnóstico con SDK Oficial...");
   for (let i = 0; i < API_KEYS.length; i++) {
     const key = API_KEYS[i];
     const masked = key.substring(0, 8) + "..." + key.substring(key.length - 4);
     try {
-      const genAI = new GoogleGenAI({ apiKey: key });
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-      const result = await model.generateContent({ contents: [{ role: 'user', parts: [{ text: 'H' }] }] });
+      const genAI = new GoogleGenerativeAI(key);
+      const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+      const result = await model.generateContent("H");
       if (result.response) {
         console.log(`[INSPECTOR] Llave ${i} (${masked}): FUNCIONA ✅`);
       }
     } catch (e: any) {
       const msg = e.message || String(e);
-      if (msg.includes("429")) {
-        console.log(`[INSPECTOR] Llave ${i} (${masked}): ERROR 429 (Cuota Agotada) ❌`);
-      } else if (msg.includes("API_KEY_INVALID") || msg.includes("not found")) {
-        console.log(`[INSPECTOR] Llave ${i} (${masked}): ERROR (Llave Inválida/Mal copiada) ❌`);
-      } else {
-        console.log(`[INSPECTOR] Llave ${i} (${masked}): ERROR (${msg.substring(0, 40)}) ❌`);
-      }
+      console.log(`[INSPECTOR] Llave ${i} (${masked}): ERROR (${msg.substring(0, 50)}) ❌`);
     }
   }
   console.log("--------------------------------------------------");
@@ -59,10 +53,10 @@ function markKeyFailed(keyIndex: number) {
   currentKeyIndex = (keyIndex + 1) % API_KEYS.length;
 }
 
-const aiClients = new Map<string, GoogleGenAI>();
-function getAiClient(apiKey: string): GoogleGenAI {
+const aiClients = new Map<string, GoogleGenerativeAI>();
+function getAiClient(apiKey: string): GoogleGenerativeAI {
   if (!aiClients.has(apiKey)) {
-    aiClients.set(apiKey, new GoogleGenAI({ apiKey }));
+    aiClients.set(apiKey, new GoogleGenerativeAI(apiKey));
   }
   return aiClients.get(apiKey)!;
 }
@@ -99,126 +93,71 @@ Tus respuestas deben:
 
 const MODEL = "gemini-2.0-flash";
 
-function buildConfig(useTools: boolean) {
-  const config: any = {
-    systemInstruction: SYSTEM_INSTRUCTION,
-    maxOutputTokens: 512,
-    temperature: 0.7,
-  };
-  if (useTools) {
-    config.tools = [{
-      functionDeclarations: [{
-        name: "student_evolution_update",
-        description: "Update the student's spiritual faculties.",
-        parameters: {
-          type: Type.OBJECT,
-          properties: {
-            Rationality:  { type: Type.NUMBER, description: "0-100" },
-            Morality:     { type: Type.NUMBER, description: "0-100" },
-            Spirituality: { type: Type.NUMBER, description: "0-100" },
-            Philosophy:   { type: Type.NUMBER, description: "0-100" },
-            Magnetism:    { type: Type.NUMBER, description: "0-100" },
-            Evolution:    { type: Type.NUMBER, description: "0-100" },
-            Memory:       { type: Type.NUMBER, description: "0-100" },
-          },
-          required: ["Rationality","Morality","Spirituality","Philosophy","Magnetism","Evolution","Memory"]
-        }
-      }]
-    }];
-  }
-  return config;
-}
-
 export async function handleChatStream(req: any, res: any) {
-  const { message, history, language, currentGrade, lessonProgress, totalLessonsInGrade, themeName, isRegistered } = req.body;
-  console.log(`[Backend] Petición recibida de: ${message?.substring(0, 50)}...`);
-  
-  res.writeHead(200, {
-    'Content-Type': 'text/event-stream',
-    'Cache-Control': 'no-cache',
-    'Connection': 'keep-alive',
-    'X-Accel-Buffering': 'no'
-  });
+  const { prompt, history, language, grade, lesson, totalLessons, theme, isRegistered } = req.body;
+  const apiKey = getNextApiKey();
+  const keyIndex = API_KEYS.indexOf(apiKey);
+
+  console.log(`[Backend] Petición recibida de: ${prompt.substring(0, 50)}...`);
+
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+  res.setHeader('X-Accel-Buffering', 'no');
 
   const sendEvent = (data: any) => {
     res.write(`data: ${JSON.stringify(data)}\n\n`);
   };
 
-  const langInstruction = language === 'es' ? "Responde SIEMPRE en español." : 
-                          language === 'en' ? "Always respond in English." : 
-                          language === 'pt' ? "Sempre responda em português." : 
-                          "Toujours répondre en français.";
+  try {
+    const genAI = getAiClient(apiKey);
+    const model = genAI.getGenerativeModel({ 
+      model: MODEL,
+      systemInstruction: SYSTEM_INSTRUCTION
+    });
 
-  const themeContext = themeName ? `Tema de esta lección: "${themeName}"` : `Tema N° ${lessonProgress}`;
-  const prompt = `Grado: ${currentGrade}/13 | Lección: ${lessonProgress}/${totalLessonsInGrade} | ${isRegistered ? "Estudiante registrado" : "Visitante"}
-${themeContext}
-
-${message}
-
-${langInstruction}`;
-
-  const contents = [
-    ...history.slice(-6).map((msg: any) => ({
-      role: msg.role === 'professor' ? 'model' : 'user',
-      parts: [{ text: msg.text }]
-    })),
-    { role: 'user', parts: [{ text: prompt }] }
-  ];
-
-  const useTools = history.length > 0;
-  const maxAttempts = API_KEYS.length * 2;
-
-  for (let attempt = 0; attempt < maxAttempts; attempt++) {
-    const keyIndex = currentKeyIndex;
-    const apiKey = getNextApiKey();
-
-    try {
-      const ai = getAiClient(apiKey);
-      const config = buildConfig(useTools);
-
-      const stream = await ai.models.generateContentStream({
-        model: MODEL,
-        contents,
-        config,
-      });
-
-      let hasText = false;
-      for await (const chunk of stream) {
-        const chunkText = chunk.candidates?.[0]?.content?.parts?.[0]?.text || "";
-        if (chunkText) {
-          hasText = true;
-          sendEvent({ text: chunkText });
-        }
-        
-        const parts = chunk.candidates?.[0]?.content?.parts || [];
-        for (const part of parts) {
-          if (part.functionCall?.name === "student_evolution_update" && part.functionCall.args) {
-            sendEvent({ studentUpdate: part.functionCall.args });
-          }
-        }
+    const chatSession = model.startChat({
+      history: history.slice(-10).map((msg: any) => ({
+        role: msg.role === 'professor' ? 'model' : 'user',
+        parts: [{ text: msg.text }]
+      })),
+      generationConfig: {
+        maxOutputTokens: 1000,
+        temperature: 0.7,
       }
+    });
 
-      if (hasText) {
-        res.write('data: [DONE]\n\n');
-        res.end();
-        return;
-      }
-      
-      markKeyFailed(keyIndex);
-      continue;
+    const result = await chatSession.sendMessageStream(prompt);
 
-    } catch (error: any) {
-      const errMsg = error?.message || String(error);
-      console.warn(`[Backend Rotador] Intento ${attempt + 1} | Clave ${keyIndex} | ${errMsg.substring(0, 70)}`);
-      markKeyFailed(keyIndex);
-      if (errMsg.includes("429") || errMsg.includes("RESOURCE_EXHAUSTED")) {
-        await new Promise(r => setTimeout(r, 300));
+    let hasText = false;
+    for await (const chunk of result.stream) {
+      const chunkText = chunk.text();
+      if (chunkText) {
+        hasText = true;
+        sendEvent({ text: chunkText });
       }
     }
-  }
 
-  // Si todas las claves fallan
-  sendEvent({ error: "ALL_KEYS_FAILED" });
-  res.write('data: [DONE]\n\n');
-  res.end();
+    if (!hasText) {
+      sendEvent({ text: "El Maestro está reflexionando. Por favor, intenta preguntar de otra forma." });
+    }
+
+    res.write('data: [DONE]\n\n');
+    res.end();
+
+  } catch (error: any) {
+    const errMsg = error?.message || String(error);
+    console.error(`[Backend Rotador] Error | Clave ${keyIndex} | ${errMsg.substring(0, 100)}`);
+    
+    markKeyFailed(keyIndex);
+    
+    if (errMsg.includes("429")) {
+      sendEvent({ error: "QUOTA_EXHAUSTED", text: "El aula está muy concurrida en este momento. Google está limitando la conexión. Por favor, intenta de nuevo en un minuto." });
+    } else {
+      sendEvent({ error: "GENERIC_ERROR", text: "Ha ocurrido un error en la conexión espiritual. Intentando reconectar..." });
+    }
+    
+    res.write('data: [DONE]\n\n');
+    res.end();
+  }
 }
