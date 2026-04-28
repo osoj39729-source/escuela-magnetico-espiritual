@@ -16,6 +16,34 @@ const API_KEYS: string[] = loadApiKeys();
 let currentKeyIndex = 0;
 let lastKeyFailTime: Record<number, number> = {};
 
+// Inspector Automático de Llaves al iniciar
+(async () => {
+  console.log("--------------------------------------------------");
+  console.log("[INSPECTOR] Iniciando diagnóstico de llaves...");
+  for (let i = 0; i < API_KEYS.length; i++) {
+    const key = API_KEYS[i];
+    const masked = key.substring(0, 8) + "..." + key.substring(key.length - 4);
+    try {
+      const genAI = new GoogleGenAI({ apiKey: key });
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+      const result = await model.generateContent({ contents: [{ role: 'user', parts: [{ text: 'H' }] }] });
+      if (result.response) {
+        console.log(`[INSPECTOR] Llave ${i} (${masked}): FUNCIONA ✅`);
+      }
+    } catch (e: any) {
+      const msg = e.message || String(e);
+      if (msg.includes("429")) {
+        console.log(`[INSPECTOR] Llave ${i} (${masked}): ERROR 429 (Cuota Agotada) ❌`);
+      } else if (msg.includes("API_KEY_INVALID") || msg.includes("not found")) {
+        console.log(`[INSPECTOR] Llave ${i} (${masked}): ERROR (Llave Inválida/Mal copiada) ❌`);
+      } else {
+        console.log(`[INSPECTOR] Llave ${i} (${masked}): ERROR (${msg.substring(0, 40)}) ❌`);
+      }
+    }
+  }
+  console.log("--------------------------------------------------");
+})();
+
 export function getNextApiKey(): string {
   if (API_KEYS.length === 0) return "";
   const now = Date.now();
