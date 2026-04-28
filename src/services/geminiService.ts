@@ -29,6 +29,8 @@ export function getNextApiKey(): string {
 // FUNCIÓN PRINCIPAL: Consumo de Streaming SSE desde el Servidor
 // ============================================================
 
+const API_BASE_URL = 'https://escuela-magnetico-espiritual.onrender.com';
+
 export async function chatWithProfessorStream(
   message: string,
   history: any[],
@@ -42,7 +44,10 @@ export async function chatWithProfessorStream(
 ): Promise<ProfessorResponse> {
   
   try {
-    const response = await fetch('/api/chat-stream', {
+    const isCapacitor = (window as any).Capacitor !== undefined;
+    const apiUrl = isCapacitor ? `${API_BASE_URL}/api/chat-stream` : '/api/chat-stream';
+    
+    const response = await fetch(apiUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ 

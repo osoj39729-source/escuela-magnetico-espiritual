@@ -1480,7 +1480,9 @@ function App() {
     }
 
     // Send via our API
-    await fetch('/api/send-verification', {
+    const isCapacitor = (window as any).Capacitor !== undefined;
+    const baseUrl = isCapacitor ? 'https://escuela-magnetico-espiritual.onrender.com' : '';
+    await fetch(`${baseUrl}/api/send-verification`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, code, motivationalMessage })
@@ -1548,7 +1550,9 @@ function App() {
     
     // Simulate sending to email
     try {
-      await fetch('/api/send-diploma', {
+      const isCapacitor = (window as any).Capacitor !== undefined;
+      const baseUrl = isCapacitor ? 'https://escuela-magnetico-espiritual.onrender.com' : '';
+      await fetch(`${baseUrl}/api/send-diploma`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
