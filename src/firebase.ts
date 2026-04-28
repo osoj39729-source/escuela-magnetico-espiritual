@@ -6,7 +6,9 @@ import {
   onAuthStateChanged,
   signOut,
   signInWithEmailAndPassword,
-  createUserWithEmailAndPassword
+  createUserWithEmailAndPassword,
+  signInWithRedirect,
+  getRedirectResult
 } from 'firebase/auth';
 import { 
   getFirestore, 
@@ -48,6 +50,8 @@ export {
   signOut,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  signInWithRedirect,
+  getRedirectResult,
   doc, 
   setDoc, 
   getDoc, 

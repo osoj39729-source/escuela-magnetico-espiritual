@@ -3,7 +3,7 @@ import { Send, BookOpen, BrainCircuit, Mic, Volume2, Sparkles, Activity, Play, P
 import { chatWithProfessor, chatWithProfessorStream, generatePresentationVideo, getNextApiKey } from './services/geminiService';
 import { motion, AnimatePresence } from 'motion/react';
 import { jsPDF } from 'jspdf';
-import { auth, db, googleProvider, signInWithPopup, onAuthStateChanged, signOut, doc, setDoc, getDoc, updateDoc, collection, addDoc, query, orderBy, onSnapshot, handleFirestoreError, OperationType, serverTimestamp, createUserWithEmailAndPassword, signInWithEmailAndPassword, hashPassword, arrayUnion } from './firebase';
+import { auth, db, googleProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut, doc, setDoc, getDoc, updateDoc, collection, addDoc, query, orderBy, onSnapshot, handleFirestoreError, OperationType, serverTimestamp, createUserWithEmailAndPassword, signInWithEmailAndPassword, hashPassword, arrayUnion } from './firebase';
 import { saveStudentProfile, getStudentProfile } from './services/localStorageService';
 import type { LocalUser as FirebaseUser } from './firebase';
 import { GoogleGenerativeAI } from "@google/generative-ai";
@@ -1414,67 +1414,87 @@ function App() {
     }
   };
 
-  const handleGoogleSignIn = async (userData?: { displayName: string, email: string }) => {
+  const handleGoogleSignIn = async () => {
     setIsTransitioning(true);
     setShowGoogleModal(false);
     
     try {
-      const { user } = await signInWithPopup(auth as any, googleProvider as any);
-      setUser(user);
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       
-      let profile = await getStudentProfile(user.uid);
-      if (!profile) {
-        // Auto-create profile for Google users to make the process "automatic"
-        profile = {
-          uid: user.uid,
-          fullName: user.displayName || user.email?.split('@')[0] || 'Estudiante',
-          email: user.email || '',
-          address: 'Google Account',
-          phone: '',
-          countryCode: '+1',
-          economicActivity: 'Estudiante',
-          educationLevel: 'Superior',
-          idNumber: 'GOOGLE_AUTH',
-          nationality: 'No especificada',
-          currentGrade: 1,
-          currentLesson: 1,
-          intelligenceScore: 50,
-          isVerified: true,
-          role: 'student',
-          registrationDate: serverTimestamp(),
-          lastInteraction: serverTimestamp(),
-          entries: [],
-          faculties: {
-            perceptiveIntelligence: 50,
-            memory: 50,
-            imagination: 50,
-            attention: 50,
-            judgment: 50,
-            reason: 50,
-            will: 50,
-          }
-        };
-        await saveStudentProfile(profile);
+      if (isMobile) {
+        await signInWithRedirect(auth as any, googleProvider as any);
+        // La redirección sacará al usuario de la app, el resultado se maneja en el useEffect al volver
+      } else {
+        const { user } = await signInWithPopup(auth as any, googleProvider as any);
+        await handleAuthUser(user);
       }
-
-      setStudentProfile(profile);
-      setIsAdminUser(profile.role === 'admin' || user.email === "nelsonosoriogarcia@gmail.com");
-      setCurrentGrade(profile.currentGrade || 1);
-      setLessonProgress(profile.currentLesson || 1);
-      
-      setTimeout(() => {
-        setShowIntro(false);
-        setIntroStep('chat');
-        fetchGreeting(profile.currentGrade || 1, profile.currentLesson || 1);
-        setTimeout(() => setIsTransitioning(false), 1500);
-      }, 2000);
-
     } catch (error: any) {
       console.error("Google sign in error:", error);
       setIsTransitioning(false);
       setError("Error al iniciar sesión con Google.");
     }
   };
+
+  const handleAuthUser = async (user: any) => {
+    setUser(user);
+    let profile = await getStudentProfile(user.uid);
+    if (!profile) {
+      profile = {
+        uid: user.uid,
+        fullName: user.displayName || user.email?.split('@')[0] || 'Estudiante',
+        email: user.email || '',
+        address: 'Google Account',
+        phone: '',
+        countryCode: '+1',
+        economicActivity: 'Estudiante',
+        educationLevel: 'Superior',
+        idNumber: 'GOOGLE_AUTH',
+        nationality: 'No especificada',
+        currentGrade: 1,
+        currentLesson: 1,
+        intelligenceScore: 50,
+        isVerified: true,
+        role: 'student',
+        registrationDate: serverTimestamp(),
+        lastInteraction: serverTimestamp(),
+        entries: [],
+        faculties: {
+          perceptiveIntelligence: 50,
+          memory: 50,
+          imagination: 50,
+          attention: 50,
+          judgment: 50,
+          reason: 50,
+          will: 50,
+        }
+      };
+      await saveStudentProfile(profile);
+    }
+
+    setStudentProfile(profile);
+    setIsAdminUser(profile.role === 'admin' || user.email === "nelsonosoriogarcia@gmail.com");
+    setCurrentGrade(profile.currentGrade || 1);
+    setLessonProgress(profile.currentLesson || 1);
+    
+    setTimeout(() => {
+      setShowIntro(false);
+      setIntroStep('chat');
+      fetchGreeting(profile.currentGrade || 1, profile.currentLesson || 1);
+      setTimeout(() => setIsTransitioning(false), 1500);
+    }, 2000);
+  };
+
+  // Manejar el resultado de la redirección al cargar
+  useEffect(() => {
+    getRedirectResult(auth as any).then(async (result) => {
+      if (result?.user) {
+        setIsTransitioning(true);
+        await handleAuthUser(result.user);
+      }
+    }).catch((error) => {
+      console.error("Redirect result error:", error);
+    });
+  }, []);
 
   const handleSendVerification = async (email: string): Promise<string> => {
     const code = Math.floor(100000 + Math.random() * 900000).toString();
