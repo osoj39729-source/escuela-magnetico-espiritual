@@ -958,7 +958,10 @@ function App() {
 
   // Auth Listener
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+    // Forzar persistencia local para móviles
+    setPersistence(auth as any, browserLocalPersistence).catch(err => console.error("Persistence error:", err));
+
+    const unsubscribe = onAuthStateChanged(auth as any, async (currentUser) => {
       // Only update if the user actually changed to avoid flickering
       if (currentUser?.uid === user?.uid && !!currentUser === !!user) return;
       
