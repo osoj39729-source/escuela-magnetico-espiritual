@@ -1790,7 +1790,18 @@ function App() {
                     <p className="text-sm md:text-lg lg:text-xl font-serif text-amber-50 leading-relaxed italic">{currentPrompt}</p>
                     {showChoiceButtons && (
                       <div className="flex flex-col sm:flex-row gap-3 mt-6">
-                        <button onClick={() => { if (window.speechSynthesis) window.speechSynthesis.cancel(); setShowIntro(false); setIntroStep('chat'); fetchGreeting(); }} className="flex-1 px-5 py-3 bg-gradient-to-r from-amber-600 to-amber-500 text-slate-950 font-bold rounded-2xl shadow-lg hover:shadow-amber-500/30 transition-all text-sm flex items-center justify-center gap-2"><PlayCircle className="w-5 h-5" />{language === 'es' ? 'Entrar al Aula' : language === 'pt' ? 'Entrar na Aula' : 'Enter Classroom'}</button>
+                        <button onClick={() => { 
+                          if (window.speechSynthesis) {
+                            window.speechSynthesis.cancel();
+                            // Desbloqueo de audio para móviles
+                            const unlock = new SpeechSynthesisUtterance("");
+                            unlock.volume = 0;
+                            window.speechSynthesis.speak(unlock);
+                          }
+                          setShowIntro(false); 
+                          setIntroStep('chat'); 
+                          fetchGreeting(); 
+                        }} className="flex-1 px-5 py-3 bg-gradient-to-r from-amber-600 to-amber-500 text-slate-950 font-bold rounded-2xl shadow-lg hover:shadow-amber-500/30 transition-all text-sm flex items-center justify-center gap-2"><PlayCircle className="w-5 h-5" />{language === 'es' ? 'Entrar al Aula' : language === 'pt' ? 'Entrar na Aula' : 'Enter Classroom'}</button>
                         <button onClick={() => { if (window.speechSynthesis) window.speechSynthesis.cancel(); setIntroStep('registration'); }} className="flex-1 px-5 py-3 bg-transparent border-2 border-amber-500/40 text-amber-400 font-bold rounded-2xl hover:bg-amber-500/10 transition-all text-sm flex items-center justify-center gap-2"><GraduationCap className="w-5 h-5" />{language === 'es' ? 'Registrarse' : language === 'pt' ? 'Registrar' : 'Register'}</button>
                       </div>
                     )}
@@ -1802,7 +1813,14 @@ function App() {
             {introStep === 'intro' && (
               <div className="mt-8 text-center flex flex-col items-center">
                 <button
-                  onClick={() => setIntroStep('professor')}
+                  onClick={() => {
+                    if (window.speechSynthesis) {
+                      const unlock = new SpeechSynthesisUtterance("");
+                      unlock.volume = 0;
+                      window.speechSynthesis.speak(unlock);
+                    }
+                    setIntroStep('professor');
+                  }}
                   className="mt-12 px-12 py-5 bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:via-amber-300 hover:to-amber-400 text-slate-900 rounded-full font-bold uppercase tracking-[0.25em] transition-all shadow-[0_0_40px_rgba(245,158,11,0.6)] border-2 border-amber-200/50 flex items-center gap-4 group mx-auto"
                 >
                   <span className="text-lg md:text-xl">Entrar a la Cátedra</span>
