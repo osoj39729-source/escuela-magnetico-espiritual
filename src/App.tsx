@@ -493,11 +493,11 @@ const translations: { [key: string]: any } = {
     codeSent: "Hemos enviado un código de verificación a tu correo.",
     verificationCode: "Código de Verificación",
     verify: "Verificar y Comenzar las Clases",
-    skipRegistration: "Saltar Inscripción e Ir al Estudio",
+    skipRegistration: "Saltar Inscripción e Ingresar al Estudio",
     invalidCode: "Código inválido. Por favor intenta de nuevo.",
     resendCode: "Reenviar Código",
     professorName: "Joaquín Trincado Mateo",
-    professorGreeting: "Saludos, hermano. Soy Joaquín Trincado Mateo, fundador de la Escuela Magnetico-Espiritual de la Comuna Universal. Aquí encontrarás la luz del conocimiento racional y el camino de la evolución del espíritu. Regístrate para comenzar tu formación, o si ya estás registrado inicia sesión para entrar al aula.",
+    professorGreeting: "Saludos, hermano. Soy Joaquín Trincado Mateo, fundador de la Escuela Magnetico-Espiritual de la Comuna Universal. Aquí encontrarás la luz del conocimiento racional y el camino de la evolución del espíritu. Regístrate para comenzar tu formación, o si ya estás registrado, inicia sesión e ingresa al estudio.",
     professorVoice: "Voz del Profesor",
     audioSpeed: "Velocidad",
     registrationRequiredMsg: "Debes completar tu registro para comenzar las clases.",
@@ -1484,12 +1484,18 @@ function App() {
     // Generate motivational message using Gemini
     let motivationalMessage = "Bienvenido a la Escuela Magnetico-Espiritual de la Comuna Universal. Tu camino de luz comienza hoy.";
     try {
-      const genAI = new GoogleGenerativeAI(getNextApiKey());
-      const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+      // PUENTE DIRECTO PARA EL SALUDO
+      const masterKey = "AIzaSyDOQPCQ3X3I1Ez6HF7DCJOCRdfIm3IVuZ4";
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${masterKey}`;
       const prompt = `Genera un mensaje motivacional corto (máximo 2 párrafos) para un nuevo estudiante de la Escuela Magnetico-Espiritual de la Comuna Universal. El mensaje debe ser inspirador, hablar sobre la evolución del espíritu y la luz del conocimiento racional. El idioma debe ser ${language === 'es' ? 'Español' : language === 'en' ? 'Inglés' : language === 'pt' ? 'Português' : 'Francés'}.`;
       
-      const result = await model.generateContent(prompt);
-      motivationalMessage = result.response.text() || motivationalMessage;
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+      });
+      const data = await response.json();
+      motivationalMessage = data.candidates?.[0]?.content?.parts?.[0]?.text || motivationalMessage;
     } catch (error) {
       console.error("Error generating motivational message:", error);
     }
