@@ -6,7 +6,7 @@ import { jsPDF } from 'jspdf';
 import { auth, db, googleProvider, signInWithPopup, onAuthStateChanged, signOut, doc, setDoc, getDoc, updateDoc, collection, addDoc, query, orderBy, onSnapshot, handleFirestoreError, OperationType, serverTimestamp, createUserWithEmailAndPassword, signInWithEmailAndPassword, hashPassword, arrayUnion } from './firebase';
 import { saveStudentProfile, getStudentProfile } from './services/localStorageService';
 import type { LocalUser as FirebaseUser } from './firebase';
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 declare global {
   interface Window {
@@ -1484,14 +1484,12 @@ function App() {
     // Generate motivational message using Gemini
     let motivationalMessage = "Bienvenido a la Escuela Magnetico-Espiritual de la Comuna Universal. Tu camino de luz comienza hoy.";
     try {
-      const ai = new GoogleGenAI({ apiKey: getNextApiKey() });
+      const genAI = new GoogleGenerativeAI(getNextApiKey());
+      const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
       const prompt = `Genera un mensaje motivacional corto (máximo 2 párrafos) para un nuevo estudiante de la Escuela Magnetico-Espiritual de la Comuna Universal. El mensaje debe ser inspirador, hablar sobre la evolución del espíritu y la luz del conocimiento racional. El idioma debe ser ${language === 'es' ? 'Español' : language === 'en' ? 'Inglés' : language === 'pt' ? 'Português' : 'Francés'}.`;
       
-      const result = await ai.models.generateContent({
-        model: "gemini-2.0-flash-lite",
-        contents: prompt
-      });
-      motivationalMessage = result.text || motivationalMessage;
+      const result = await model.generateContent(prompt);
+      motivationalMessage = result.response.text() || motivationalMessage;
     } catch (error) {
       console.error("Error generating motivational message:", error);
     }
