@@ -57,6 +57,10 @@ export async function chatWithProfessorStream(
     });
 
     if (!response.ok) {
+      if (response.status === 429 || response.status === 500) {
+        console.warn("[geminiService] Servidor bloqueado o saturado. Activando Puente Directo...");
+        return await chatDirectlyWithGoogle(message, history, language, onChunk);
+      }
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     if (!response.body) {
@@ -89,6 +93,9 @@ export async function chatWithProfessorStream(
             const data = JSON.parse(dataStr);
             if (data.error) {
                console.error("Backend Error:", data.error);
+               if (data.error === "QUOTA_EXHAUSTED") {
+                 return await chatDirectlyWithGoogle(message, history, language, onChunk);
+               }
                throw new Error(data.error);
             }
             if (data.text) {
@@ -107,12 +114,53 @@ export async function chatWithProfessorStream(
 
     return { text: "", studentUpdate };
   } catch (error) {
-    console.warn("[geminiService] Error de red o del servidor backend:", error);
-    const errText = language === 'es'
-      ? "El Profesor no puede conectarse a los servidores del éter. Intenta de nuevo."
-      : "The Professor cannot connect right now. Please try again.";
+    console.warn("[geminiService] Error detectado. Intentando Puente Directo...", error);
+    return await chatDirectlyWithGoogle(message, history, language, onChunk);
+  }
+}
+
+// NUEVA FUNCIÓN DE RESCATE: Conexión Directa
+async function chatDirectlyWithGoogle(
+  message: string,
+  history: any[],
+  language: string,
+  onChunk: StreamChunkCallback
+): Promise<ProfessorResponse> {
+  const masterKey = "AIzaSyDOQPCQ3X3I1Ez6HF7DCJOCRdfIm3IVuZ4";
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${masterKey}`;
+  
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [
+          ...history.slice(-6).map(m => ({
+            role: m.role === 'professor' ? 'model' : 'user',
+            parts: [{ text: m.text }]
+          })),
+          { role: 'user', parts: [{ text: message }] }
+        ],
+        generationConfig: {
+          maxOutputTokens: 800,
+          temperature: 0.7,
+        }
+      })
+    });
+
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error?.message || "Error en Puente Directo");
+
+    const aiText = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+    onChunk(aiText);
+    return { text: aiText };
+  } catch (e: any) {
+    console.error("Fallo total del Puente Directo:", e);
+    const errText = language === 'es' 
+      ? "El Maestro se encuentra en meditación profunda y no puede responder en este momento. Por favor, intenta más tarde."
+      : "The Master is in deep meditation. Please try again later.";
     onChunk(errText);
-    return { text: errText, isLocalModel: true };
+    return { text: errText };
   }
 }
 
