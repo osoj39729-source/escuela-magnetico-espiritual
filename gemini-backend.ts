@@ -1,16 +1,10 @@
 import { GoogleGenAI, Type } from "@google/genai";
 
 const loadApiKeys = (): string[] => {
-  // Ponemos la llave que sabemos que funciona de primera
-  const confirmedKey = "AIzaSyARfL-Be4h35xc-725_CUSIEpKOMfZWLKA";
-  const envKeys = (process.env.GEMINI_API_KEY || process.env.API_KEY || "")
-    .split(",")
-    .map(k => k.trim())
-    .filter(Boolean);
-  
-  const finalKeys = [confirmedKey, ...envKeys.filter(k => k !== confirmedKey)];
-  console.log(`[Backend Keys] Cargadas ${finalKeys.length} API Keys para rotación.`);
-  return finalKeys;
+  // LLAVE MAESTRA CONFIRMADA Y FUNCIONAL
+  const masterKey = "AIzaSyDOQPCQ3X3I1Ez6HF7DCJOCRdfIm3IVuZ4";
+  console.log(`[Backend Keys] Llave Maestra cargada.`);
+  return [masterKey];
 };
 
 const API_KEYS: string[] = loadApiKeys();
