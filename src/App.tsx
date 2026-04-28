@@ -1402,7 +1402,7 @@ function App() {
     setShowGoogleModal(false);
     
     try {
-      const { user } = await signInWithPopup(auth, googleProvider, userData);
+      const { user } = await signInWithPopup(auth as any, googleProvider as any);
       setUser(user);
       
       let profile = await getStudentProfile(user.uid);
