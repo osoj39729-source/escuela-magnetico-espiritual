@@ -46,7 +46,7 @@ async function getAvailablePort(startPort: number): Promise<number> {
 
 async function startServer() {
   const app = express();
-  const PORT = await getAvailablePort(3000);
+  const PORT = process.env.PORT || await getAvailablePort(3000);
 
   app.use(express.json());
 
