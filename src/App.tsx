@@ -782,6 +782,10 @@ function App() {
   const [isListening, setIsListening] = useState(false);
   const [continuousListen, setContinuousListen] = useState(false);
   const [isPhotoEnlarged, setIsPhotoEnlarged] = useState(false);
+  
+  useEffect(() => {
+    console.log("EMECU APP - Versión 1.1.2 (Puente Directo Activo)");
+  }, []);
   const [language, setLanguage] = useState<'es' | 'en' | 'pt' | 'fr'>('es');
   const t = translations[language];
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
@@ -1810,6 +1814,21 @@ function App() {
                     <img src={TRINCADO_IMG} onError={(e) => { const target = e.target as HTMLImageElement; if (target.src !== TRINCADO_IMG_FALLBACK) { target.src = TRINCADO_IMG_FALLBACK; }}} alt="Joaquin Trincado Mateo" className="w-full h-auto object-cover" referrerPolicy="no-referrer" />
                   </div>
                   <div className="flex-shrink-0 max-w-lg lg:max-w-xl text-left px-6 py-6 bg-slate-900/90 backdrop-blur-2xl border-2 border-amber-500/40 rounded-3xl z-30 shadow-2xl relative group">
+                    <div className="absolute -top-4 -right-4">
+                      <button 
+                        onClick={() => {
+                          if (window.speechSynthesis) {
+                            window.speechSynthesis.cancel();
+                            const ut = new SpeechSynthesisUtterance(t.professorGreeting);
+                            ut.lang = 'es-ES';
+                            window.speechSynthesis.speak(ut);
+                          }
+                        }}
+                        className="p-3 bg-amber-500 text-slate-900 rounded-full shadow-lg hover:scale-110 transition-transform"
+                      >
+                        <Volume2 className="w-5 h-5" />
+                      </button>
+                    </div>
                     <p className="text-sm md:text-lg lg:text-xl font-serif text-amber-50 leading-relaxed italic">{currentPrompt}</p>
                     {showChoiceButtons && (
                       <div className="flex flex-col sm:flex-row gap-3 mt-6">
