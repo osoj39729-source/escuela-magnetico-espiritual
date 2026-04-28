@@ -123,7 +123,7 @@ async function startServer() {
   });
 
   // Importar y usar el handler de Gemini Backend
-  const { handleChatStream } = await import('./gemini-backend.js');
+  const { handleChatStream } = await import('./gemini-backend.ts');
   app.post("/api/chat-stream", handleChatStream);
 
   // Vite middleware for development
