@@ -3,7 +3,7 @@ import { Send, BookOpen, BrainCircuit, Mic, Volume2, Sparkles, Activity, Play, P
 import { chatWithProfessor, chatWithProfessorStream, generatePresentationVideo, getNextApiKey } from './services/geminiService';
 import { motion, AnimatePresence } from 'motion/react';
 import { jsPDF } from 'jspdf';
-import { auth, db, googleProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut, doc, setDoc, getDoc, updateDoc, collection, addDoc, query, orderBy, onSnapshot, handleFirestoreError, OperationType, serverTimestamp, createUserWithEmailAndPassword, signInWithEmailAndPassword, hashPassword, arrayUnion } from './firebase';
+import { auth, db, googleProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut, doc, setDoc, getDoc, updateDoc, collection, addDoc, query, orderBy, onSnapshot, handleFirestoreError, OperationType, serverTimestamp, createUserWithEmailAndPassword, signInWithEmailAndPassword, hashPassword, arrayUnion, setPersistence, browserLocalPersistence } from './firebase';
 import { saveStudentProfile, getStudentProfile } from './services/localStorageService';
 import type { LocalUser as FirebaseUser } from './firebase';
 import { GoogleGenerativeAI } from "@google/generative-ai";
@@ -1512,7 +1512,7 @@ function App() {
     let motivationalMessage = "Bienvenido a la Escuela Magnetico-Espiritual de la Comuna Universal. Tu camino de luz comienza hoy.";
     try {
       // PUENTE DIRECTO PARA EL SALUDO
-      const masterKey = "AIzaSyDOQPCQ3X3I1Ez6HF7DCJOCRdfIm3IVuZ4";
+      const masterKey = "AIzaSyA1ug2Ust6vkHTFs0QclluX6ZbNHT0JPKw";
       const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${masterKey}`;
       const prompt = `Genera un mensaje motivacional corto (máximo 2 párrafos) para un nuevo estudiante de la Escuela Magnetico-Espiritual de la Comuna Universal. El mensaje debe ser inspirador, hablar sobre la evolución del espíritu y la luz del conocimiento racional. El idioma debe ser ${language === 'es' ? 'Español' : language === 'en' ? 'Inglés' : language === 'pt' ? 'Português' : 'Francés'}.`;
       
@@ -2596,3 +2596,4 @@ export default function AppWithErrorBoundary() {
     </ErrorBoundary>
   );
 }
+

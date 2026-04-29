@@ -126,7 +126,7 @@ async function chatDirectlyWithGoogle(
   language: string,
   onChunk: StreamChunkCallback
 ): Promise<ProfessorResponse> {
-  const masterKey = "AIzaSyDOQPCQ3X3I1Ez6HF7DCJOCRdfIm3IVuZ4";
+  const masterKey = "AIzaSyA1ug2Ust6vkHTFs0QclluX6ZbNHT0JPKw";
   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${masterKey}`;
   
   const systemInstruction = `
@@ -218,3 +218,4 @@ export async function chatWithProfessor(
 export async function generatePresentationVideo(_prompt: string): Promise<string> {
   return "";
 }
+

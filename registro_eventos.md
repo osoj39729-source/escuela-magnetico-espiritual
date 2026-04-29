@@ -7,8 +7,13 @@ Documentar todo nuevo cambio al final de este archivo detallando la fecha, los a
 
 Este documento registra todas las modificaciones importantes, decisiones arquitectónicas y eventos de mantenimiento del proyecto.
 
-## [2026-04-27] - Inicio del Plan de Evolución
-- **Motivo**: El usuario aprobó el plan de modernización para soportar 1 millón de usuarios, convertir la web en App móvil (Capacitor) y crear un rotador de API Keys.
+## [2026-04-29] - Actualización de API Key y Sincronización
+- **Motivo**: Las llaves de Gemini anteriores estaban bloqueadas. Se procedió a clonar una copia limpia del repositorio y actualizar la llave maestra.
+- **Cambios**:
+  - Repositorio clonado en `C:\Users\58424\Desktop\proyectos 2`.
+  - Reemplazo de la llave maestra `AIzaSyDO...` por la nueva `AIzaSyA1...` en `gemini-backend.ts`, `App.tsx` y `geminiService.ts`.
+  - Creación de archivo `.env` con la nueva llave.
+- **Resultado**: Sistema listo para operar con la nueva cuota de Google AI Studio.
 - **Archivos modificados**: Creación de este archivo `registro_eventos.md`.
 ## [2026-04-27] - Inicio del Plan de Evolución
 - **Motivo**: El usuario aprobó el plan de modernización.

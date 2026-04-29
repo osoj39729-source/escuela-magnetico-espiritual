@@ -2,7 +2,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const loadApiKeys = (): string[] => {
   // LLAVE MAESTRA CONFIRMADA Y FUNCIONAL
-  const masterKey = "AIzaSyDOQPCQ3X3I1Ez6HF7DCJOCRdfIm3IVuZ4";
+  const masterKey = "AIzaSyA1ug2Ust6vkHTFs0QclluX6ZbNHT0JPKw";
   console.log(`[Backend Keys] Llave Maestra cargada.`);
   return [masterKey];
 };
@@ -161,3 +161,4 @@ export async function handleChatStream(req: any, res: any) {
     res.end();
   }
 }
+
