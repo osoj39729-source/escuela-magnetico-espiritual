@@ -19,6 +19,12 @@ Este documento registra todas las modificaciones importantes, decisiones arquite
 - **Cambios**:
   - `src/App.tsx` → Se agregaron los imports faltantes `setPersistence` y `browserLocalPersistence` desde `./firebase`.
 - **Resultado**: La aplicación ahora carga correctamente en entornos de producción (Render/Vercel).
+## [2026-04-29] - Fix: Modelo Gemini 404
+- **Motivo**: El modelo `gemini-1.5-flash-8b` devolvía error 404 en el despliegue de Render.
+- **Cambios**:
+  - `gemini-backend.ts` y `geminiService.ts` → Se actualizó el modelo a `gemini-1.5-flash` para mayor compatibilidad y estabilidad.
+- **Resultado**: El Maestro Virtual vuelve a responder correctamente.
+
 
 - **Archivos modificados**: Creación de este archivo `registro_eventos.md`.
 ## [2026-04-27] - Inicio del Plan de Evolución
