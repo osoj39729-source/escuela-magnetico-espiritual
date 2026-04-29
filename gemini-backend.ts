@@ -91,7 +91,7 @@ Tus respuestas deben:
 5. Preguntar el nombre en la primera interacción y usarlo con fraternidad.
 `;
 
-const MODEL = "gemini-1.5-flash";
+const MODEL = "gemini-1.5-flash-8b";
 
 export async function handleChatStream(req: any, res: any) {
   const { prompt, history, language, grade, lesson, totalLessons, theme, isRegistered } = req.body;
@@ -161,5 +161,6 @@ export async function handleChatStream(req: any, res: any) {
     res.end();
   }
 }
+
 
 
