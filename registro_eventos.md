@@ -30,6 +30,15 @@ Este documento registra todas las modificaciones importantes, decisiones arquite
   - `App.tsx` → `TRINCADO_IMG` ahora usa el link directo de GitHub Raw para asegurar carga al 100%.
   - `geminiService.ts` → Migración de `v1beta` a `v1` para mayor estabilidad en el Puente Directo.
 - **Resultado**: Imagen y AI funcionando de forma resiliente.
+## [2026-04-29] - Blindaje de Seguridad y Variables de Entorno
+- **Motivo**: Proteger la API Key en un repositorio público de GitHub para evitar revocaciones automáticas por parte de Google.
+- **Cambios**:
+  - `gemini-backend.ts` → Ahora solo carga llaves desde `process.env.GEMINI_API_KEY`.
+  - `src/services/geminiService.ts` → El Puente Directo ahora usa `import.meta.env.VITE_GEMINI_API_KEY`.
+  - `App.tsx` → Se eliminó la llave hardcodeada en la función de mensajes motivacionales.
+  - `.gitignore` → Se añadió `.env` para evitar subidas accidentales de claves locales.
+- **Resultado**: Código fuente 100% libre de claves expuestas. El sistema requiere configuración en el panel de Render para funcionar.
+
 
 
 
