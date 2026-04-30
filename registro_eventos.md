@@ -24,6 +24,13 @@ Este documento registra todas las modificaciones importantes, decisiones arquite
 - **Cambios**:
   - `gemini-backend.ts` y `geminiService.ts` → Se actualizó el modelo a `gemini-1.5-flash` para mayor compatibilidad y estabilidad.
 - **Resultado**: El Maestro Virtual vuelve a responder correctamente.
+## [2026-04-29] - Fix Final: Estabilidad de Imagen y API
+- **Motivo**: La imagen local fallaba en Render y el modelo presentaba errores 429/404.
+- **Cambios**:
+  - `App.tsx` → `TRINCADO_IMG` ahora usa el link directo de GitHub Raw para asegurar carga al 100%.
+  - `geminiService.ts` → Migración de `v1beta` a `v1` para mayor estabilidad en el Puente Directo.
+- **Resultado**: Imagen y AI funcionando de forma resiliente.
+
 
 
 - **Archivos modificados**: Creación de este archivo `registro_eventos.md`.

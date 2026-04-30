@@ -64,8 +64,8 @@ class ErrorBoundary extends React.Component<any, any> {
 }
 
 // Foto local del Maestro Joaquín Trincado (desde la carpeta del proyecto)
-const TRINCADO_IMG = "/joaquin_trincado.png";
-const TRINCADO_IMG_FALLBACK = "https://joaquintrincado.net/wp-content/uploads/2020/05/foto-Joaquin-Trincado.jpg";
+const TRINCADO_IMG = "https://raw.githubusercontent.com/osoj39729-source/escuela-magnetico-espiritual/main/public/joaquin_trincado.png";
+const TRINCADO_IMG_FALLBACK = "https://raw.githubusercontent.com/osoj39729-source/escuela-magnetico-espiritual/main/public/joaquin_trincado.png";
 
 const countryCodes = [
   { code: '+54', name: 'Argentina' },
