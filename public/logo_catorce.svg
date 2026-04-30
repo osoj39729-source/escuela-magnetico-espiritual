@@ -1,11 +1,22 @@
 <svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-  <rect width="512" height="73.14" y="0" fill="#dc2626"/>
-  <rect width="512" height="73.14" y="73.14" fill="#f97316"/>
-  <rect width="512" height="73.14" y="146.28" fill="#facc15"/>
-  <rect width="512" height="73.14" y="219.42" fill="#16a34a"/>
-  <rect width="512" height="73.14" y="292.56" fill="#3b82f6"/>
-  <rect width="512" height="73.14" y="365.7" fill="#4f46e5"/>
-  <rect width="512" height="73.14" y="438.84" fill="#7c3aed"/>
-  <circle cx="256" cy="256" r="80" fill="white" opacity="0.2"/>
-  <text x="256" y="275" font-family="Serif" font-size="60" text-anchor="middle" fill="white" font-weight="bold" opacity="0.9">14</text>
+  <!-- Fondo Negro Circular -->
+  <circle cx="256" cy="256" r="250" fill="black" stroke="#ffffff" stroke-width="4"/>
+  
+  <!-- Estrella de 14 Puntas (Gran Catorce) -->
+  <path d="M256 40 L280 180 L420 160 L320 256 L420 352 L280 332 L256 472 L232 332 L92 352 L192 256 L92 160 L232 180 Z" fill="none" stroke="white" stroke-width="2" opacity="0.3"/>
+  
+  <!-- Diseño más preciso de estrella de 14 puntas -->
+  <polygon points="256,60 278,160 376,110 326,208 426,230 326,252 426,302 326,324 376,422 278,372 256,472 234,372 136,422 186,324 86,302 186,252 86,230 186,208 136,110 234,160" fill="white" />
+
+  <!-- El número 14 en el centro -->
+  <circle cx="256" cy="256" r="70" fill="black" stroke="white" stroke-width="2"/>
+  <text x="256" y="280" font-family="Serif, Georgia, Times New Roman" font-size="80" text-anchor="middle" fill="white" font-weight="bold">14</text>
+  
+  <!-- Texto Circular Externo -->
+  <defs>
+    <path id="circlePath" d="M 256, 256 m -180, 0 a 180,180 0 1,1 360,0 a 180,180 0 1,1 -360,0" />
+  </defs>
+  <text font-family="Serif" font-size="24" fill="white" letter-spacing="4">
+    <textPath href="#circlePath" startOffset="25%">ESCUELA MAGNETICO-ESPIRITUAL</textPath>
+  </text>
 </svg>

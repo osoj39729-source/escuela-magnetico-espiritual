@@ -1850,9 +1850,9 @@ function App() {
                               window.speechSynthesis.speak(ut);
                             }
                         }}
-                        className="p-3 bg-amber-500 text-slate-900 rounded-full shadow-lg hover:scale-110 transition-transform"
+                        className="p-5 bg-amber-500 text-slate-900 rounded-full shadow-[0_0_30px_rgba(245,158,11,0.5)] hover:scale-110 transition-transform active:scale-90"
                       >
-                        <Volume2 className="w-5 h-5" />
+                        <Volume2 className="w-8 h-8" />
                       </button>
                     </div>
                     <p className="text-sm md:text-lg lg:text-xl font-serif text-amber-50 leading-relaxed italic">{currentPrompt}</p>
@@ -2468,7 +2468,7 @@ function App() {
           </div>
         </motion.aside>
 
-        <section className="lg:col-span-3 flex flex-col min-h-[60vh] lg:h-[75vh] max-h-[85vh] lg:max-h-none">
+        <section className="lg:col-span-3 flex flex-col flex-1 min-h-[400px] lg:h-[75vh]">
           {/* Student Header Bar - Harmonized above chat */}
           <div className="flex items-center justify-between px-6 py-3 bg-slate-900/40 backdrop-blur-md rounded-2xl border border-slate-800/50 mb-4 shadow-xl">
             <div className="flex items-center gap-3">
