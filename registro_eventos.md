@@ -37,7 +37,13 @@ Este documento registra todas las modificaciones importantes, decisiones arquite
   - `src/services/geminiService.ts` → El Puente Directo ahora usa `import.meta.env.VITE_GEMINI_API_KEY`.
   - `App.tsx` → Se eliminó la llave hardcodeada en la función de mensajes motivacionales.
   - `.gitignore` → Se añadió `.env` para evitar subidas accidentales de claves locales.
-## [2026-04-29] - Versión 1.2.2: Diseño Responsivo y Logo "Gran Catorce"
+## [2026-04-29] - Versión 1.2.4: Logo Oficial EMECU
+- **Motivo**: Ajustar el logo de la APK al escudo oficial (sin el número 14).
+- **Cambios**:
+  - `public/logo_catorce.svg` → Rediseñado con círculo negro, estrella blanca de 14 puntas, triángulo central con ancla y texto circular ("ESCUELA MAGNETICO-ESPIRITUAL COMUNA UNIVERSAL").
+- **Resultado**: El logo ahora refleja exactamente el escudo que aparece en el intro de la aplicación.
+
+## [2026-04-29] - Versión 1.2.2 y 1.2.3: Diseño Responsivo y Mejoras UX
 - **Motivo**: Corregir problemas de desplazamiento en móviles y actualizar la identidad visual de la APK.
 - **Cambios**:
   - `App.tsx` → Layout del aula actualizado para permitir scroll en móviles y aviso específico para bloqueos de Brave Browser en login Google.
