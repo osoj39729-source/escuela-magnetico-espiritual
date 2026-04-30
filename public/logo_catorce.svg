@@ -1,22 +1,31 @@
 <svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
   <!-- Fondo Negro Circular -->
-  <circle cx="256" cy="256" r="250" fill="black" stroke="#ffffff" stroke-width="4"/>
+  <circle cx="256" cy="256" r="256" fill="black"/>
   
-  <!-- Estrella de 14 Puntas (Gran Catorce) -->
-  <path d="M256 40 L280 180 L420 160 L320 256 L420 352 L280 332 L256 472 L232 332 L92 352 L192 256 L92 160 L232 180 Z" fill="none" stroke="white" stroke-width="2" opacity="0.3"/>
-  
-  <!-- Diseño más preciso de estrella de 14 puntas -->
-  <polygon points="256,60 278,160 376,110 326,208 426,230 326,252 426,302 326,324 376,422 278,372 256,472 234,372 136,422 186,324 86,302 186,252 86,230 186,208 136,110 234,160" fill="white" />
+  <!-- Estrella de 14 Puntas -->
+  <polygon points="256,30 285,160 380,80 340,190 470,190 360,256 470,322 340,322 380,432 285,352 256,482 227,352 132,432 172,322 42,322 152,256 42,190 172,190 132,80 227,160" fill="white" />
 
-  <!-- El número 14 en el centro -->
-  <circle cx="256" cy="256" r="70" fill="black" stroke="white" stroke-width="2"/>
-  <text x="256" y="280" font-family="Serif, Georgia, Times New Roman" font-size="80" text-anchor="middle" fill="white" font-weight="bold">14</text>
+  <!-- Círculo interior negro para el contenido -->
+  <circle cx="256" cy="256" r="160" fill="black" stroke="white" stroke-width="2"/>
   
-  <!-- Texto Circular Externo -->
+  <!-- Triángulo Central -->
+  <path d="M256 140 L346 300 L166 300 Z" fill="none" stroke="white" stroke-width="4"/>
+  
+  <!-- Ancla y Balanza (Estilizada) -->
+  <path d="M256 180 L256 280 M220 200 L292 200" fill="none" stroke="white" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="230" cy="230" r="15" fill="none" stroke="white" stroke-width="2"/>
+  <circle cx="282" cy="230" r="15" fill="none" stroke="white" stroke-width="2"/>
+
+  <!-- Texto Circular -->
   <defs>
-    <path id="circlePath" d="M 256, 256 m -180, 0 a 180,180 0 1,1 360,0 a 180,180 0 1,1 -360,0" />
+    <path id="textPathTop" d="M 106, 256 a 150,150 0 1,1 300,0" />
+    <path id="textPathBottom" d="M 106, 256 a 150,150 0 1,0 300,0" />
   </defs>
-  <text font-family="Serif" font-size="24" fill="white" letter-spacing="4">
-    <textPath href="#circlePath" startOffset="25%">ESCUELA MAGNETICO-ESPIRITUAL</textPath>
+  
+  <text font-family="Serif, Times New Roman" font-size="18" fill="white" font-weight="bold">
+    <textPath href="#textPathTop" startOffset="50%" text-anchor="middle">ESCUELA MAGNETICO-ESPIRITUAL</textPath>
+  </text>
+  <text font-family="Serif, Times New Roman" font-size="16" fill="white">
+    <textPath href="#textPathBottom" startOffset="50%" text-anchor="middle">COMUNA UNIVERSAL</textPath>
   </text>
 </svg>
