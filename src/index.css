@@ -16,3 +16,12 @@
     box-shadow: 0 0 50px rgba(245, 158, 11, 0.8), inset 0 0 20px rgba(245, 158, 11, 0.5);
   }
 }
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+}

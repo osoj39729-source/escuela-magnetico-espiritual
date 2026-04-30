@@ -37,13 +37,15 @@ Este documento registra todas las modificaciones importantes, decisiones arquite
   - `src/services/geminiService.ts` → El Puente Directo ahora usa `import.meta.env.VITE_GEMINI_API_KEY`.
   - `App.tsx` → Se eliminó la llave hardcodeada en la función de mensajes motivacionales.
   - `.gitignore` → Se añadió `.env` para evitar subidas accidentales de claves locales.
-## [2026-04-29] - Versión 1.2.0: Robustez y Fluidez (APK Update)
-- **Motivo**: Optimizar la experiencia en dispositivos móviles y evitar bloqueos por latencia de red.
+## [2026-04-29] - Versión 1.2.2: Diseño Responsivo y Logo "Gran Catorce"
+- **Motivo**: Corregir problemas de desplazamiento en móviles y actualizar la identidad visual de la APK.
 - **Cambios**:
-  - `geminiService.ts` → Implementación de **Timeout (8s)** en peticiones al servidor para activar el Puente Directo automáticamente si hay lag.
-  - `App.tsx` → Monitor de estado de red en tiempo real con banner de aviso "Offline".
-  - `capacitor.config.ts` → Confirmación de la URL de Render para el modo Bridge estable.
-- **Resultado**: Aplicación más fluida y resistente a fallos de conexión. Lista para compilación de APK en GitHub.
+  - `App.tsx` → Layout del aula actualizado para permitir scroll en móviles y aviso específico para bloqueos de Brave Browser en login Google.
+  - `index.css` → Forzado de scroll vertical y optimización de tacto para móviles.
+  - `public/logo_catorce.svg` → Creado el nuevo logo basado en los 7 colores de la bandera.
+  - `manifest.json` y `index.html` → Actualizados para usar el nuevo logo y permitir cualquier orientación de pantalla.
+- **Resultado**: Aula totalmente navegable en móviles. Identidad visual unificada. Mejor diagnóstico de errores de login.
+
 
 
 

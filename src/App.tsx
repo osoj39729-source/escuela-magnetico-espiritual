@@ -1449,7 +1449,12 @@ function App() {
     } catch (error: any) {
       console.error("Google sign in error:", error);
       setIsTransitioning(false);
-      setError("Error al iniciar sesión con Google.");
+      const errorMsg = error?.message || String(error);
+      if (errorMsg.includes("missing-initial-state")) {
+        setError("Error de seguridad (Bloqueo de cookies). Si usas Brave, desactiva el 'Escudo' o usa Chrome/Samsung Internet.");
+      } else {
+        setError("Error al iniciar sesión con Google. Intenta usar otro navegador o regístrate con correo.");
+      }
     }
   };
 
@@ -2391,7 +2396,7 @@ function App() {
         </div>
       </header>
 
-      <main className="relative z-10 grid grid-cols-1 lg:grid-cols-4 gap-10 mt-4">
+      <main className="relative z-10 grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-10 mt-4 px-2 sm:px-4 overflow-y-visible lg:overflow-visible">
         <motion.aside 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -2463,7 +2468,7 @@ function App() {
           </div>
         </motion.aside>
 
-        <section className="lg:col-span-3 flex flex-col h-[75vh]">
+        <section className="lg:col-span-3 flex flex-col min-h-[60vh] lg:h-[75vh] max-h-[85vh] lg:max-h-none">
           {/* Student Header Bar - Harmonized above chat */}
           <div className="flex items-center justify-between px-6 py-3 bg-slate-900/40 backdrop-blur-md rounded-2xl border border-slate-800/50 mb-4 shadow-xl">
             <div className="flex items-center gap-3">
