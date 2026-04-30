@@ -1,10 +1,15 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const loadApiKeys = (): string[] => {
-  // LLAVE MAESTRA CONFIRMADA Y FUNCIONAL
-  const masterKey = "AIzaSyA1ug2Ust6vkHTFs0QclluX6ZbNHT0JPKw";
-  console.log(`[Backend Keys] Llave Maestra cargada.`);
-  return [masterKey];
+  // Se prioriza la variable de entorno configurada en Render/Vercel por seguridad
+  const envKey = process.env.GEMINI_API_KEY;
+  if (envKey) {
+    console.log(`[Backend Keys] Llaves cargadas desde el entorno.`);
+    return envKey.split(',').map(k => k.trim());
+  }
+  
+  console.warn(`[Backend Keys] No se encontró GEMINI_API_KEY en el entorno. El sistema podría fallar.`);
+  return [];
 };
 
 const API_KEYS: string[] = loadApiKeys();

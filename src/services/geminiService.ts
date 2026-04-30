@@ -126,7 +126,8 @@ async function chatDirectlyWithGoogle(
   language: string,
   onChunk: StreamChunkCallback
 ): Promise<ProfessorResponse> {
-  const masterKey = "AIzaSyA1ug2Ust6vkHTFs0QclluX6ZbNHT0JPKw";
+  const masterKey = import.meta.env.VITE_GEMINI_API_KEY || "";
+  if (!masterKey) throw new Error("No API Key available for Direct Bridge");
   const url = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${masterKey}`;
   
   const systemInstruction = `
