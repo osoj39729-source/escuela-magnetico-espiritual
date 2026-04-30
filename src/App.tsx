@@ -990,16 +990,15 @@ function App() {
             setCurrentGrade(profile.currentGrade || 1);
             setLessonProgress(profile.currentLesson || 1);
             
-            // Usar update functions para evitar añadir dependencias externas
-            setShowIntro(prev => {
-              if (prev) setIntroStep('chat');
-              return false;
-            });
+            setShowIntro(false);
+            setIntroStep('chat');
           } else {
-            setIntroStep(prev => prev !== 'registration' ? 'registration' : prev);
+            // Solo redirigir si realmente no existe el perfil tras una carga exitosa
+            setIntroStep('registration');
           }
         } catch (error) {
           console.error("Error cargando perfil:", error);
+          setError("Error de conexión al descargar tu perfil. Reintentando...");
         }
       }
     });
@@ -1436,11 +1435,13 @@ function App() {
     setShowGoogleModal(false);
     
     try {
+      const isCapacitor = (window as any).Capacitor !== undefined;
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       
-      if (isMobile) {
-        await signInWithRedirect(auth as any, googleProvider as any);
-        // La redirección sacará al usuario de la app, el resultado se maneja en el useEffect al volver
+      if (isCapacitor) {
+        await signInWithPopup(auth, googleProvider);
+      } else if (isMobile) {
+        await signInWithRedirect(auth, googleProvider);
       } else {
         const { user } = await signInWithPopup(auth as any, googleProvider as any);
         await handleAuthUser(user);
@@ -1832,12 +1833,17 @@ function App() {
                     <div className="absolute -top-4 -right-4">
                       <button 
                         onClick={() => {
-                          if (window.speechSynthesis) {
-                            window.speechSynthesis.cancel();
-                            const ut = new SpeechSynthesisUtterance(t.professorGreeting);
-                            ut.lang = 'es-ES';
-                            window.speechSynthesis.speak(ut);
-                          }
+                            if (window.speechSynthesis) {
+                              window.speechSynthesis.cancel();
+                              if (window.speechSynthesis.paused) {
+                                window.speechSynthesis.resume();
+                              }
+                              const ut = new SpeechSynthesisUtterance(t.professorGreeting);
+                              ut.lang = 'es-MX';
+                              ut.onstart = () => console.log("Audio started");
+                              ut.onerror = (e) => console.error("Audio error:", e);
+                              window.speechSynthesis.speak(ut);
+                            }
                         }}
                         className="p-3 bg-amber-500 text-slate-900 rounded-full shadow-lg hover:scale-110 transition-transform"
                       >
