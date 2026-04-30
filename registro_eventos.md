@@ -37,7 +37,14 @@ Este documento registra todas las modificaciones importantes, decisiones arquite
   - `src/services/geminiService.ts` → El Puente Directo ahora usa `import.meta.env.VITE_GEMINI_API_KEY`.
   - `App.tsx` → Se eliminó la llave hardcodeada en la función de mensajes motivacionales.
   - `.gitignore` → Se añadió `.env` para evitar subidas accidentales de claves locales.
-- **Resultado**: Código fuente 100% libre de claves expuestas. El sistema requiere configuración en el panel de Render para funcionar.
+## [2026-04-29] - Versión 1.2.0: Robustez y Fluidez (APK Update)
+- **Motivo**: Optimizar la experiencia en dispositivos móviles y evitar bloqueos por latencia de red.
+- **Cambios**:
+  - `geminiService.ts` → Implementación de **Timeout (8s)** en peticiones al servidor para activar el Puente Directo automáticamente si hay lag.
+  - `App.tsx` → Monitor de estado de red en tiempo real con banner de aviso "Offline".
+  - `capacitor.config.ts` → Confirmación de la URL de Render para el modo Bridge estable.
+- **Resultado**: Aplicación más fluida y resistente a fallos de conexión. Lista para compilación de APK en GitHub.
+
 
 
 

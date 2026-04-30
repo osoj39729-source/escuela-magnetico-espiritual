@@ -783,8 +783,18 @@ function App() {
   const [continuousListen, setContinuousListen] = useState(false);
   const [isPhotoEnlarged, setIsPhotoEnlarged] = useState(false);
   
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  
   useEffect(() => {
-    console.log("EMECU APP - Versión 1.1.2 (Puente Directo Activo)");
+    console.log("EMECU APP - Versión 1.2.0 (Robusta & Fluida)");
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
   }, []);
   const [language, setLanguage] = useState<'es' | 'en' | 'pt' | 'fr'>('es');
   const t = translations[language];
@@ -1787,6 +1797,11 @@ function App() {
 
   return (
     <>
+      {!isOnline && (
+        <div className="fixed top-0 left-0 right-0 z-[1000] bg-red-600 text-white text-center py-1 text-sm font-bold shadow-md animate-pulse">
+          {language === 'es' ? '⚠️ Sin conexión a Internet - El Maestro esperará tu regreso' : '⚠️ No internet connection - The Master will wait for your return'}
+        </div>
+      )}
       {showIntro && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto">
           {/* Flag Background */}

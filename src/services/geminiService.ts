@@ -47,14 +47,19 @@ export async function chatWithProfessorStream(
     const isCapacitor = (window as any).Capacitor !== undefined;
     const apiUrl = isCapacitor ? `${API_BASE_URL}/api/chat-stream` : '/api/chat-stream';
     
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 segundos para evitar lag
+
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      signal: controller.signal,
       body: JSON.stringify({ 
         message, history, language, currentGrade, 
         lessonProgress, totalLessonsInGrade, themeName, isRegistered 
       })
     });
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       if (response.status === 429 || response.status === 500) {
