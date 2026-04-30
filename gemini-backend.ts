@@ -20,7 +20,7 @@ let lastKeyFailTime: Record<number, number> = {};
     const masked = key.substring(0, 8) + "..." + key.substring(key.length - 4);
     try {
       const genAI = new GoogleGenerativeAI(key);
-      const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
       const result = await model.generateContent("H");
       if (result.response) {
         console.log(`[INSPECTOR] Llave ${i} (${masked}): FUNCIONA ✅`);
@@ -91,7 +91,7 @@ Tus respuestas deben:
 5. Preguntar el nombre en la primera interacción y usarlo con fraternidad.
 `;
 
-const MODEL = "gemini-2.0-flash";
+const MODEL = "gemini-1.5-flash";
 
 export async function handleChatStream(req: any, res: any) {
   const { prompt, history, language, grade, lesson, totalLessons, theme, isRegistered } = req.body;
@@ -161,6 +161,7 @@ export async function handleChatStream(req: any, res: any) {
     res.end();
   }
 }
+
 
 
 

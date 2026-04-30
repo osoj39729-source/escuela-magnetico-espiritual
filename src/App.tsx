@@ -64,7 +64,7 @@ class ErrorBoundary extends React.Component<any, any> {
 }
 
 // Foto local del Maestro Joaquín Trincado (desde la carpeta del proyecto)
-const TRINCADO_IMG = "/maestro.png";
+const TRINCADO_IMG = "/joaquin_trincado.png";
 const TRINCADO_IMG_FALLBACK = "https://joaquintrincado.net/wp-content/uploads/2020/05/foto-Joaquin-Trincado.jpg";
 
 const countryCodes = [
