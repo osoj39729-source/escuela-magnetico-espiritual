@@ -184,7 +184,9 @@ const RegistrationForm = ({ t, onSubmit, onLogin, onSkip, onBack, user, language
             className="absolute top-6 left-6 text-slate-400 hover:text-amber-400 transition-colors flex items-center gap-2"
           >
             <ArrowLeft className="w-5 h-5" />
-            <span className="text-sm font-medium">Volver</span>
+            <span className="text-sm font-medium">
+              {language === 'es' ? 'Volver' : language === 'en' ? 'Back' : language === 'pt' ? 'Voltar' : 'Retour'}
+            </span>
           </button>
         )}
 
@@ -193,10 +195,12 @@ const RegistrationForm = ({ t, onSubmit, onLogin, onSkip, onBack, user, language
             <GraduationCap className="w-10 h-10 text-amber-400" />
           </div>
           <h2 className="text-3xl md:text-4xl font-serif text-amber-400 tracking-wide mb-2">
-            Escuela Magnetico-Espiritual de la Comuna Universal
+            {t.introTitle}
           </h2>
           <p className="text-slate-400 font-light">
-            La luz del conocimiento racional
+            {language === 'es' ? 'La luz del conocimiento racional' : 
+             language === 'en' ? 'The light of rational knowledge' : 
+             language === 'pt' ? 'A luz do conhecimento racional' : 'La lumière de la connaissance rationnelle'}
           </p>
         </div>
 
@@ -207,14 +211,14 @@ const RegistrationForm = ({ t, onSubmit, onLogin, onSkip, onBack, user, language
             onClick={() => { setMode('login'); setError(''); }}
             className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all ${mode === 'login' ? 'bg-amber-500 text-slate-950 shadow-lg' : 'text-slate-400 hover:text-amber-300'}`}
           >
-            Iniciar Sesión
+            {language === 'es' ? 'Iniciar Sesión' : language === 'en' ? 'Sign In' : language === 'pt' ? 'Entrar' : 'Se Connecter'}
           </button>
           <button
             type="button"
             onClick={() => { setMode('register'); setError(''); }}
             className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all ${mode === 'register' ? 'bg-amber-500 text-slate-950 shadow-lg' : 'text-slate-400 hover:text-amber-300'}`}
           >
-            Registrarse
+            {language === 'es' ? 'Registrarse' : language === 'en' ? 'Sign Up' : language === 'pt' ? 'Cadastrar' : "S'inscrire"}
           </button>
         </div>
 
@@ -796,7 +800,14 @@ function App() {
       window.removeEventListener('offline', handleOffline);
     };
   }, []);
-  const [language, setLanguage] = useState<'es' | 'en' | 'pt' | 'fr'>('es');
+  const getBrowserLang = (): 'es' | 'en' | 'pt' | 'fr' => {
+    try {
+      const lang = navigator.language.slice(0, 2).toLowerCase();
+      if (['es', 'en', 'pt', 'fr'].includes(lang)) return lang as 'es' | 'en' | 'pt' | 'fr';
+    } catch(e) {}
+    return 'es';
+  };
+  const [language, setLanguage] = useState<'es' | 'en' | 'pt' | 'fr'>(getBrowserLang());
   const t = translations[language];
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [isAudioPaused, setIsAudioPaused] = useState(false);
@@ -812,6 +823,9 @@ function App() {
   const [showAdminPassInput, setShowAdminPassInput] = useState(false);
   const [pendingGradeChange, setPendingGradeChange] = useState<number | null>(null);
   const [showGradeConfirm, setShowGradeConfirm] = useState(false);
+  const [showDiploma, setShowDiploma] = useState<number | null>(null);
+  const [maxReachedLesson, setMaxReachedLesson] = useState(1);
+  const [maxReachedGrade, setMaxReachedGrade] = useState(1);
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [videoLoading, setVideoLoading] = useState(false);
   const [videoError, setVideoError] = useState<string | null>(null);
@@ -827,6 +841,8 @@ function App() {
         setStudentProfile(profile);
         setCurrentGrade(profile.currentGrade || 1);
         setLessonProgress(profile.currentLesson || 1);
+        setMaxReachedGrade(profile.maxReachedGrade || profile.currentGrade || 1);
+        setMaxReachedLesson(profile.maxReachedLesson || profile.currentLesson || 1);
       }
     } catch(e) { console.log('No saved profile'); }
   }, []);
@@ -976,29 +992,40 @@ function App() {
     setPersistence(auth as any, browserLocalPersistence).catch(err => console.error("Persistence error:", err));
 
     const unsubscribe = onAuthStateChanged(auth as any, async (currentUser) => {
-      // Only update if the user actually changed to avoid flickering
-      if (currentUser?.uid === user?.uid && !!currentUser === !!user) return;
-      
-      setUser(currentUser);
-      
       if (currentUser) {
-        try {
-          const profile = await getStudentProfile(currentUser.uid);
-          if (profile) {
-            setStudentProfile(profile);
-            setIsAdminUser(profile.role === 'admin' || currentUser.email === "nelsonosoriogarcia@gmail.com");
-            setCurrentGrade(profile.currentGrade || 1);
-            setLessonProgress(profile.currentLesson || 1);
-            
-            setShowIntro(false);
-            setIntroStep('chat');
-          } else {
-            // Solo redirigir si realmente no existe el perfil tras una carga exitosa
-            setIntroStep('registration');
+        if (currentUser.uid !== user?.uid) {
+          setUser(currentUser);
+          try {
+            const profile = await getStudentProfile(currentUser.uid);
+            if (profile) {
+              setStudentProfile(profile);
+              setIsAdminUser(profile.role === 'admin' || currentUser.email === "nelsonosoriogarcia@gmail.com");
+              setCurrentGrade(profile.currentGrade || 1);
+              setLessonProgress(profile.currentLesson || 1);
+              setShowIntro(false);
+              setIntroStep('chat');
+            } else {
+              setIntroStep('registration');
+            }
+          } catch (error) {
+            console.error("Error cargando perfil:", error);
+            setError("Error de conexión al descargar tu perfil.");
           }
-        } catch (error) {
-          console.error("Error cargando perfil:", error);
-          setError("Error de conexión al descargar tu perfil. Reintentando...");
+        }
+      } else {
+        // Manejar regreso de Google Redirect (Crítico para móviles)
+        try {
+          const result = await getRedirectResult(auth as any);
+          if (result?.user) {
+            await handleAuthUser(result.user);
+          }
+        } catch (error: any) {
+          console.error("Error en auth redirect:", error);
+          if (error.code === 'auth/unauthorized-domain') {
+            setError("⚠️ Dominio no autorizado en Firebase. Por favor, añade 'maestro-trincado.vercel.app' a los dominios autorizados en la consola de Firebase.");
+          } else {
+            setError("Error al iniciar sesión: " + error.message);
+          }
         }
       }
     });
@@ -1046,12 +1073,9 @@ function App() {
 
   // Handle Language Change
   useEffect(() => {
-    if (!showIntro && chat.length > 0) {
-      // If we are already in a chat, we might want the professor to repeat the last message in the new language
-      const lastProfessorMsg = [...chat].reverse().find(m => m.role === 'professor');
-      if (lastProfessorMsg) {
-        speak(lastProfessorMsg.text);
-      }
+    if (!showIntro) {
+      // Reiniciar saludo en el nuevo idioma
+      fetchGreeting();
     }
   }, [language]);
 
@@ -1084,6 +1108,7 @@ function App() {
       
       await chatWithProfessorStream(
         startPrompt, [], language, activeGrade, activeLesson, totalLessons, themeName, !!studentProfile,
+        studentProfile?.fullName || 'Alumno',
         (chunk) => {
           accumulated += chunk;
           
@@ -1149,6 +1174,14 @@ function App() {
     }
   }, [user, introStep]);
 
+  const unlockAudio = () => {
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      const utterance = new SpeechSynthesisUtterance(" ");
+      utterance.volume = 0;
+      window.speechSynthesis.speak(utterance);
+    }
+  };
+
   // Progressive TTS Queue
   const enqueueSpeech = (text: string) => {
     ttsQueueRef.current.push(text);
@@ -1157,8 +1190,54 @@ function App() {
     }
   };
 
-  const processSpeechQueue = () => {
-    if (!window.speechSynthesis) return;
+  const speakWithAzure = async (text: string, lang: string) => {
+    const azureKey = import.meta.env.VITE_AZURE_SPEECH_KEY;
+    const azureRegion = import.meta.env.VITE_AZURE_SPEECH_REGION || 'eastus';
+    
+    if (!azureKey) return false;
+
+    try {
+      const voiceMap: { [key: string]: string } = {
+        'es': 'es-NI-FedericoNeural',
+        'en': 'en-US-AndrewNeural',
+        'pt': 'pt-BR-FabioNeural',
+        'fr': 'fr-FR-HenriNeural'
+      };
+      
+      const voiceName = voiceMap[lang.split('-')[0]] || 'es-NI-FedericoNeural';
+      
+      const response = await fetch(`https://${azureRegion}.tts.speech.microsoft.com/cognitiveservices/v1`, {
+        method: 'POST',
+        headers: {
+          'Ocp-Apim-Subscription-Key': azureKey,
+          'Content-Type': 'application/ssml+xml',
+          'X-Microsoft-OutputFormat': 'audio-16khz-128kbitrate-mono-mp3',
+          'User-Agent': 'MaestroTrincadoApp'
+        },
+        body: `<speak version='1.0' xml:lang='${lang}'><voice xml:lang='${lang}' xml:gender='Male' name='${voiceName}'>${text}</voice></speak>`
+      });
+
+      if (!response.ok) throw new Error('Azure TTS error');
+
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const audio = new Audio(url);
+      
+      return new Promise((resolve) => {
+        audio.onended = () => {
+          URL.revokeObjectURL(url);
+          resolve(true);
+        };
+        audio.onerror = () => resolve(false);
+        audio.play().catch(() => resolve(false));
+      });
+    } catch (e) {
+      console.error('Azure TTS failed:', e);
+      return false;
+    }
+  };
+
+  const processSpeechQueue = async () => {
     if (ttsQueueRef.current.length === 0 || !shouldContinueSpeakingRef.current) {
       isSpeakingQueueRef.current = false;
       setIsAudioPlaying(false);
@@ -1170,13 +1249,29 @@ function App() {
     setIsAudioPaused(false);
     
     const text = ttsQueueRef.current.shift() || "";
-    const utterance = new SpeechSynthesisUtterance(text.trim());
+    const cleanText = text.trim();
+    
+    // Intentar Azure primero si hay llave
+    if (import.meta.env.VITE_AZURE_SPEECH_KEY) {
+      const success = await speakWithAzure(cleanText, language === 'es' ? 'es-ES' : language === 'en' ? 'en-US' : language === 'pt' ? 'pt-BR' : 'fr-FR');
+      if (success) {
+        processSpeechQueue();
+        return;
+      }
+    }
+
+    // Fallback a Web Speech API si Azure falla o no hay llave
+    if (!window.speechSynthesis) {
+      processSpeechQueue();
+      return;
+    }
+
+    const utterance = new SpeechSynthesisUtterance(cleanText);
     utterance.rate = audioSpeed;
     utterance.pitch = 0.4;
     utterance.volume = 1;
     
     const voices = window.speechSynthesis.getVoices();
-    // Priorizar voces masculinas en el idioma seleccionado
     const maleVoices = voices.filter(v => v.lang.startsWith(language) && 
       (v.name.toLowerCase().includes('male') || 
        v.name.toLowerCase().includes('hombre') || 
@@ -1197,17 +1292,9 @@ function App() {
       utterance.lang = language === 'es' ? 'es-MX' : language === 'en' ? 'en-US' : language === 'pt' ? 'pt-BR' : 'fr-FR';
     }
 
-    utterance.onend = () => {
-      // Process next in queue
-      processSpeechQueue();
-    };
-
-    utterance.onerror = () => {
-      // Ignore errors and keep going
-      processSpeechQueue();
-    };
-
-    if (window.speechSynthesis) window.speechSynthesis.speak(utterance);
+    utterance.onend = () => processSpeechQueue();
+    utterance.onerror = () => processSpeechQueue();
+    window.speechSynthesis.speak(utterance);
   };
 
   const speak = (text: string) => {
@@ -1293,6 +1380,7 @@ function App() {
   };
 
   const handleSkipRegistration = () => {
+    unlockAudio();
     setShowIntro(false);
     setIntroStep('chat');
     fetchGreeting();
@@ -1332,6 +1420,7 @@ function App() {
       setTimeout(() => {
         setStudentProfile(localStudent);
         setUser(user);
+        unlockAudio();
         setShowIntro(false);
         setIntroStep('chat');
         setTimeout(() => {
@@ -1392,6 +1481,7 @@ function App() {
         setLessonProgress(profile.currentLesson || 1);
         
         setTimeout(() => {
+          unlockAudio();
           setShowIntro(false);
           setIntroStep('chat');
           fetchGreeting(profile.currentGrade || 1, profile.currentLesson || 1);
@@ -1498,8 +1588,11 @@ function App() {
     setIsAdminUser(profile.role === 'admin' || user.email === "nelsonosoriogarcia@gmail.com");
     setCurrentGrade(profile.currentGrade || 1);
     setLessonProgress(profile.currentLesson || 1);
+    setMaxReachedGrade(profile.maxReachedGrade || profile.currentGrade || 1);
+    setMaxReachedLesson(profile.maxReachedLesson || profile.currentLesson || 1);
     
     setTimeout(() => {
+      unlockAudio();
       setShowIntro(false);
       setIntroStep('chat');
       fetchGreeting(profile.currentGrade || 1, profile.currentLesson || 1);
@@ -1726,7 +1819,15 @@ function App() {
       shouldContinueSpeakingRef.current = true;
       
       const result = await chatWithProfessorStream(
-        msg, currentHistory, language, currentGrade, lessonProgress, totalLessons, themeName, !!studentProfile,
+        msg, 
+        currentHistory, 
+        language, 
+        currentGrade, 
+        lessonProgress, 
+        totalLessons, 
+        themeName, 
+        !!studentProfile,
+        studentProfile?.fullName || 'Alumno',
         (chunk) => {
           accumulated += chunk;
           
@@ -1767,24 +1868,71 @@ function App() {
       }
       
       streamedStudentUpdate = result.studentUpdate || null;
+
+      // Evaluar paso de lección por conciencia
+      if (streamedStudentUpdate?.pass_lesson) {
+        const gradeData = CURRICULUM.find(g => g.id === currentGrade);
+        const totalCount = gradeData?.lessonsCount || 50;
+        
+        if (lessonProgress < totalCount) {
+          // Avanzar a la siguiente lección
+          const nextLesson = lessonProgress + 1;
+          setLessonProgress(nextLesson);
+          if (nextLesson > maxReachedLesson || currentGrade > maxReachedGrade) {
+            setMaxReachedLesson(nextLesson);
+          }
+        } else if (currentGrade < 13) {
+          // Fin de grado - Diploma
+          setShowDiploma(currentGrade);
+          const nextGrade = currentGrade + 1;
+          setCurrentGrade(nextGrade);
+          setLessonProgress(1);
+          setMaxReachedGrade(nextGrade);
+          setMaxReachedLesson(1);
+          generateCertificate(currentGrade);
+        }
+      }
+
       // Guardar progreso
       if (studentProfile) {
         try {
-          const updated = { ...studentProfile, currentGrade, currentLesson: lessonProgress };
-          if (streamedStudentUpdate) updated.faculties = streamedStudentUpdate;
+          const updated = { 
+            ...studentProfile, 
+            currentGrade, 
+            currentLesson: lessonProgress,
+            maxReachedGrade: Math.max(maxReachedGrade, currentGrade),
+            maxReachedLesson: Math.max(maxReachedLesson, lessonProgress)
+          };
+          if (streamedStudentUpdate) {
+             // Filtrar solo las facultades numéricas y evitar undefined/booleans en el objeto faculties
+             const newFaculties = { ...studentProfile.faculties };
+             const facultyKeys = ['Rationality', 'Morality', 'Spirituality', 'Philosophy', 'Magnetism', 'Evolution', 'Memory'];
+             
+             facultyKeys.forEach(key => {
+               if (typeof streamedStudentUpdate[key] === 'number') {
+                 newFaculties[key] = streamedStudentUpdate[key];
+               }
+             });
+             
+             updated.faculties = newFaculties;
+             if (typeof streamedStudentUpdate.IntelligenceGrade === 'string') {
+               updated.intelligenceGrade = streamedStudentUpdate.IntelligenceGrade;
+             }
+          }
           localStorage.setItem('emecu_student', JSON.stringify(updated));
+          
+          // Actualizar en Firestore si está logueado
+          if (user) {
+            const docRef = doc(db, 'students', user.uid);
+            await updateDoc(docRef, {
+              currentGrade: updated.currentGrade,
+              currentLesson: updated.currentLesson,
+              maxReachedGrade: updated.maxReachedGrade,
+              maxReachedLesson: updated.maxReachedLesson,
+              faculties: updated.faculties
+            });
+          }
         } catch(e) { console.error('Error saving progress:', e); }
-      }
-      // Detectar fin de lección
-      if (accumulated.toLowerCase().includes("lección ha terminado") ||
-          accumulated.toLowerCase().includes("lesson has ended") ||
-          accumulated.toLowerCase().includes("lição terminou") ||
-          accumulated.toLowerCase().includes("leçon est terminée")) {
-        const grade = CURRICULUM.find(g => g.id === currentGrade);
-        const totalCount = grade?.lessonsCount || 50;
-        const nextLesson = Math.min(lessonProgress + 1, totalCount);
-        setLessonProgress(nextLesson);
-        if (nextLesson === totalCount) generateCertificate(currentGrade);
       }
     } catch (error: any) {
       console.error(error);
@@ -1906,7 +2054,7 @@ function App() {
                   language={language}
                   onSubmit={handleRegistration}
                   onLogin={handleLogin}
-                  onSkip={() => { setShowIntro(false); setIntroStep('chat'); fetchGreeting(); }}
+                  onSkip={() => { unlockAudio(); setShowIntro(false); setIntroStep('chat'); fetchGreeting(); }}
                   onBack={() => setIntroStep('intro')}
                   externalError={error}
                   setExternalError={setError}
@@ -2083,6 +2231,113 @@ function App() {
         )}
       </AnimatePresence>
 
+      {/* Diploma overlay */}
+      <AnimatePresence>
+        {showDiploma && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/90 backdrop-blur-2xl p-4 md:p-10"
+          >
+            <motion.div
+              initial={{ scale: 0.8, y: 50, rotateY: 45 }}
+              animate={{ scale: 1, y: 0, rotateY: 0 }}
+              exit={{ scale: 0.8, y: 50, opacity: 0 }}
+              transition={{ type: "spring", damping: 15, stiffness: 100 }}
+              className="relative max-w-4xl w-full aspect-[1.414/1] bg-slate-950 border-4 border-amber-500/50 rounded-lg shadow-[0_0_100px_rgba(245,158,11,0.4)] overflow-hidden p-8 md:p-16 flex flex-col items-center justify-between text-center"
+            >
+              {/* Background watermark */}
+              <div className="absolute inset-0 opacity-10 flex items-center justify-center pointer-events-none">
+                <img src="https://emecu.org.gt/wp-content/uploads/2021/03/Escudo_Emecu-PNG.webp" className="w-2/3 object-contain" alt="" />
+              </div>
+
+              <div className="relative z-10 w-full flex flex-col items-center">
+                <motion.div 
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 }}
+                  className="mb-6"
+                >
+                  <Award className="w-16 h-16 md:w-24 md:h-24 text-amber-500 animate-pulse" />
+                </motion.div>
+
+                <h1 className="text-2xl md:text-5xl font-serif text-amber-400 mb-4 tracking-tighter">
+                  {t.certificateTitle}
+                </h1>
+                
+                <div className="w-32 h-1 bg-gradient-to-r from-transparent via-amber-500 to-transparent mb-8" />
+                
+                <p className="text-slate-400 italic text-lg mb-4">{t.certificateAwarded}</p>
+                
+                <h2 className="text-3xl md:text-6xl font-serif text-white mb-8 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">
+                  {studentProfile?.fullName}
+                </h2>
+                
+                <p className="max-w-2xl text-slate-300 text-lg md:text-xl leading-relaxed">
+                  {t.certificateBody} <span className="text-amber-400 font-bold">GRADO {showDiploma}</span> de la Escuela Magnetico-Espiritual de la Comuna Universal.
+                </p>
+              </div>
+
+              <div className="relative z-10 w-full flex flex-col items-center gap-6">
+                <div className="flex flex-col items-center">
+                   <div className="w-48 h-px bg-slate-700 mb-2" />
+                   <p className="text-amber-200/60 font-serif text-sm">Joaquín Trincado Mateo</p>
+                   <p className="text-slate-500 text-[10px] uppercase tracking-widest">Director Fundador</p>
+                </div>
+
+                <div className="flex gap-4">
+                  <button 
+                    onClick={() => generateCertificate(showDiploma)}
+                    className="px-8 py-3 bg-amber-500 text-slate-950 font-bold rounded-xl shadow-lg hover:bg-amber-400 transition-all flex items-center gap-2"
+                  >
+                    <Download className="w-5 h-5" />
+                    {t.downloadCertificate}
+                  </button>
+                  <button 
+                    onClick={() => setShowDiploma(null)}
+                    className="px-8 py-3 bg-slate-800 text-white font-bold rounded-xl hover:bg-slate-700 transition-all"
+                  >
+                    {language === 'es' ? 'Continuar al Siguiente Grado' : 
+                     language === 'en' ? 'Continue to Next Grade' : 
+                     language === 'pt' ? 'Continuar para o Próximo Grau' : 'Continuer au Grade Suivant'}
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+            
+            {/* Confetti simulation */}
+            <motion.div 
+               initial={{ opacity: 0 }}
+               animate={{ opacity: 1 }}
+               className="absolute inset-0 pointer-events-none"
+            >
+               {[...Array(20)].map((_, i) => (
+                 <motion.div
+                   key={i}
+                   initial={{ 
+                     top: -10, 
+                     left: `${Math.random() * 100}%`,
+                     rotate: 0 
+                   }}
+                   animate={{ 
+                     top: '105%',
+                     rotate: 360,
+                     left: `${Math.random() * 100}%`
+                   }}
+                   transition={{ 
+                     duration: 3 + Math.random() * 2, 
+                     repeat: Infinity,
+                     delay: Math.random() * 2 
+                   }}
+                   className="w-2 h-4 bg-amber-500 opacity-60 rounded-sm"
+                 />
+               ))}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Grade Change Confirmation Floating Dialog */}
       {showGradeConfirm && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 sm:p-12 pointer-events-none">
@@ -2125,7 +2380,9 @@ function App() {
                       setLessonProgress(1);
                       setShowGradeConfirm(false);
                       setPendingGradeChange(null);
-                      setChat([{ role: 'professor', text: 'Preparando la nueva cátedra, aguarda un momento...' }]);
+                      setChat([{ role: 'professor', text: language === 'es' ? 'Preparando la nueva cátedra, aguarda un momento...' : 
+                                                          language === 'en' ? 'Preparing the new lecture, please wait a moment...' : 
+                                                          language === 'pt' ? 'Preparando a nova aula, aguarde um momento...' : 'Préparation de la nouvelle conférence, veuillez patienter...' }]);
                       setTimeout(() => {
                          fetchGreeting(targetGrade, 1);
                       }, 50);
@@ -2155,7 +2412,7 @@ function App() {
       {/* School Name - Top Banner */}
       <div className="w-full z-[100] text-center py-4 bg-gradient-to-r from-amber-950 via-amber-900 to-amber-950 border-b border-amber-500/50 shadow-[0_4px_20px_rgba(245,158,11,0.15)] relative">
         <p className="text-amber-100 text-xs sm:text-sm md:text-base font-bold tracking-[0.3em] uppercase drop-shadow-md px-2">
-          Escuela Magnetico-Espiritual de la Comuna Universal
+          {t.introTitle}
         </p>
       </div>
 
@@ -2210,7 +2467,9 @@ function App() {
             <div className="flex items-center gap-2 mt-2">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
               <p className="text-slate-500 text-[10px] md:text-xs font-medium tracking-wide">
-                Profesor Virtual Doctrinal
+                {language === 'es' ? 'Profesor Virtual Doctrinal' : 
+                 language === 'en' ? 'Virtual Doctrinal Professor' : 
+                 language === 'pt' ? 'Professor Virtual Doutrinário' : 'Professeur Doctrinaire Virtuel'}
               </p>
             </div>
           </div>
@@ -2256,9 +2515,10 @@ function App() {
                         value={adminPass}
                         onChange={(e) => {
                           setAdminPass(e.target.value);
-                          if (e.target.value === "EMECU_SECRET") {
+                          if (e.target.value === "TRINCADO_2026_ADMIN") {
                             setUnlockedAllGrades(true);
                             setShowAdminPassInput(false);
+                            setAdminPass('');
                           }
                         }}
                       />
@@ -2267,7 +2527,7 @@ function App() {
 
                   <div className="max-h-80 overflow-y-auto p-2 space-y-1">
                     {CURRICULUM.map((grade) => {
-                      const isUnlocked = true; // Temporary unlock all grades for testing
+                      const isUnlocked = unlockedAllGrades || grade.id <= maxReachedGrade;
                       return (
                         <button
                           key={grade.id}
@@ -2289,7 +2549,85 @@ function App() {
                         >
                           <div className="flex items-center gap-2">
                             <span className="w-5 text-center font-mono opacity-50">{grade.id}</span>
-                            <span className="truncate max-w-[160px]">{grade.title}</span>
+                            <span className="truncate max-w-[160px]">
+                              {(() => {
+                                const title = grade.title;
+                                if (language === 'es') return title;
+                                
+                                // Traducciones dinámicas de los títulos principales
+                                const translations: Record<string, Record<string, string>> = {
+                                  'en': {
+                                    'Grado 1': 'Grade 1', 'Grado 2': 'Grade 2', 'Grado 3': 'Grade 3',
+                                    'Grado 4': 'Grade 4', 'Grado 5': 'Grade 5', 'Grado 6': 'Grade 6',
+                                    'Grado 7': 'Grade 7', 'Grado 8': 'Grade 8', 'Grado 9': 'Grade 9',
+                                    'Grado 10': 'Grade 10', 'Grado 11': 'Grade 11', 'Grado 12': 'Grade 12',
+                                    'Grado 13': 'Grade 13',
+                                    'El Discurso del Obispo Stromayer': "Bishop Strossmayer's Speech",
+                                    'Conócete a ti mismo': 'Know Thyself',
+                                    'Profilaxis de la Vida': 'Prophylaxis of Life',
+                                    'Buscando a Dios': 'Seeking God',
+                                    'Filosofía Austera Racional': 'Austere Rational Philosophy',
+                                    'Los Extremos se Tocan': 'Extremes Meet',
+                                    'Espiritismo en su Asiento': 'Spiritism in its Seat',
+                                    'Los Cinco Amores': 'The Five Loves',
+                                    'El Primer Rayo de Luz': 'The First Ray of Light',
+                                    'Historia Magnética': 'Magnetic History',
+                                    'Alpha y Omega': 'Alpha and Omega',
+                                    'Código de Amor': 'Code of Love',
+                                    'Profecías': 'Prophecies'
+                                  },
+                                  'pt': {
+                                    'Grado 1': 'Grau 1', 'Grado 2': 'Grau 2', 'Grado 3': 'Grau 3',
+                                    'Grado 4': 'Grau 4', 'Grado 5': 'Grau 5', 'Grado 6': 'Grau 6',
+                                    'Grado 7': 'Grau 7', 'Grado 8': 'Grau 8', 'Grado 9': 'Grau 9',
+                                    'Grado 10': 'Grau 10', 'Grado 11': 'Grau 11', 'Grado 12': 'Grau 12',
+                                    'Grado 13': 'Grau 13',
+                                    'El Discurso del Obispo Stromayer': 'O Discurso do Bispo Strossmayer',
+                                    'Conócete a ti mismo': 'Conhece-te a ti mesmo',
+                                    'Profilaxis de la Vida': 'Profilaxia da Vida',
+                                    'Buscando a Dios': 'Buscando a Deus',
+                                    'Filosofía Austera Racional': 'Filosofia Austera Racional',
+                                    'Los Extremos se Tocan': 'Os Extremos se Tocam',
+                                    'Espiritismo en su Asiento': 'Espiritismo em seu Assento',
+                                    'Los Cinco Amores': 'Os Cinco Amores',
+                                    'El Primer Rayo de Luz': 'O Primeiro Raio de Luz',
+                                    'Historia Magnética': 'História Magnética',
+                                    'Alpha y Omega': 'Alfa e Ômega',
+                                    'Código de Amor': 'Código de Amor',
+                                    'Profecías': 'Profecias'
+                                  },
+                                  'fr': {
+                                    'Grado 1': 'Grade 1', 'Grado 2': 'Grade 2', 'Grado 3': 'Grade 3',
+                                    'Grado 4': 'Grade 4', 'Grado 5': 'Grade 5', 'Grado 6': 'Grade 6',
+                                    'Grado 7': 'Grade 7', 'Grado 8': 'Grade 8', 'Grado 9': 'Grade 9',
+                                    'Grado 10': 'Grade 10', 'Grado 11': 'Grade 11', 'Grado 12': 'Grade 12',
+                                    'Grado 13': 'Grade 13',
+                                    'El Discurso del Obispo Stromayer': "Le Discours de l'Évêque Strossmayer",
+                                    'Conócete a ti mismo': 'Connais-toi toi-même',
+                                    'Profilaxis de la Vida': 'Prophylaxie de la Vie',
+                                    'Buscando a Dios': 'À la recherche de Dieu',
+                                    'Filosofía Austera Racional': 'Philosophie Austère Rationnelle',
+                                    'Los Extremos se Tocan': 'Les Extrêmes se Touchent',
+                                    'Espiritismo en su Asiento': 'Le Spiritisme dans son Siège',
+                                    'Los Cinco Amores': 'Les Cinq Amours',
+                                    'El Primer Rayo de Luz': 'Le Premier Rayon de Lumière',
+                                    'Historia Magnética': 'Histoire Magnétique',
+                                    'Alpha y Omega': 'Alpha et Oméga',
+                                    'Código de Amor': "Code d'Amour",
+                                    'Profecías': 'Prophéties'
+                                  }
+                                };
+
+                                let translatedTitle = title;
+                                const langDict = translations[language];
+                                if (langDict) {
+                                  Object.keys(langDict).forEach(key => {
+                                    translatedTitle = translatedTitle.replace(key, langDict[key]);
+                                  });
+                                }
+                                return translatedTitle;
+                              })()}
+                            </span>
                           </div>
                           {!isUnlocked && <Lock className="w-3 h-3" />}
                           {isUnlocked && currentGrade > grade.id && <ShieldCheck className="w-3 h-3 text-green-500" />}
@@ -2355,11 +2693,22 @@ function App() {
               className="bg-slate-900/50 border border-slate-800/50 rounded-xl px-2 py-1 text-amber-400 text-[10px] outline-none hover:bg-slate-800 transition-all shadow-lg max-w-[120px]"
             >
               {availableVoices
-                .filter(v => v.lang.startsWith(language))
-                .sort((a, b) => a.name.localeCompare(b.name))
+                .filter(v => v.lang.startsWith(language) && 
+                  (v.name.toLowerCase().includes('male') || 
+                   v.name.toLowerCase().includes('hombre') || 
+                   v.name.toLowerCase().includes('federico') ||
+                   v.name.toLowerCase().includes('natural') ||
+                   v.name.toLowerCase().includes('google')))
+                .sort((a, b) => {
+                  // Priorizar Federico y Natural
+                  const aScore = (a.name.includes('Federico') || a.name.includes('Natural')) ? 0 : 1;
+                  const bScore = (b.name.includes('Federico') || b.name.includes('Natural')) ? 0 : 1;
+                  return aScore - bScore || a.name.localeCompare(b.name);
+                })
+                .slice(0, 5) // Máximo 5 opciones
                 .map(voice => (
                   <option key={voice.voiceURI} value={voice.voiceURI}>
-                    {voice.name}
+                    {voice.name.replace('Microsoft ', '').replace('Online (Natural)', '✨').replace('Google ', '🌐 ')}
                   </option>
                 ))}
             </select>
@@ -2409,21 +2758,42 @@ function App() {
               <div className="p-2 bg-amber-500/10 rounded-lg">
                 <BookOpen className="w-5 h-5" />
               </div>
-              Currículo Actual
+              {language === 'es' ? 'Currículo Actual' : 
+               language === 'en' ? 'Current Curriculum' : 
+               language === 'pt' ? 'Currículo Atual' : 'Programme Actuel'}
             </h2>
             <div className="space-y-6 text-left">
               {/* Lesson Progress */}
               <div className="p-4 bg-slate-950/50 rounded-2xl border border-slate-800/50">
-                <p className="text-amber-200/80 text-[10px] font-bold uppercase tracking-[0.2em] mb-3">Estudio Actual</p>
+                <p className="text-amber-200/80 text-[10px] font-bold uppercase tracking-[0.2em] mb-3">
+                  {language === 'es' ? 'Estudio Actual' : 
+                   language === 'en' ? 'Current Study' : 
+                   language === 'pt' ? 'Estudo Atual' : 'Étude Actuelle'}
+                </p>
                 <div className="flex flex-col gap-1 mb-4">
-                  <span className="text-slate-400 text-xs font-medium">Libro:</span>
+                  <span className="text-slate-400 text-xs font-medium">
+                    {language === 'es' ? 'Libro:' : language === 'en' ? 'Book:' : language === 'pt' ? 'Livro:' : 'Livre:'}
+                  </span>
                   <p className="text-amber-100/90 text-sm font-bold leading-tight">
-                    {CURRICULUM.find(g => g.id === currentGrade)?.book}
+                    {(() => {
+                      const bookTitle = CURRICULUM.find(g => g.id === currentGrade)?.book || '';
+                      if (language === 'es') return bookTitle;
+                      const dict: Record<string, Record<string, string>> = {
+                        'en': { 'El Discurso del Obispo Stromayer': "Bishop Strossmayer's Speech", 'Conócete a ti mismo': 'Know Thyself', 'Profilaxis de la Vida': 'Prophylaxis of Life', 'Buscando a Dios': 'Seeking God', 'Filosofía Austera Racional': 'Austere Rational Philosophy', 'Los Extremos se Tocan': 'Extremes Meet', 'Espiritismo en su Asiento': 'Spiritism in its Seat', 'Los Cinco Amores': 'The Five Loves', 'El Primer Rayo de Luz': 'The First Ray of Light', 'Historia Magnética': 'Magnetic History', 'Alpha y Omega': 'Alpha and Omega', 'Código de Amor': 'Code of Love', 'Profecías': 'Prophecies' },
+                        'pt': { 'El Discurso del Obispo Stromayer': 'O Discurso do Bispo Strossmayer', 'Conócete a ti mismo': 'Conhece-te a ti mesmo', 'Profilaxis de la Vida': 'Profilaxia da Vida', 'Buscando a Dios': 'Buscando a Deus', 'Filosofía Austera Racional': 'Filosofia Austera Racional', 'Los Extremos se Tocan': 'Os Extremos se Tocam', 'Espiritismo en su Asiento': 'Espiritismo em seu Assento', 'Los Cinco Amores': 'Os Cinco Amores', 'El Primer Rayo de Luz': 'O Primeiro Raio de Luz', 'Historia Magnética': 'História Magnética', 'Alpha y Omega': 'Alfa e Ômega', 'Código de Amor': 'Código de Amor', 'Profecías': 'Profecias' },
+                        'fr': { 'El Discurso del Obispo Stromayer': "Le Discours de l'Évêque Strossmayer", 'Conócete a ti mismo': 'Connais-toi toi-même', 'Profilaxis de la Vida': 'Prophylaxie de la Vie', 'Buscando a Dios': 'À la recherche de Dieu', 'Filosofía Austera Racional': 'Philosophie Austère Rationnelle', 'Los Extremos se Tocan': 'Les Extrêmes se Touchent', 'Espiritismo en su Asiento': 'Le Spiritisme dans son Siège', 'Los Cinco Amores': 'Les Cinq Amours', 'El Primer Rayo de Luz': 'Le Premier Rayon de Lumière', 'Historia Magnética': 'Histoire Magnétique', 'Alpha y Omega': 'Alpha et Oméga', 'Código de Amor': "Code d'Amour", 'Profecías': 'Prophéties' }
+                      };
+                      return dict[language]?.[bookTitle] || bookTitle;
+                    })()}
                   </p>
                 </div>
                 <div className="flex flex-col gap-1 mb-4">
-                  <span className="text-slate-400 text-xs font-medium">Capítulo:</span>
-                  <p className="text-slate-200 text-xs italic">Tema {lessonProgress}</p>
+                  <span className="text-slate-400 text-xs font-medium">
+                    {language === 'es' ? 'Capítulo:' : language === 'en' ? 'Chapter:' : language === 'pt' ? 'Capítulo:' : 'Chapitre:'}
+                  </span>
+                  <p className="text-slate-200 text-xs italic">
+                    {language === 'es' ? 'Tema' : language === 'en' ? 'Theme' : language === 'pt' ? 'Tema' : 'Thème'} {lessonProgress}
+                  </p>
                 </div>
                 
                 <div className="w-full bg-slate-950 h-2 rounded-full overflow-hidden border border-slate-800 mt-4 shadow-inner">
@@ -2437,7 +2807,9 @@ function App() {
                   />
                 </div>
                 <div className="flex justify-between mt-2">
-                  <span className="text-[10px] text-slate-500 uppercase tracking-wider">Avance del Curso</span>
+                  <span className="text-[10px] text-slate-500 uppercase tracking-wider">
+                    {language === 'es' ? 'Avance del Curso' : language === 'en' ? 'Course Progress' : language === 'pt' ? 'Avanço do Curso' : 'Progression du Cours'}
+                  </span>
                   <span className="text-[10px] text-amber-500 font-bold">
                     {lessonProgress} / {CURRICULUM.find(g => g.id === currentGrade)?.lessonsCount || 1}
                   </span>
@@ -2446,7 +2818,11 @@ function App() {
 
               {/* Total Progress */}
               <div className="p-4 bg-slate-950/50 rounded-2xl border border-slate-800/50">
-                <p className="text-amber-200/80 text-[10px] font-bold uppercase tracking-[0.2em] mb-3">Carrera Académica (13 Grados)</p>
+                <p className="text-amber-200/80 text-[10px] font-bold uppercase tracking-[0.2em] mb-3">
+                  {language === 'es' ? 'Carrera Académica (13 Grados)' : 
+                   language === 'en' ? 'Academic Career (13 Grades)' : 
+                   language === 'pt' ? 'Carreira Acadêmica (13 Graus)' : 'Carrière Académique (13 Grades)'}
+                </p>
                 <div className="w-full bg-slate-950 h-2 rounded-full overflow-hidden border border-slate-800 mt-1 shadow-inner">
                   <motion.div 
                     className="bg-gradient-to-r from-blue-600 to-blue-400 h-full"
@@ -2458,9 +2834,11 @@ function App() {
                   />
                 </div>
                 <div className="flex justify-between mt-2">
-                  <span className="text-[10px] text-slate-500 uppercase tracking-wider">Grado en curso</span>
+                  <span className="text-[10px] text-slate-500 uppercase tracking-wider">
+                    {language === 'es' ? 'Grado en curso' : language === 'en' ? 'Current Grade' : language === 'pt' ? 'Grau em curso' : 'Grade en cours'}
+                  </span>
                   <span className="text-[10px] text-blue-400 font-bold">
-                    {currentGrade} de 13
+                    {currentGrade} {language === 'es' ? 'de' : language === 'en' ? 'of' : language === 'pt' ? 'de' : 'sur'} 13
                   </span>
                 </div>
               </div>
@@ -2471,23 +2849,62 @@ function App() {
         <section className="lg:col-span-3 flex flex-col flex-1 min-h-[400px] lg:h-[75vh]">
           {/* Student Header Bar - Harmonized above chat */}
           <div className="flex items-center justify-between px-6 py-3 bg-slate-900/40 backdrop-blur-md rounded-2xl border border-slate-800/50 mb-4 shadow-xl">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center">
-                <User className="w-4 h-4 text-amber-400" />
+            <div className="flex items-center gap-6">
+              <div className="flex items-center gap-2">
+                <button 
+                  disabled={lessonProgress <= 1}
+                  onClick={() => {
+                    if (lessonProgress > 1) {
+                      setLessonProgress(prev => prev - 1);
+                      fetchGreeting(currentGrade, lessonProgress - 1);
+                    }
+                  }}
+                  className={`p-2 rounded-xl border transition-all ${lessonProgress <= 1 ? 'border-slate-800 text-slate-700 opacity-30 cursor-not-allowed' : 'border-amber-500/30 text-amber-400 hover:bg-amber-500/10'}`}
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                </button>
+
+                <div className="flex flex-col items-center min-w-[80px]">
+                  <span className="text-[8px] text-slate-500 uppercase font-bold tracking-[0.2em] mb-1">
+                    {language === 'es' ? 'Lección' : language === 'en' ? 'Lesson' : language === 'pt' ? 'Lição' : 'Leçon'}
+                  </span>
+                  <span className="text-amber-100 text-sm font-mono font-bold">{lessonProgress} / {CURRICULUM.find(g => g.id === currentGrade)?.lessonsCount || 1}</span>
+                </div>
+
+                <button 
+                  disabled={!unlockedAllGrades && (lessonProgress >= maxReachedLesson && currentGrade >= maxReachedGrade)}
+                  onClick={() => {
+                    const gradeData = CURRICULUM.find(g => g.id === currentGrade);
+                    if (lessonProgress < (gradeData?.lessonsCount || 0)) {
+                      setLessonProgress(prev => prev + 1);
+                      fetchGreeting(currentGrade, lessonProgress + 1);
+                    }
+                  }}
+                  className={`p-2 rounded-xl border transition-all ${(!unlockedAllGrades && (lessonProgress >= maxReachedLesson && currentGrade >= maxReachedGrade)) ? 'border-slate-800 text-slate-700 opacity-30 cursor-not-allowed' : 'border-amber-500/30 text-amber-400 hover:bg-amber-500/10'}`}
+                >
+                  <ArrowRight className="w-4 h-4" />
+                </button>
               </div>
-              <div className="flex flex-col">
-                <span className="text-[9px] text-slate-500 uppercase font-bold tracking-widest leading-none mb-0.5">Estudiante en Sesión</span>
-                <span className="text-amber-100 text-sm font-serif">{studentProfile?.fullName || 'Invitado'}</span>
+
+              <div className="hidden sm:flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center">
+                  <User className="w-4 h-4 text-amber-400" />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-[9px] text-slate-500 uppercase font-bold tracking-widest leading-none mb-0.5">Estudiante</span>
+                  <span className="text-amber-100 text-xs font-serif truncate max-w-[100px]">{studentProfile?.fullName || 'Invitado'}</span>
+                </div>
               </div>
             </div>
             
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-2 px-3 py-1.5 bg-slate-950/50 hover:bg-red-500/10 border border-slate-800 hover:border-red-500/40 rounded-xl text-slate-400 hover:text-red-400 transition-all text-xs font-medium group"
-            >
-              <LogOut className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-              <span>Cerrar Sesión</span>
-            </button>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 px-3 py-1.5 bg-slate-950/50 hover:bg-red-500/10 border border-slate-800 hover:border-red-500/40 rounded-xl text-slate-400 hover:text-red-400 transition-all text-xs font-medium group"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+              </button>
+            </div>
           </div>
 
           <div className="flex-1 overflow-y-auto space-y-6 p-8 bg-slate-900/40 backdrop-blur-md rounded-3xl border border-slate-800/50 shadow-2xl scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent relative">

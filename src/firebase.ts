@@ -24,7 +24,8 @@ import {
   orderBy, 
   onSnapshot,
   serverTimestamp,
-  arrayUnion
+  arrayUnion,
+  getDocs
 } from 'firebase/firestore';
 
 const firebaseConfig = {
@@ -66,7 +67,8 @@ export {
   orderBy, 
   onSnapshot,
   serverTimestamp,
-  arrayUnion
+  arrayUnion,
+  getDocs
 };
 
 export enum OperationType {

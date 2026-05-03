@@ -1,4 +1,5 @@
-// localStorage-based persistence service (replaces Firebase)
+// Firestore-based persistence service with local caching
+import { db, doc, setDoc, getDoc, updateDoc, collection, getDocs, query, orderBy, serverTimestamp, arrayUnion } from '../firebase';
 
 export interface LocalUser {
   uid: string;
@@ -144,15 +145,16 @@ export async function saveStudentProfile(data: StudentProfile): Promise<void> {
   map[data.uid] = sanitized;
   saveAllStudentsMap(map);
   
-  // Sync with server for multi-user support
+  // Sync with Firestore
   try {
-    await fetch('/api/save-student', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(sanitized)
-    });
+    const docRef = doc(db, 'students', data.uid);
+    await setDoc(docRef, {
+      ...sanitized,
+      lastInteraction: serverTimestamp(),
+      registrationDate: sanitized.registrationDate || serverTimestamp()
+    }, { merge: true });
   } catch (err) {
-    console.warn("Server sync failed, data saved locally:", err);
+    console.error("Firestore sync failed, data saved locally only:", err);
   }
 }
 
@@ -163,20 +165,17 @@ export function getStudentProfile(uid?: string): StudentProfile | null {
   return map[id] || null;
 }
 
-export function updateStudentProfile(uid: string, updates: Partial<StudentProfile>): void {
+export async function updateStudentProfile(uid: string, updates: Partial<StudentProfile>): Promise<void> {
   const map = getAllStudentsMap();
   if (map[uid]) {
     const existing = map[uid];
     const merged = { ...existing };
     for (const [key, value] of Object.entries(updates)) {
       if (key === 'faculties' && typeof value === 'object' && value !== null) {
-        // Merge faculties deeply
         merged[key] = { ...(existing[key] as any || {}), ...value };
       } else if (key === 'entries' && Array.isArray(value)) {
-        // Append to existing entries
         merged[key] = [...(existing[key] as any[] || []), ...value];
       } else if (key === 'evolutionLog' && Array.isArray(value)) {
-        // Append to existing evolutionLog
         merged[key] = [...(existing[key] as any[] || []), ...value];
       } else {
         merged[key] = value;
@@ -185,23 +184,38 @@ export function updateStudentProfile(uid: string, updates: Partial<StudentProfil
     map[uid] = sanitizeObject(merged);
     saveAllStudentsMap(map);
   }
+
+  // Sync with Firestore
+  try {
+    const docRef = doc(db, 'students', uid);
+    const firestoreUpdates: any = { ...updates, lastInteraction: serverTimestamp() };
+    
+    // Convert array additions to arrayUnion if they are simple pushes
+    if (updates.entries) firestoreUpdates.entries = arrayUnion(...updates.entries);
+    if (updates.evolutionLog) firestoreUpdates.evolutionLog = arrayUnion(...updates.evolutionLog);
+    
+    await updateDoc(docRef, firestoreUpdates);
+  } catch (err) {
+    console.error("Firestore update failed:", err);
+  }
 }
 
 export async function getAllStudents(): Promise<StudentProfile[]> {
   try {
-    const res = await fetch('/api/students');
-    const data = await res.json();
-    if (data.success && Array.isArray(data.students)) {
-      // Sync local storage with server data
+    const q = query(collection(db, 'students'), orderBy('lastInteraction', 'desc'));
+    const snapshot = await getDocs(q);
+    const students = snapshot.docs.map(doc => ({ ...doc.data() } as StudentProfile));
+    
+    if (students.length > 0) {
       const map: Record<string, StudentProfile> = {};
-      data.students.forEach((s: StudentProfile) => {
+      students.forEach((s) => {
         if (s.uid) map[s.uid] = s;
       });
       saveAllStudentsMap(map);
-      return data.students;
+      return students;
     }
   } catch (err) {
-    console.warn("Failed to fetch students from server, using local data:", err);
+    console.warn("Failed to fetch students from Firestore, using local data:", err);
   }
   
   const map = getAllStudentsMap();
@@ -262,8 +276,8 @@ export function verifyCode(email: string, code: string): boolean {
 
 // --- Helpers ---
 
-export function serverTimestamp(): any {
-  return new Date();
+export function getFirestoreServerTimestamp(): any {
+  return serverTimestamp();
 }
 
 export function arrayUnion(...values: any[]): any {

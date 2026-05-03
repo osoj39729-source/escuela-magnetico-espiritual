@@ -1,0 +1,31 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fondo Negro Circular -->
+  <circle cx="256" cy="256" r="256" fill="black"/>
+  
+  <!-- Estrella de 14 Puntas -->
+  <polygon points="256,30 285,160 380,80 340,190 470,190 360,256 470,322 340,322 380,432 285,352 256,482 227,352 132,432 172,322 42,322 152,256 42,190 172,190 132,80 227,160" fill="white" />
+
+  <!-- Círculo interior negro para el contenido -->
+  <circle cx="256" cy="256" r="160" fill="black" stroke="white" stroke-width="2"/>
+  
+  <!-- Triángulo Central -->
+  <path d="M256 140 L346 300 L166 300 Z" fill="none" stroke="white" stroke-width="4"/>
+  
+  <!-- Ancla y Balanza (Estilizada) -->
+  <path d="M256 180 L256 280 M220 200 L292 200" fill="none" stroke="white" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="230" cy="230" r="15" fill="none" stroke="white" stroke-width="2"/>
+  <circle cx="282" cy="230" r="15" fill="none" stroke="white" stroke-width="2"/>
+
+  <!-- Texto Circular -->
+  <defs>
+    <path id="textPathTop" d="M 106, 256 a 150,150 0 1,1 300,0" />
+    <path id="textPathBottom" d="M 106, 256 a 150,150 0 1,0 300,0" />
+  </defs>
+  
+  <text font-family="Serif, Times New Roman" font-size="18" fill="white" font-weight="bold">
+    <textPath href="#textPathTop" startOffset="50%" text-anchor="middle">ESCUELA MAGNETICO-ESPIRITUAL</textPath>
+  </text>
+  <text font-family="Serif, Times New Roman" font-size="16" fill="white">
+    <textPath href="#textPathBottom" startOffset="50%" text-anchor="middle">COMUNA UNIVERSAL</textPath>
+  </text>
+</svg>
