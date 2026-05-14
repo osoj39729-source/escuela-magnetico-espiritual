@@ -22,8 +22,13 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+let __dirname = '';
+try {
+  const __filename = fileURLToPath(import.meta.url);
+  __dirname = path.dirname(__filename);
+} catch (e) {
+  __dirname = process.cwd();
+}
 
 // --- PROTOCOLO 0 ABUSOS: LÍMITES POR DEFECTO ---
 // Se configuran ligeramente por debajo de los límites reales de la capa gratuita
