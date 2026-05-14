@@ -65,7 +65,7 @@ async function startServer() {
   });
 
   // Importar handlers del backend
-  const { handleChatStream, handleSystemStatus } = await import('./gemini-backend.ts');
+  const { handleChatStream, handleSystemStatus } = await import('./api/gemini-backend.ts');
   app.post("/api/chat-stream", handleChatStream);
   app.get("/api/status", handleSystemStatus);
 
