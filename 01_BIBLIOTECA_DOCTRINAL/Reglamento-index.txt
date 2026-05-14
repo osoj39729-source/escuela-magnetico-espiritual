@@ -1,0 +1,28 @@
+  {
+    "id": "reglamento-interno-e.m.e.delac-.u.-1",
+    "title": "Reglamento Interno E.M.E. de la C.U.",
+    "pdfUrl": "/biblioteca/Reglamento-Interno-E.M.E.delaC_.U.-1.pdf",
+    "index": [
+      "0: INTRODUCCIÓN",
+      "1: AUMENTADA Y REFORMADA",
+      "2: REGLAMENTO INTERNO",
+      "3: CREACION DE UN COMISARIADO",
+      "4: REFORMA DEL REGLAMENTO INTERNO",
+      "5: PARTE PRIMERA",
+      "6: CONSIDERANDO:",
+      "7: REGIMEN DE ADMISION A LAS SESIONES ENTRATICOS",
+      "8: NOVATOS.",
+      "9: SIMPATIZANTES",
+      "10: ASAMBLEA DE CONSEJO Y TITULARES",
+      "11: ESCALA DE CARGOS QUE DEBEN RECONOCERSE",
+      "12: FORMACION DE LAS ASAMBLEAS",
+      "13: ACLARACION DE JUSTICIA",
+      "14: FIESTAS FIJAS DE LA ESCUELA",
+      "15: PRESENTACION DE NIÑOS",
+      "16: EXTRACTO DE LOS LIBROS DE ESTA ESCUELA",
+      "17: DEFINE NUESTRA ESCUELA",
+      "18: LO QUE DICEN Y LO QUE DIGO YO",
+      "19: FIN DE LA FIESTA",
+      "20: NOTA FINAL",
+    ]
+  }

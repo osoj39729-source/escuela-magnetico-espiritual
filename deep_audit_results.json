@@ -1,0 +1,165 @@
+{
+  "failing_analysis": [
+    "la-revoluci-n-de-m-xico",
+    "reglamento-interno-e-m-e-delac--u--1",
+    "-1library-co--discurso-obispo-strossmayer"
+  ],
+  "corruption": [
+    {
+      "bookId": "-1library-co--discurso-obispo-strossmayer",
+      "level": "✅ LIMPIO",
+      "totalGarbled": 0,
+      "sampleCorrupt": ""
+    },
+    {
+      "bookId": "alfaqui-vademecum",
+      "level": "✅ LIMPIO",
+      "totalGarbled": 0,
+      "sampleCorrupt": ""
+    },
+    {
+      "bookId": "buscando-a-dios-joaquin-trincado",
+      "level": "✅ LIMPIO",
+      "totalGarbled": 0,
+      "sampleCorrupt": ""
+    },
+    {
+      "bookId": "codigo-de-amor-universal-tomo2-1975",
+      "level": "✅ LIMPIO",
+      "totalGarbled": 0,
+      "sampleCorrupt": ""
+    },
+    {
+      "bookId": "codigodeamoruniversaltomoi-1",
+      "level": "✅ LIMPIO",
+      "totalGarbled": 0,
+      "sampleCorrupt": ""
+    },
+    {
+      "bookId": "conocete-a-ti-mismo-1",
+      "level": "✅ LIMPIO",
+      "totalGarbled": 0,
+      "sampleCorrupt": ""
+    },
+    {
+      "bookId": "cuestionario-espirita-racional",
+      "level": "✅ LIMPIO",
+      "totalGarbled": 0,
+      "sampleCorrupt": ""
+    },
+    {
+      "bookId": "el-espiritismo-estudiado",
+      "level": "✅ LIMPIO",
+      "totalGarbled": 0,
+      "sampleCorrupt": ""
+    },
+    {
+      "bookId": "el-magnetismo-en-su-origen",
+      "level": "✅ LIMPIO",
+      "totalGarbled": 0,
+      "sampleCorrupt": ""
+    },
+    {
+      "bookId": "espiritismo-en-su-asiento",
+      "level": "✅ LIMPIO",
+      "totalGarbled": 0,
+      "sampleCorrupt": ""
+    },
+    {
+      "bookId": "estatutos-y-reglamentos",
+      "level": "✅ LIMPIO",
+      "totalGarbled": 0,
+      "sampleCorrupt": ""
+    },
+    {
+      "bookId": "filosof-a-austera-racional",
+      "level": "✅ LIMPIO",
+      "totalGarbled": 0,
+      "sampleCorrupt": ""
+    },
+    {
+      "bookId": "filosofia-enciclopedica-universal-tomo-1",
+      "level": "✅ LIMPIO",
+      "totalGarbled": 0,
+      "sampleCorrupt": ""
+    },
+    {
+      "bookId": "filosofia-enciclopedica-universal-tomo-2",
+      "level": "✅ LIMPIO",
+      "totalGarbled": 0,
+      "sampleCorrupt": ""
+    },
+    {
+      "bookId": "jes-s-hombre-y-no-dios",
+      "level": "✅ LIMPIO",
+      "totalGarbled": 0,
+      "sampleCorrupt": ""
+    },
+    {
+      "bookId": "la-revoluci-n-de-m-xico",
+      "level": "✅ LIMPIO",
+      "totalGarbled": 0,
+      "sampleCorrupt": ""
+    },
+    {
+      "bookId": "laudode-rigor",
+      "level": "✅ LIMPIO",
+      "totalGarbled": 0,
+      "sampleCorrupt": ""
+    },
+    {
+      "bookId": "ley-de-las-mediumidades-en-general",
+      "level": "✅ LIMPIO",
+      "totalGarbled": 0,
+      "sampleCorrupt": ""
+    },
+    {
+      "bookId": "los-cinco-amores",
+      "level": "✅ LIMPIO",
+      "totalGarbled": 0,
+      "sampleCorrupt": ""
+    },
+    {
+      "bookId": "los-extremos-se-tocan",
+      "level": "✅ LIMPIO",
+      "totalGarbled": 0,
+      "sampleCorrupt": ""
+    },
+    {
+      "bookId": "primer-rayo-de-luz",
+      "level": "✅ LIMPIO",
+      "totalGarbled": 0,
+      "sampleCorrupt": ""
+    },
+    {
+      "bookId": "profilaxis-de-la-vida",
+      "level": "✅ LIMPIO",
+      "totalGarbled": 0,
+      "sampleCorrupt": ""
+    },
+    {
+      "bookId": "reglamento-interno-e-m-e-delac--u--1",
+      "level": "✅ LIMPIO",
+      "totalGarbled": 0,
+      "sampleCorrupt": ""
+    },
+    {
+      "bookId": "tercera-etapa",
+      "level": "✅ LIMPIO",
+      "totalGarbled": 0,
+      "sampleCorrupt": ""
+    },
+    {
+      "bookId": "v-i-d-a---d-e----m-a-r-i-a",
+      "level": "✅ LIMPIO",
+      "totalGarbled": 0,
+      "sampleCorrupt": ""
+    },
+    {
+      "bookId": "[1library.co]-discurso-obispo-strossmayer",
+      "level": "✅ LIMPIO",
+      "totalGarbled": 0,
+      "sampleCorrupt": ""
+    }
+  ]
+}

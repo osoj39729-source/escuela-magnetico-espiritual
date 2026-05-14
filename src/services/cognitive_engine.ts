@@ -1,0 +1,333 @@
+/**
+ * MOTOR COGNITIVO INVISIBLE — EMECU
+ * Basado en las 7 Facultades del Espíritu de Joaquín Trincado.
+ * Se ejecuta en silencio tras cada respuesta del estudiante.
+ * El estudiante NUNCA sabe que está siendo evaluado.
+ *
+ * Escala: 0 (nulo) → 100 (maestría)
+ * Nivel inicial de todo estudiante nuevo: 30 / 100
+ */
+
+import { db } from '../firebase';
+import {
+  doc, getDoc, setDoc, updateDoc, serverTimestamp, collection, addDoc
+} from 'firebase/firestore';
+
+// ── Tipos ─────────────────────────────────────────────────────────────────────
+
+export interface FacultadMedicion {
+  nivel: number;          // 0-100
+  tendencia: 'ascendente' | 'estable' | 'descendente';
+  ultimaActualizacion: string;
+}
+
+export interface PerfilCognitivo {
+  gradoInteligencia: 'Iniciado' | 'En Desarrollo' | 'Avanzado' | 'Maestría';
+  puntajeGlobal: number;  // 0-100 (promedio ponderado de las 7 facultades)
+  sesionesTotal: number;
+  interaccionesTotal: number;
+  ultimaSesion: string;
+  facultades: {
+    inteligenciaPerceptiva: FacultadMedicion;
+    memoria: FacultadMedicion;
+    imaginacion: FacultadMedicion;
+    atencion: FacultadMedicion;
+    razon: FacultadMedicion;
+    juicio: FacultadMedicion;
+    voluntad: FacultadMedicion;
+  };
+  conceptosDominados: string[];
+  zonasEstancamiento: string[];
+  historialNiveles: {
+    fecha: string;
+    puntajeGlobal: number;
+    facultades: Record<string, number>;
+  }[];
+}
+
+// ── Pesos por facultad (suman 100) ────────────────────────────────────────────
+// Trincado da más peso a Razón y Juicio como pilares del espíritu libre
+const PESOS_FACULTADES: Record<string, number> = {
+  razon: 20,
+  juicio: 20,
+  inteligenciaPerceptiva: 15,
+  atencion: 15,
+  memoria: 12,
+  imaginacion: 10,
+  voluntad: 8,
+};
+
+// ── Perfil inicial para estudiante nuevo ──────────────────────────────────────
+function crearPerfilInicial(): PerfilCognitivo {
+  const ahora = new Date().toISOString();
+  return {
+    gradoInteligencia: 'Iniciado',
+    puntajeGlobal: 30,
+    sesionesTotal: 0,
+    interaccionesTotal: 0,
+    ultimaSesion: ahora,
+    facultades: {
+      inteligenciaPerceptiva: { nivel: 30, tendencia: 'estable', ultimaActualizacion: ahora },
+      memoria:                { nivel: 30, tendencia: 'estable', ultimaActualizacion: ahora },
+      imaginacion:            { nivel: 30, tendencia: 'estable', ultimaActualizacion: ahora },
+      atencion:               { nivel: 30, tendencia: 'estable', ultimaActualizacion: ahora },
+      razon:                  { nivel: 30, tendencia: 'estable', ultimaActualizacion: ahora },
+      juicio:                 { nivel: 30, tendencia: 'estable', ultimaActualizacion: ahora },
+      voluntad:               { nivel: 30, tendencia: 'estable', ultimaActualizacion: ahora },
+    },
+    conceptosDominados: [],
+    zonasEstancamiento: [],
+    historialNiveles: [],
+  };
+}
+
+// ── Análisis Semántico de Respuesta del Estudiante ────────────────────────────
+function analizarRespuesta(
+  mensajeEstudiante: string,
+  preguntaProfesor: string,
+  historialMensajes: { role: string; text: string }[]
+): Record<string, number> {
+
+  const texto = mensajeEstudiante.toLowerCase().trim();
+  const palabras = texto.split(/\s+/).length;
+  const deltas: Record<string, number> = {
+    inteligenciaPerceptiva: 0,
+    memoria: 0,
+    imaginacion: 0,
+    atencion: 0,
+    razon: 0,
+    juicio: 0,
+    voluntad: 0,
+  };
+
+  // ── RAZÓN: conectores causales, relaciones causa-efecto ──
+  const conectoresCausales = /\b(porque|por lo tanto|entonces|dado que|ya que|en consecuencia|por ende|de modo que|esto significa|lo que implica|se debe a|la causa es|el efecto|la ley|el principio)\b/g;
+  const matchesCausal = (texto.match(conectoresCausales) || []).length;
+  deltas.razon += Math.min(matchesCausal * 1.5, 5);
+
+  // ── JUICIO: distinción moral, cuestionamiento racional ──
+  const juicioPatrones = /\b(creo que|considero|no es correcto|es injusto|es justo|la ley indica|según la doctrina|el error es|la verdad es|sin embargo|en cambio|por el contrario|no coincide|difiero)\b/g;
+  const matchesJuicio = (texto.match(juicioPatrones) || []).length;
+  deltas.juicio += Math.min(matchesJuicio * 1.5, 5);
+
+  // ── ATENCIÓN: coherencia con la pregunta del Profesor ──
+  if (preguntaProfesor) {
+    const palabrasClave = preguntaProfesor.toLowerCase()
+      .split(/\s+/)
+      .filter(p => p.length > 5)
+      .slice(0, 5);
+    const coincidencias = palabrasClave.filter(p => texto.includes(p)).length;
+    deltas.atencion += coincidencias >= 2 ? 3 : coincidencias === 1 ? 1.5 : -1;
+  }
+
+  // ── MEMORIA: referencias a conceptos anteriores ──
+  const mensajesAnteriores = historialMensajes
+    .filter(m => m.role === 'professor')
+    .map(m => m.text.toLowerCase())
+    .join(' ');
+  const conceptosDoctr = ['eloí', 'ley de afinidad', 'escuela', 'espíritu', 'facultad',
+    'magnetismo', 'commune', 'procreación', 'desdoblamiento', 'telepatía',
+    'trincado', 'espiritismo', 'justicia', 'moral', 'razón', 'conciencia'];
+  const conceptosUsados = conceptosDoctr.filter(c => texto.includes(c) && mensajesAnteriores.includes(c));
+  deltas.memoria += Math.min(conceptosUsados.length * 2, 6);
+
+  // ── INTELIGENCIA PERCEPTIVA: analogías, síntesis, comprensión de metáforas ──
+  const analogias = /\b(es como|similar a|se parece|al igual que|así como|podemos comparar|funciona igual|esto es análogo)\b/g;
+  const matchesAnal = (texto.match(analogias) || []).length;
+  deltas.inteligenciaPerceptiva += Math.min(matchesAnal * 2, 5);
+  // Respuestas que sintetizan: más de 40 palabras con sustancia
+  if (palabras >= 40) deltas.inteligenciaPerceptiva += 2;
+
+  // ── IMAGINACIÓN: extrapolación, nuevos contextos, hipótesis ──
+  const imaginacionPatrones = /\b(imagino que|si aplicáramos|en el futuro|podría significar|esto podría|en otro contexto|lo que sugiere|si pensamos en|llevando esto a)\b/g;
+  const matchesImag = (texto.match(imaginacionPatrones) || []).length;
+  deltas.imaginacion += Math.min(matchesImag * 2, 5);
+
+  // ── VOLUNTAD: longitud y esfuerzo de la respuesta ──
+  if (palabras >= 60) deltas.voluntad += 4;
+  else if (palabras >= 30) deltas.voluntad += 2;
+  else if (palabras <= 5) deltas.voluntad -= 2; // respuesta muy corta = poca voluntad
+
+  // ── Límite de delta por sesión: max +6 min -3 por facultad ──
+  Object.keys(deltas).forEach(k => {
+    deltas[k] = Math.max(-3, Math.min(6, deltas[k]));
+  });
+
+  return deltas;
+}
+
+// ── Calcular puntaje global ponderado ─────────────────────────────────────────
+function calcularPuntajeGlobal(facultades: PerfilCognitivo['facultades']): number {
+  let total = 0;
+  Object.entries(PESOS_FACULTADES).forEach(([key, peso]) => {
+    const nivel = facultades[key as keyof typeof facultades]?.nivel || 30;
+    total += (nivel * peso) / 100;
+  });
+  return Math.round(Math.min(100, Math.max(0, total)));
+}
+
+// ── Determinar grado de inteligencia ─────────────────────────────────────────
+function calcularGradoInteligencia(puntaje: number): PerfilCognitivo['gradoInteligencia'] {
+  if (puntaje >= 80) return 'Maestría';
+  if (puntaje >= 60) return 'Avanzado';
+  if (puntaje >= 40) return 'En Desarrollo';
+  return 'Iniciado';
+}
+
+// ── Calcular tendencia ────────────────────────────────────────────────────────
+function calcularTendencia(nivelAnterior: number, nivelNuevo: number): FacultadMedicion['tendencia'] {
+  if (nivelNuevo > nivelAnterior + 0.5) return 'ascendente';
+  if (nivelNuevo < nivelAnterior - 0.5) return 'descendente';
+  return 'estable';
+}
+
+// ── Función Principal: Evaluar y Actualizar Firestore ─────────────────────────
+export async function evaluarYActualizarPerfil(params: {
+  uid: string;
+  mensajeEstudiante: string;
+  preguntaProfesor: string;
+  historialMensajes: { role: string; text: string }[];
+  temaActual?: string;
+  gradoActual?: number;
+}): Promise<void> {
+  if (!uid || !params.mensajeEstudiante.trim() || params.mensajeEstudiante.length < 10) return;
+
+  const { uid, mensajeEstudiante, preguntaProfesor, historialMensajes, temaActual, gradoActual } = params;
+
+  try {
+    const profileRef = doc(db, 'students', uid, 'cognitive', 'profile');
+    const snap = await getDoc(profileRef);
+
+    let perfil: PerfilCognitivo = snap.exists()
+      ? (snap.data() as PerfilCognitivo)
+      : crearPerfilInicial();
+
+    // Analizar la respuesta del estudiante
+    const deltas = analizarRespuesta(mensajeEstudiante, preguntaProfesor, historialMensajes);
+    const ahora = new Date().toISOString();
+
+    // Aplicar deltas a cada facultad (escala 0-100)
+    const facultadesActualizadas = { ...perfil.facultades };
+    Object.entries(deltas).forEach(([key, delta]) => {
+      const fac = facultadesActualizadas[key as keyof typeof facultadesActualizadas];
+      if (fac) {
+        const nivelAnterior = fac.nivel;
+        const nivelNuevo = Math.max(0, Math.min(100, fac.nivel + delta));
+        facultadesActualizadas[key as keyof typeof facultadesActualizadas] = {
+          nivel: nivelNuevo,
+          tendencia: calcularTendencia(nivelAnterior, nivelNuevo),
+          ultimaActualizacion: ahora,
+        };
+      }
+    });
+
+    // Calcular puntaje global y grado
+    const puntajeGlobal = calcularPuntajeGlobal(facultadesActualizadas);
+    const gradoInteligencia = calcularGradoInteligencia(puntajeGlobal);
+
+    // Detectar conceptos dominados (nivel > 65)
+    const conceptosDominados = Object.entries(facultadesActualizadas)
+      .filter(([, f]) => f.nivel >= 65)
+      .map(([k]) => k);
+
+    // Detectar zonas de estancamiento (nivel < 40 después de 5+ interacciones)
+    const zonasEstancamiento = (perfil.interaccionesTotal + 1) >= 5
+      ? Object.entries(facultadesActualizadas)
+          .filter(([, f]) => f.nivel < 40)
+          .map(([k]) => k)
+      : perfil.zonasEstancamiento;
+
+    // Agregar al historial (máximo 50 registros)
+    const historialNiveles = [
+      ...(perfil.historialNiveles || []).slice(-49),
+      {
+        fecha: ahora,
+        puntajeGlobal,
+        facultades: Object.fromEntries(
+          Object.entries(facultadesActualizadas).map(([k, f]) => [k, f.nivel])
+        ),
+      },
+    ];
+
+    const perfilActualizado: PerfilCognitivo = {
+      ...perfil,
+      gradoInteligencia,
+      puntajeGlobal,
+      interaccionesTotal: (perfil.interaccionesTotal || 0) + 1,
+      ultimaSesion: ahora,
+      facultades: facultadesActualizadas,
+      conceptosDominados,
+      zonasEstancamiento,
+      historialNiveles,
+    };
+
+    // Guardar en Firestore (subcolección cognitive/profile)
+    await setDoc(profileRef, perfilActualizado, { merge: true });
+
+    // Guardar la interacción individual (para historial completo)
+    await addDoc(collection(db, 'students', uid, 'interactions'), {
+      timestamp: serverTimestamp(),
+      mensaje: mensajeEstudiante.substring(0, 500),
+      pregunta: preguntaProfesor.substring(0, 300),
+      deltas,
+      puntajeGlobal,
+      tema: temaActual || '',
+      grado: gradoActual || null,
+    });
+
+  } catch (err) {
+    // Error silencioso — no interrumpe el flujo del estudiante
+    console.error('[CognitiveEngine] Error silencioso:', err);
+  }
+}
+
+// ── Leer Perfil Cognitivo (para inyectar en el Profesor) ──────────────────────
+export async function leerPerfilCognitivo(uid: string): Promise<PerfilCognitivo | null> {
+  try {
+    const snap = await getDoc(doc(db, 'students', uid, 'cognitive', 'profile'));
+    return snap.exists() ? (snap.data() as PerfilCognitivo) : null;
+  } catch {
+    return null;
+  }
+}
+
+// ── Construir Contexto Interno para el Profesor ───────────────────────────────
+export function construirContextoProfesor(
+  perfil: PerfilCognitivo | null,
+  nombreEstudiante: string,
+  grado: number,
+  leccion: number,
+  tema?: string
+): string {
+  if (!perfil) return '';
+
+  const facs = perfil.facultades;
+  const debiles = Object.entries(facs)
+    .filter(([, f]) => f.nivel < 45)
+    .sort(([, a], [, b]) => a.nivel - b.nivel)
+    .slice(0, 2)
+    .map(([k, f]) => `${k} (${f.nivel.toFixed(0)}/100)`);
+
+  const fuertes = Object.entries(facs)
+    .filter(([, f]) => f.nivel >= 60)
+    .sort(([, a], [, b]) => b.nivel - a.nivel)
+    .slice(0, 2)
+    .map(([k, f]) => `${k} (${f.nivel.toFixed(0)}/100)`);
+
+  const diasDesdeUltima = Math.floor(
+    (Date.now() - new Date(perfil.ultimaSesion).getTime()) / 86400000
+  );
+
+  return `
+[MEMORIA PEDAGÓGICA INTERNA — EXCLUSIVA DEL MAESTRO — NO MENCIONAR AL ESTUDIANTE BAJO NINGUNA CIRCUNSTANCIA]
+Estudiante: ${nombreEstudiante} | Sesiones: ${perfil.sesionesTotal} | Interacciones totales: ${perfil.interaccionesTotal}
+Puntaje Global: ${perfil.puntajeGlobal}/100 | Grado Evolutivo: ${perfil.gradoInteligencia}
+Facultades a reforzar: ${debiles.length > 0 ? debiles.join(', ') : 'ninguna crítica'}
+Facultades desarrolladas: ${fuertes.length > 0 ? fuertes.join(', ') : 'en construcción'}
+Conceptos asimilados: ${perfil.conceptosDominados.join(', ') || 'ninguno aún'}
+Zonas de estancamiento: ${perfil.zonasEstancamiento.join(', ') || 'ninguna detectada'}
+Última sesión: hace ${diasDesdeUltima === 0 ? 'hoy' : diasDesdeUltima + ' días'} — Grado ${grado}, Lección ${leccion}${tema ? `, Tema: ${tema}` : ''}
+INSTRUCCIÓN PEDAGÓGICA: Adapta tu profundidad a su nivel ${perfil.gradoInteligencia}. ${debiles.length > 0 ? `Diseña preguntas que estimulen especialmente: ${debiles.map(d => d.split(' ')[0]).join(' y ')}.` : 'Mantén el nivel alcanzado y eleva la complejidad gradualmente.'} No repitas lo ya dominado. Continúa desde donde quedó.
+[FIN MEMORIA INTERNA]
+`.trim();
+}

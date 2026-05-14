@@ -1,0 +1,42 @@
+{
+  "AIzaSyCtJ_...": {
+    "provider": "Gemini",
+    "rpdCount": 2,
+    "rpmCount": 2,
+    "lastDayReset": 1778793274246,
+    "suspendedUntil": 1778793345184,
+    "status": "Suspended"
+  },
+  "AIzaSyBZFo...": {
+    "provider": "Gemini",
+    "rpdCount": 1,
+    "rpmCount": 1,
+    "lastDayReset": 1778793274246,
+    "suspendedUntil": 1778793344687,
+    "status": "Suspended"
+  },
+  "AIzaSyBu9H...": {
+    "provider": "Gemini",
+    "rpdCount": 1,
+    "rpmCount": 1,
+    "lastDayReset": 1778793274246,
+    "suspendedUntil": 1778793344787,
+    "status": "Suspended"
+  },
+  "AIzaSyDY3j...": {
+    "provider": "Gemini",
+    "rpdCount": 2,
+    "rpmCount": 2,
+    "lastDayReset": 1778793274246,
+    "suspendedUntil": 1778793345212,
+    "status": "Suspended"
+  },
+  "AIzaSyAEJH...": {
+    "provider": "Gemini",
+    "rpdCount": 2,
+    "rpmCount": 2,
+    "lastDayReset": 1778793274246,
+    "suspendedUntil": 1778793345320,
+    "status": "Suspended"
+  }
+}
