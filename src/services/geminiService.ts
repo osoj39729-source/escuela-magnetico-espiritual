@@ -114,7 +114,13 @@ export async function chatWithProfessorStream(
     });
 
     if (!response.ok) {
-      throw new Error(`Error en el servidor: ${response.status}`);
+      try {
+        const errorData = await response.json();
+        throw new Error(`Error ${response.status}: ${errorData.details || errorData.error || 'Error desconocido'}`);
+      } catch (e: any) {
+        if (e.message.includes("Error " + response.status)) throw e;
+        throw new Error(`Error en el servidor: ${response.status}`);
+      }
     }
 
     const reader = response.body?.getReader();
