@@ -84,7 +84,7 @@ Este documento registra todas las modificaciones importantes, decisiones arquite
 ## [2026-05-02] - Migración a Arquitectura "A Prueba de Murphy"
 - **Motivo**: Eliminar dependencia del servidor Render (lento, duerme en plan gratuito). Migrar a infraestructura 100% en la nube y gratuita.
 - **Cambios realizados**:
-  - **`cloudflare-worker.js`** (NUEVO) → Proxy rotador de llaves Gemini/Groq/SiliconFlow con streaming SSE y CORS blindado (v1.4 FINAL). URL activa: `https://escudo-maestro.osoj39729.workers.dev`. Variable configurada: `GEMINI_KEYS=AIzaSyAURo7mrnaEcidgNqemX0GOLCElyuYpPwU`.
+  - **`cloudflare-worker.js`** (NUEVO) → Proxy rotador de llaves Gemini/Groq/SiliconFlow con streaming SSE y CORS blindado (v1.4 FINAL). URL activa: `https://escudo-maestro.osoj39729.workers.dev`. Variable configurada: `GEMINI_KEYS=AIzaSy...CENSURADO`.
   - **`src/services/geminiService.ts`** → Refactorizado a balanceador multicanal con rotación automática Gemini → Groq → SiliconFlow. Endpoint actualizado a `v1beta/models/gemini-2.5-flash` (fix crítico: `system_instruction` solo funciona en v1beta). Prompt del Maestro profundamente enriquecido con reglas pedagógicas, 7 facultades, técnica mayéutica.
   - **`src/services/localStorageService.ts`** → Migrado a Firebase Firestore. Perfiles de alumnos en la nube, sin dependencia de `students.json` ni servidor Express.
   - **`src/firebase.ts`** → Añadidos todos los exports faltantes: `getDocs`, `getRedirectResult`, `setPersistence`, `browserLocalPersistence`, `createUserWithEmailAndPassword`, `signInWithEmailAndPassword`.
