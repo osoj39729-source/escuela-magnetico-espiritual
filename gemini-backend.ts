@@ -44,7 +44,10 @@ interface KeyStats {
   suspendedUntil: number; // 0 if active
 }
 
-const QUOTA_STATE_FILE = path.join(__dirname, 'quota_state.json');
+// Guardar fuera del directorio del proyecto para no disparar watchers de Vite/tsx
+const DATA_DIR = path.join(process.env.APPDATA || process.env.HOME || __dirname, 'emecu_server_data');
+if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+const QUOTA_STATE_FILE = path.join(DATA_DIR, 'quota_state.json');
 
 class QuotaStore {
   static load(): Record<string, Partial<KeyStats>> {
@@ -96,6 +99,25 @@ class ApiManager {
 
   constructor() {
     this.loadKeys();
+    // ── WATCHDOG DE DESBLOQUEO AUTOMÁTICO ──────────────────────────────────
+    // Se ejecuta cada 30 segundos en segundo plano.
+    // Revisa si alguna llave suspendida ya cumplió su tiempo de castigo
+    // y la reactiva sin necesidad de esperar a que llegue una petición.
+    setInterval(() => {
+      const now = Date.now();
+      let reactivadas = 0;
+      for (const stat of this.keys) {
+        if (stat.suspendedUntil > 0 && now >= stat.suspendedUntil) {
+          stat.suspendedUntil = 0;
+          stat.rpmCount = 0; // Reiniciar también el contador de minuto
+          reactivadas++;
+          console.log(`[Watchdog] ✅ Llave ${stat.provider} reactivada automáticamente tras cumplir su suspensión.`);
+        }
+      }
+      if (reactivadas > 0) {
+        QuotaStore.save(this.keys); // Sincronizar con Firebase el nuevo estado
+      }
+    }, 30000); // Cada 30 segundos
   }
 
   private loadKeys() {
@@ -128,17 +150,23 @@ class ApiManager {
     console.log("--------------------------------------------------");
     console.log(`[Protocolo 0 Abusos] Cargadas ${this.keys.filter(k => k.provider === 'Gemini').length} llaves Gemini y ${this.keys.filter(k => k.provider === 'Groq').length} llaves Groq.`);
     
-    // Aplicar cuota guardada
+    // Aplicar cuota guardada, pero ignorar suspensiones expiradas
+    const now = Date.now();
     this.keys.forEach(k => {
       if (savedQuota[k.key]) {
         k.rpdCount = savedQuota[k.key].rpdCount || 0;
-        k.lastDayReset = savedQuota[k.key].lastDayReset || Date.now();
-        k.suspendedUntil = savedQuota[k.key].suspendedUntil || 0;
+        k.lastDayReset = savedQuota[k.key].lastDayReset || now;
+        // Solo restaurar suspensión si aún no ha expirado
+        const savedSuspension = savedQuota[k.key].suspendedUntil || 0;
+        k.suspendedUntil = (savedSuspension > now) ? savedSuspension : 0;
+        if (savedSuspension > 0 && savedSuspension <= now) {
+          console.log(`[Protocolo 0 Abusos] Llave ${k.provider} tenía suspensión expirada al iniciar → reactivada automáticamente.`);
+        }
       }
     });
     
     console.log("--------------------------------------------------");
-    // Forzar guardado inicial para sincronizar con Firebase Inmediatamente
+    // Sincronizar estado inicial con Firebase (sin generar reinicios)
     QuotaStore.save(this.keys);
   }
 
@@ -526,7 +554,7 @@ REGLA DE IDIOMA: Responde ÚNICAMENTE en "${langLabel}".
     if (keyStat.provider === 'Gemini') {
       const genAI = getGeminiClient(keyStat.key);
       const model = genAI.getGenerativeModel({ 
-        model: "gemini-1.5-flash",
+        model: "gemini-2.5-flash",
         systemInstruction: activeSystemInstruction
       });
 

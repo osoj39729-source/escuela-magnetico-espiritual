@@ -15,7 +15,7 @@ export default {
     if (request.method === "OPTIONS") return new Response(null, { headers });
 
     // LLAVE DIRECTA (CUIDADO: ESTO ES SOLO PARA PRUEBAS)
-    const KEY = "AIzaSyAURo7mrnaEcidgNqemX0GOLCElyuYpPwU";
+    const KEY = "USE_ENV_VARIABLE"; // Llave eliminada por seguridad
 
     try {
       if (request.method !== "POST") return new Response("Solo POST permitido", { status: 405, headers });
