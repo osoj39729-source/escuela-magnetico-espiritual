@@ -45,8 +45,11 @@ interface KeyStats {
 }
 
 // Guardar fuera del directorio del proyecto para no disparar watchers de Vite/tsx
-const DATA_DIR = path.join(process.env.APPDATA || process.env.HOME || __dirname, 'emecu_server_data');
-if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+// En Vercel, usaremos /tmp si es necesario, pero priorizaremos Firebase
+const DATA_DIR = process.env.VERCEL ? '/tmp' : path.join(process.env.APPDATA || process.env.HOME || process.cwd(), 'emecu_server_data');
+if (!fs.existsSync(DATA_DIR) && !process.env.VERCEL) {
+  try { fs.mkdirSync(DATA_DIR, { recursive: true }); } catch(e) {}
+}
 const QUOTA_STATE_FILE = path.join(DATA_DIR, 'quota_state.json');
 
 class QuotaStore {
@@ -75,8 +78,12 @@ class QuotaStore {
         };
       });
       
-      // 1. Guardado Local
-      fs.writeFileSync(QUOTA_STATE_FILE, JSON.stringify(data, null, 2), 'utf-8');
+      // 1. Guardado Local (Opcional en Vercel)
+      try {
+        fs.writeFileSync(QUOTA_STATE_FILE, JSON.stringify(data, null, 2), 'utf-8');
+      } catch (e) {
+        // En Vercel esto fallará, lo ignoramos y seguimos con Firebase
+      }
       
       // 2. Sincronización con Firebase para el Observador EMECU
       const statusDocRef = doc(db, "system", "api_quotas");
@@ -342,9 +349,10 @@ function normalize(s: string) {
 }
 
 async function loadBookData(bookId: string, chapter: string) {
-  const contentsPath = path.join(__dirname, 'public', 'data', 'contents', `${bookId}_content.json`);
-  const essencesPath = path.join(__dirname, 'public', 'data', 'contents', `${bookId}_esencia.json`);
-  const synapsisPath = path.join(__dirname, 'public', 'data', 'diccionario_sinapsis.json');
+  const rootDir = process.cwd();
+  const contentsPath = path.join(rootDir, 'public', 'data', 'contents', `${bookId}_content.json`);
+  const essencesPath = path.join(rootDir, 'public', 'data', 'contents', `${bookId}_esencia.json`);
+  const synapsisPath = path.join(rootDir, 'public', 'data', 'diccionario_sinapsis.json');
   
   let bookText = "";
   let rawEssence = null;
