@@ -17,6 +17,15 @@ export default async function handler(req: any, res: any) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  // Llamar al handler original
-  return handleChatStream(req, res);
+  try {
+    // Llamar al handler original
+    return await handleChatStream(req, res);
+  } catch (error: any) {
+    console.error("Vercel Function Error:", error);
+    return res.status(500).json({ 
+      error: 'Error interno del servidor en Vercel', 
+      details: error?.message || String(error),
+      stack: error?.stack 
+    });
+  }
 }
