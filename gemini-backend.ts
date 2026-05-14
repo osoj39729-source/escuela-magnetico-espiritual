@@ -5,6 +5,8 @@ import { getFirestore, doc, setDoc, serverTimestamp } from "firebase/firestore";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import dotenv from "dotenv";
+
 // Solo cargar dotenv si no estamos en Vercel (Vercel ya inyecta las variables)
 if (!process.env.VERCEL) {
   dotenv.config();
