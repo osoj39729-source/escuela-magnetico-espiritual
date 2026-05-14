@@ -5,9 +5,10 @@ import { getFirestore, doc, setDoc, serverTimestamp } from "firebase/firestore";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import dotenv from "dotenv";
-
-dotenv.config();
+// Solo cargar dotenv si no estamos en Vercel (Vercel ya inyecta las variables)
+if (!process.env.VERCEL) {
+  dotenv.config();
+}
 
 // --- CONFIGURACIÓN FIREBASE (NODE) ---
 const firebaseConfig = {
@@ -18,6 +19,10 @@ const firebaseConfig = {
   messagingSenderId: "184063770528",
   appId: "1:184063770528:web:ef63f6d4dc9963dd256ec5"
 };
+
+if (!firebaseConfig.apiKey) {
+  console.warn("[Backend] ADVERTENCIA: No se encontró VITE_FIREBASE_API_KEY. Firebase operará en modo limitado o fallará.");
+}
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);

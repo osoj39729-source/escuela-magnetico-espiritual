@@ -50,20 +50,19 @@ async function obtenerGeoIP(): Promise<{
   ip: string; lat: number; lon: number;
 } | null> {
   try {
-    const res = await fetch('http://ip-api.com/json/?fields=status,country,regionName,city,lat,lon,query', {
+    // Usar ipapi.co que soporta HTTPS de forma gratuita para peticiones básicas
+    const res = await fetch('https://ipapi.co/json/', {
       signal: AbortSignal.timeout(3000)
     });
     const data = await res.json();
-    if (data.status === 'success') {
-      return {
-        pais: data.country || '',
-        ciudad: data.city || '',
-        region: data.regionName || '',
-        ip: data.query || '',
-        lat: data.lat || 0,
-        lon: data.lon || 0,
-      };
-    }
+    return {
+      pais: data.country_name || data.country || '',
+      ciudad: data.city || '',
+      region: data.region || '',
+      ip: data.ip || '',
+      lat: data.latitude || 0,
+      lon: data.longitude || 0,
+    };
   } catch {
     // Silencioso si el servicio no responde
   }
