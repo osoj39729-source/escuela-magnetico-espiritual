@@ -85,7 +85,7 @@ class QuotaStore {
         lastUpdate: serverTimestamp(),
         serverUptime: process.uptime(),
         memoryUsage: process.memoryUsage().heapUsed
-      }, { merge: true });
+      });
       
     } catch (e) {
       console.error("[QuotaStore] Error guardando memoria de cuotas:", e);

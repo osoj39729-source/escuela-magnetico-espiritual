@@ -91,8 +91,11 @@ export async function chatWithProfessorStream(
 ): Promise<ProfessorResponse> {
   
   try {
+    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
     const isCapacitor = (window as any).Capacitor !== undefined;
-    const baseUrl = isCapacitor ? 'https://escuela-magnetico-espiritual.onrender.com' : '';
+    
+    // Si estamos en local, usamos el servidor local. Si estamos en Vercel/Producción, usamos Render.
+    const baseUrl = (isLocal && !isCapacitor) ? '' : 'https://escuela-magnetico-espiritual.onrender.com';
     
     const response = await fetch(`${baseUrl}/api/chat-stream`, {
       method: 'POST',
