@@ -998,18 +998,14 @@ function App() {
   const ttsQueueRef = useRef<string[]>([]);
   const isSpeakingQueueRef = useRef(false);
   const hasInitialGreetingBeenFetched = useRef(false);
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
 
   // Auth Listener Robusto para Móviles
   useEffect(() => {
-    // 1. Forzar persistencia para que no pida login al cerrar el navegador
-    setPersistence(auth as any, browserLocalPersistence)
-      .catch(err => console.error("Persistence error:", err));
-
-    // 2. Escuchar cambios de estado
     const unsubscribe = onAuthStateChanged(auth as any, async (currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
-        try {
+      try {
+        if (currentUser) {
+          setUser(currentUser);
           const profile = await getStudentProfile(currentUser.uid);
           if (profile) {
             setStudentProfile(profile);
@@ -1019,32 +1015,28 @@ function App() {
             setMaxReachedGrade(profile.maxReachedGrade || profile.currentGrade || 1);
             setMaxReachedLesson(profile.maxReachedLesson || profile.currentLesson || 1);
             
-            // Transición suave al chat si ya tenemos perfil
             setShowIntro(false);
             setIntroStep('chat');
           } else {
-            // Usuario autenticado pero sin perfil (Google Login por primera vez)
             setIntroStep('registration');
           }
-        } catch (error) {
-          console.error("Error cargando perfil:", error);
-          setError("Error de sincronización con la Escuela.");
-        }
-      } else {
-        // No hay usuario, verificar si estamos volviendo de un Redirect de Google
-        try {
+        } else {
+          // Si no hay usuario inmediato, verificar si estamos volviendo de un redirect
           const result = await getRedirectResult(auth as any);
           if (result?.user) {
             await handleAuthUser(result.user);
           } else {
-            // Definitivamente no hay sesión, mostrar Intro
             setShowIntro(true);
             setIntroStep('intro');
           }
-        } catch (error: any) {
-          console.error("Auth redirect error:", error);
-          setError("Error de autenticación: " + (error.message || "Intenta de nuevo."));
         }
+      } catch (error: any) {
+        console.error("Auth error:", error);
+        setShowIntro(true);
+        setIntroStep('intro');
+      } finally {
+        // Dar un pequeño respiro para que el estado se asiente
+        setTimeout(() => setIsAuthLoading(false), 800);
       }
     });
 
@@ -2147,6 +2139,31 @@ function App() {
       {!isOnline && (
         <div className="fixed top-0 left-0 right-0 z-[1000] bg-red-600 text-white text-center py-1 text-sm font-bold shadow-md animate-pulse">
           {language === 'es' ? '⚠️ Sin conexión a Internet - El Maestro esperará tu regreso' : '⚠️ No internet connection - The Master will wait for your return'}
+        </div>
+      )}
+
+      {isAuthLoading && (
+        <div className="fixed inset-0 z-[2000] bg-slate-950 flex flex-col items-center justify-center p-8">
+           <motion.div 
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="flex flex-col items-center gap-8"
+           >
+             <div className="relative w-40 h-40">
+               <div className="absolute inset-0 bg-amber-500/20 blur-[40px] rounded-full animate-pulse" />
+               <img src="https://emecu.org.gt/wp-content/uploads/2021/03/Escudo_Emecu-PNG.webp" alt="EMECU" className="w-full h-full object-contain relative z-10" style={{ filter: "invert(85%)" }} />
+             </div>
+             <div className="flex flex-col items-center gap-4">
+               <h2 className="text-amber-400 font-serif text-xl tracking-widest uppercase">Sincronizando con la Escuela</h2>
+               <div className="w-48 h-1 bg-slate-900 rounded-full overflow-hidden border border-slate-800">
+                 <motion.div 
+                   className="h-full bg-amber-500"
+                   animate={{ x: [-200, 200] }}
+                   transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
+                 />
+               </div>
+             </div>
+           </motion.div>
         </div>
       )}
       {showIntro && (
