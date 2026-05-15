@@ -38,6 +38,9 @@ const firebaseConfig = {
   measurementId: "G-Q11ZKWBJ8J"
 };
 
+console.log("[Observador] Inicializando Firebase con Proyecto ID:", firebaseConfig.projectId);
+if (!firebaseConfig.apiKey) console.error("[Observador] CRÍTICO: La API Key de Firebase no se ha cargado. Verifica tu archivo .env");
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);

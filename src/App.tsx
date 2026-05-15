@@ -1478,8 +1478,12 @@ function App() {
       
       // Si no hay usuario (Google), lo creamos por email
       if (!user) {
-        const cred = await createUserWithEmailAndPassword(auth as any, data.email, data.password);
+        console.log("[Observador] Creando nuevo usuario por email/password...");
+        const cleanEmail = data.email.trim();
+        const cleanPass = data.password.trim();
+        const cred = await createUserWithEmailAndPassword(auth as any, cleanEmail, cleanPass);
         user = cred.user;
+        console.log("[Observador] Usuario creado exitosamente en Firebase Auth:", user.uid);
       }
       
       // Iniciamos el overlay de transición inmediatamente después de crear/autenticar al usuario
@@ -1552,11 +1556,26 @@ function App() {
 
   const handleLogin = async (email: string, pass: string) => {
     setLoading(true);
+    setError('');
+    const cleanEmail = email.trim();
+    const cleanPass = pass.trim();
+    
+    console.log("[Observador] Iniciando proceso de login para:", cleanEmail);
+
     try {
-      // Asegurar persistencia antes del login manual
-      await setPersistence(auth as any, browserLocalPersistence);
+      // Asegurar persistencia antes del login manual - Ahora no bloqueante
+      try {
+        console.log("[Observador] Configurando persistencia local...");
+        await setPersistence(auth as any, browserLocalPersistence);
+      } catch (persistErr) {
+        console.warn("[Observador] Advertencia: No se pudo establecer persistencia, continuando login...", persistErr);
+      }
       
-      const { user } = await signInWithEmailAndPassword(auth as any, email, pass);
+      console.log("[Observador] Llamando a Firebase Auth Portero...");
+      const { user } = await signInWithEmailAndPassword(auth as any, cleanEmail, cleanPass);
+      console.log("[Observador] Autenticación exitosa. UID:", user.uid);
+
+      console.log("[Observador] Recuperando perfil desde la nube...");
       const profile = await getStudentProfile(user.uid);
       
       if (profile) {
@@ -1581,14 +1600,22 @@ function App() {
         throw new Error("Perfil no encontrado.");
       }
     } catch (error: any) {
-      console.error("Login error:", error);
+      console.error("[Observador] ERROR TÉCNICO DETECTADO:", {
+        code: error?.code,
+        message: error?.message,
+        authDomain: auth.config?.authDomain,
+        apiKey: auth.config?.apiKey?.substring(0, 5) + "..."
+      });
+
       let errorMsg = error?.message || String(error);
       
       // Traducción amigable de errores de Firebase para el usuario
-      if (errorMsg.includes("auth/invalid-credential") || errorMsg.includes("not-found") || errorMsg.includes("wrong-password")) {
-        errorMsg = "Correo o contraseña incorrectos. Verifica tus datos e intenta de nuevo.";
-      } else if (errorMsg.includes("auth/network-request-failed")) {
+      if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+        errorMsg = "Correo o contraseña incorrectos. Verifica tus datos e intenta de nuevo. (Nota: Si te registraste con Google, debes usar el botón de Google).";
+      } else if (error.code === 'auth/network-request-failed') {
         errorMsg = "Error de red. Verifica tu conexión a internet.";
+      } else if (error.code === 'auth/too-many-requests') {
+        errorMsg = "Demasiados intentos fallidos. Tu cuenta ha sido bloqueada temporalmente por seguridad. Intenta más tarde.";
       }
       
       setError(errorMsg);
