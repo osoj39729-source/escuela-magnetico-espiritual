@@ -162,11 +162,30 @@ export async function saveStudentProfile(data: StudentProfile): Promise<void> {
   }
 }
 
-export function getStudentProfile(uid?: string): StudentProfile | null {
+export async function getStudentProfile(uid?: string): Promise<StudentProfile | null> {
   const map = getAllStudentsMap();
   const id = uid || getCurrentUser()?.uid;
   if (!id) return null;
-  return map[id] || null;
+  
+  // 1. Intentar carga local (rápida)
+  if (map[id]) return map[id];
+
+  // 2. Si no está local, buscar en Firestore (Sincronización Cloud)
+  try {
+    const docRef = doc(db, 'students', id);
+    const snap = await getDoc(docRef);
+    if (snap.exists()) {
+      const profile = { ...snap.data() } as StudentProfile;
+      // Guardar localmente para futuras consultas rápidas
+      map[id] = profile;
+      saveAllStudentsMap(map);
+      return profile;
+    }
+  } catch (err) {
+    console.error("Error al recuperar perfil desde Firestore:", err);
+  }
+
+  return null;
 }
 
 export async function updateStudentProfile(uid: string, updates: Partial<StudentProfile>): Promise<void> {
