@@ -997,6 +997,7 @@ function App() {
   // TTS Queue para hablar progresivamente
   const ttsQueueRef = useRef<string[]>([]);
   const isSpeakingQueueRef = useRef(false);
+  const hasInitialGreetingBeenFetched = useRef(false);
 
   // Auth Listener Robusto para Móviles
   useEffect(() => {
@@ -1098,6 +1099,9 @@ function App() {
   }, [language]);
 
   const fetchGreeting = async (gradeOverride?: number, lessonOverride?: number) => {
+    if (hasInitialGreetingBeenFetched.current && !gradeOverride) return;
+    if (!gradeOverride) hasInitialGreetingBeenFetched.current = true;
+    
     setLoading(true);
     // Mostrar mensaje inicial inmediatamente
     setChat([{ role: 'professor', text: '...' }]);

@@ -95,7 +95,7 @@ class QuotaStore {
         data[s.key.substring(0, 10) + "..."] = {
           provider: s.provider,
           rpdCount: s.rpdCount,
-          rpmCount: s.rpmCount,
+          // rpmCount: s.rpmCount, // Eliminado para evitar bloqueos falsos en Serverless
           lastDayReset: s.lastDayReset,
           suspendedUntil: s.suspendedUntil,
           status: s.suspendedUntil > Date.now() ? "Suspended" : "Active"
@@ -226,6 +226,7 @@ class ApiManager {
   public async registerUsage(stat: KeyStats) {
     stat.rpmCount++;
     stat.rpdCount++;
+    // Solo persistimos el contador diario y la suspensión, el de minuto es volátil por instancia
     await QuotaStore.save(this.keys);
   }
 
