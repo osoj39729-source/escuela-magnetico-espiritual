@@ -1021,11 +1021,24 @@ function App() {
             setIntroStep('registration');
           }
         } else {
-          // Si no hay usuario inmediato, verificar si estamos volviendo de un redirect
-          const result = await getRedirectResult(auth as any);
+          // Intentar capturar el resultado del redirect con más insistencia
+          const result = await getRedirectResult(auth as any).catch(e => {
+            console.warn("Redirect result failed (expected on normal load):", e);
+            return null;
+          });
+          
           if (result?.user) {
-            await handleAuthUser(result.user);
+            setUser(result.user);
+            const profile = await getStudentProfile(result.user.uid);
+            if (profile) {
+              setStudentProfile(profile);
+              setShowIntro(false);
+              setIntroStep('chat');
+            } else {
+              setIntroStep('registration');
+            }
           } else {
+            // Si no hay usuario ni resultado de redirect, mostrar intro
             setShowIntro(true);
             setIntroStep('intro');
           }
@@ -1035,8 +1048,7 @@ function App() {
         setShowIntro(true);
         setIntroStep('intro');
       } finally {
-        // Dar un pequeño respiro para que el estado se asiente
-        setTimeout(() => setIsAuthLoading(false), 800);
+        setTimeout(() => setIsAuthLoading(false), 1200);
       }
     });
 
@@ -1482,6 +1494,9 @@ function App() {
   const handleLogin = async (email: string, pass: string) => {
     setLoading(true);
     try {
+      // Asegurar persistencia antes del login manual
+      await setPersistence(auth as any, browserLocalPersistence);
+      
       const { user } = await signInWithEmailAndPassword(auth as any, email, pass);
       const profile = await getStudentProfile(user.uid);
       
@@ -1508,12 +1523,16 @@ function App() {
       }
     } catch (error: any) {
       console.error("Login error:", error);
-      const errorMsg = error?.message || String(error);
-      if (errorMsg.includes("not-found")) {
-        setError("Correo o contraseña incorrectos.");
-      } else {
-        setError(errorMsg);
+      let errorMsg = error?.message || String(error);
+      
+      // Traducción amigable de errores de Firebase para el usuario
+      if (errorMsg.includes("auth/invalid-credential") || errorMsg.includes("not-found") || errorMsg.includes("wrong-password")) {
+        errorMsg = "Correo o contraseña incorrectos. Verifica tus datos e intenta de nuevo.";
+      } else if (errorMsg.includes("auth/network-request-failed")) {
+        errorMsg = "Error de red. Verifica tu conexión a internet.";
       }
+      
+      setError(errorMsg);
     } finally {
       setLoading(false);
     }
@@ -1538,6 +1557,9 @@ function App() {
     setIsTransitioning(true);
     
     try {
+      // Forzar persistencia para evitar que el navegador limpie la sesión al redirigir
+      await setPersistence(auth as any, browserLocalPersistence);
+      
       const isCapacitor = (window as any).Capacitor !== undefined;
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       
