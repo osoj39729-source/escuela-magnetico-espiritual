@@ -362,9 +362,11 @@ const AdminPanel = ({ t }: { t: any }) => {
 
   useEffect(() => {
     fetchStatus();
-    const interval = setInterval(fetchStatus, 10000); // Actualizar cada 10s
+    const interval = setInterval(fetchStatus, 10000);
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
     const q = query(collection(db, 'students'), orderBy('registrationDate', 'desc'));
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));

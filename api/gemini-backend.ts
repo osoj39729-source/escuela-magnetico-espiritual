@@ -259,18 +259,25 @@ class ApiManager {
 
   public async suspendKeyOnFail(stat: KeyStats, error?: any) {
     const now = Date.now();
-    const errorMessage = error?.message || String(error || "Fallo desconocido");
+    const errorMessage = (error?.message || String(error || "Fallo desconocido")).toLowerCase();
     stat.lastError = errorMessage;
     
-    // Si es un error de cuota, suspendemos por 24h para no "golpear" a Google/Groq en vano
-    if (errorMessage.includes("429") || errorMessage.includes("quota") || errorMessage.includes("limit reached")) {
-      stat.suspendedUntil = now + 86400000;
+    // Si es un error de red o timeout, la suspensión es mínima (10 segundos)
+    const isNetworkError = errorMessage.includes("econnreset") || 
+                          errorMessage.includes("fetch failed") || 
+                          errorMessage.includes("timeout") ||
+                          errorMessage.includes("network");
+
+    if (isNetworkError) {
+      stat.suspendedUntil = now + 10000; // 10 segundos
+      console.warn(`[Protocolo 0 Abusos] Error de red detectado. Reintentando llave ${stat.provider} en 10s.`);
+    } else if (errorMessage.includes("429") || errorMessage.includes("quota") || errorMessage.includes("limit reached")) {
+      stat.suspendedUntil = now + 86400000; // 24 horas
     } else {
-      stat.suspendedUntil = now + 60000; // 1 minuto para errores de red o temporales
+      stat.suspendedUntil = now + 60000; // 1 minuto para otros errores (como modelo no encontrado)
     }
     
     await QuotaStore.save(this.keys);
-    console.error(`[Protocolo 0 Abusos] Fallo de API: ${errorMessage}. Llave ${stat.provider} suspendida hasta ${new Date(stat.suspendedUntil).toLocaleTimeString()}.`);
   }
 
   public getStatus() {
