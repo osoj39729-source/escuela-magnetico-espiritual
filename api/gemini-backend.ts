@@ -273,6 +273,16 @@ class ApiManager {
       suspendedUntil: k.suspendedUntil
     }));
   }
+
+  public forceResetAll() {
+    this.keys.forEach(k => {
+      k.rpmCount = 0;
+      k.rpdCount = 0;
+      k.suspendedUntil = 0;
+    });
+    QuotaStore.save(this.keys);
+    console.log("[Protocolo 0 Abusos] ¡TODAS LAS CUOTAS HAN SIDO RESETEADAS MANUALMENTE!");
+  }
 }
 
 const apiManager = new ApiManager();
@@ -662,5 +672,16 @@ export async function handleSystemStatus(req: any, res: any) {
     res.json(status);
   } catch (err) {
     res.status(500).json({ error: "Error obteniendo estado del sistema" });
+  }
+}
+
+export async function handleResetQuotas(req: any, res: any) {
+  console.log("[Backend] Petición de RESET de cuotas recibida.");
+  try {
+    await apiManager.initialize();
+    apiManager.forceResetAll();
+    res.json({ status: "ok", message: "Todas las cuotas han sido reiniciadas." });
+  } catch (err) {
+    res.status(500).json({ error: "Error reiniciando cuotas" });
   }
 }

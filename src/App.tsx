@@ -379,6 +379,22 @@ const AdminPanel = ({ t }: { t: any }) => {
           {t.adminPanel}
         </h2>
         <div className="flex gap-4 text-sm">
+          <button 
+            onClick={async () => {
+              if (confirm('¿Estás seguro de que deseas reiniciar todas las cuotas y desbloquear las llaves?')) {
+                try {
+                  const res = await fetch('/api/reset-quotas', { method: 'POST' });
+                  if (res.ok) alert('Sistema de cuotas reiniciado con éxito.');
+                } catch (e) {
+                  alert('Error al reiniciar cuotas.');
+                }
+              }
+            }}
+            className="px-4 py-2 bg-red-500/20 text-red-400 rounded-xl border border-red-500/30 hover:bg-red-500/30 transition-all flex items-center gap-2"
+          >
+            <ShieldAlert className="w-4 h-4" />
+            Reiniciar Sistema de Cuotas
+          </button>
           <div className="px-4 py-2 bg-slate-900/50 rounded-xl border border-slate-800 text-slate-400">
             Total: <span className="text-amber-400 font-bold">{students.length}</span>
           </div>
@@ -1637,55 +1653,6 @@ function App() {
       setTimeout(() => setIsTransitioning(false), 1500);
     }, 2000);
   };
-
-  // Manejar el resultado de la redirección y el estado de autenticación persistente
-  useEffect(() => {
-    // 1. Verificar si regresamos de un login de Google por redirección (Común en móviles)
-    getRedirectResult(auth as any).then(async (result) => {
-      if (result?.user) {
-        setIsTransitioning(true);
-        await handleAuthUser(result.user);
-      }
-    }).catch((error) => {
-      console.error("Redirect result error:", error);
-    });
-
-    // 2. Escuchar cambios de estado (Persistencia)
-    const unsubscribe = onAuthStateChanged(auth as any, async (firebaseUser) => {
-      if (firebaseUser) {
-        console.log("Sesión recuperada:", firebaseUser.email);
-        const profile = await getStudentProfile(firebaseUser.uid);
-        if (profile) {
-          setUser(firebaseUser as any);
-          setStudentProfile(profile);
-          setIsAdminUser(profile.role === 'admin' || firebaseUser.email === "nelsonosoriogarcia@gmail.com");
-          setCurrentGrade(profile.currentGrade || 1);
-          setLessonProgress(profile.currentLesson || 1);
-          setMaxReachedGrade(profile.maxReachedGrade || profile.currentGrade || 1);
-          setMaxReachedLesson(profile.maxReachedLesson || profile.currentLesson || 1);
-          
-          // Si estamos en el intro, saltar al chat automáticamente
-          if (showIntro) {
-            setShowIntro(false);
-            setIntroStep('chat');
-            fetchGreeting(profile.currentGrade || 1, profile.currentLesson || 1);
-          }
-        } else {
-          // Usuario logueado pero sin perfil (completar registro)
-          setUser(firebaseUser as any);
-          setIntroStep('registration');
-        }
-      } else {
-        // No hay usuario, asegurar que mostramos el intro si no estamos ya allí
-        if (!showIntro && introStep !== 'intro') {
-          setShowIntro(true);
-          setIntroStep('intro');
-        }
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
 
   // ── MOTOR COGNITIVO Y RASTREADOR DE SESIONES ──
   useEffect(() => {

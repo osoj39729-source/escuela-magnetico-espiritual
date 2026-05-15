@@ -26,8 +26,7 @@
               registration.unregister();
             }
             localStorage.setItem('emecu_sw_version', currentVersion);
-            console.log("[EMECU] Memoria vieja purgada. Reiniciando para aplicar Vercel...");
-            setTimeout(() => window.location.reload(true), 500);
+            console.log("[EMECU] Memoria purgada para la próxima carga.");
           }
         });
       }
