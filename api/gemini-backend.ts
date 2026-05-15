@@ -136,12 +136,27 @@ class ApiManager {
     if (this.keys.length > 0) return; // Ya inicializado
     
     const savedQuota = await QuotaStore.load();
-    // 1. Cargar llaves Gemini
+    
+    // 1. Cargar llaves Gemini (Soporta VITE_GEMINI_KEY_X y GEMINI_KEY_X)
     for (let i = 1; i <= 5; i++) {
-      const key = process.env[`VITE_GEMINI_KEY_${i}`];
+      const key = process.env[`VITE_GEMINI_KEY_${i}`] || process.env[`GEMINI_KEY_${i}`];
       if (key && key.trim().length > 10) {
         this.keys.push(this.createKeyStat(key.trim(), 'Gemini'));
       }
+    }
+
+    // 2. Cargar llaves Groq (Soporta VITE_GROQ_KEY_X y GROQ_KEY_X)
+    for (let i = 1; i <= 5; i++) {
+      const key = process.env[`VITE_GROQ_KEY_${i}`] || process.env[`GROQ_KEY_${i}`];
+      if (key && key.trim().length > 10) {
+        this.keys.push(this.createKeyStat(key.trim(), 'Groq'));
+      }
+    }
+
+    // Fallback: Si no hay ninguna, intentar con GEMINI_API_KEY única
+    if (this.keys.length === 0) {
+      const singleKey = process.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
+      if (singleKey) this.keys.push(this.createKeyStat(singleKey, 'Gemini'));
     }
     
     const now = Date.now();
@@ -150,12 +165,23 @@ class ApiManager {
       if (savedQuota[prefix]) {
         k.rpdCount = (savedQuota[prefix] as any).rpdCount || 0;
         k.lastDayReset = (savedQuota[prefix] as any).lastDayReset || now;
+        
+        // Solo respetamos la suspensión si es MUY reciente (menos de 5 min)
+        // Esto evita bloqueos eternos por errores de sincronización
         const savedSuspension = (savedQuota[prefix] as any).suspendedUntil || 0;
-        k.suspendedUntil = (savedSuspension > now) ? savedSuspension : 0;
+        if (savedSuspension > now && (savedSuspension - now) < 300000) {
+          k.suspendedUntil = savedSuspension;
+        } else {
+          k.suspendedUntil = 0;
+        }
       }
     });
     
-    console.log(`[Protocolo 0 Abusos] Cerebro inicializado con ${this.keys.length} llaves.`);
+    if (this.keys.length === 0) {
+      console.error("[Protocolo 0 Abusos] ¡CRÍTICO: No se encontraron API Keys en el entorno!");
+    } else {
+      console.log(`[Protocolo 0 Abusos] Cerebro inicializado con ${this.keys.length} llaves activas.`);
+    }
   }
 
   private createKeyStat(key: string, provider: Provider): KeyStats {
