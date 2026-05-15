@@ -1614,8 +1614,9 @@ function App() {
     }, 2000);
   };
 
-  // Manejar el resultado de la redirección al cargar
+  // Manejar el resultado de la redirección y el estado de autenticación persistente
   useEffect(() => {
+    // 1. Verificar si regresamos de un login de Google por redirección (Común en móviles)
     getRedirectResult(auth as any).then(async (result) => {
       if (result?.user) {
         setIsTransitioning(true);
@@ -1624,6 +1625,42 @@ function App() {
     }).catch((error) => {
       console.error("Redirect result error:", error);
     });
+
+    // 2. Escuchar cambios de estado (Persistencia)
+    const unsubscribe = onAuthStateChanged(auth as any, async (firebaseUser) => {
+      if (firebaseUser) {
+        console.log("Sesión recuperada:", firebaseUser.email);
+        const profile = await getStudentProfile(firebaseUser.uid);
+        if (profile) {
+          setUser(firebaseUser as any);
+          setStudentProfile(profile);
+          setIsAdminUser(profile.role === 'admin' || firebaseUser.email === "nelsonosoriogarcia@gmail.com");
+          setCurrentGrade(profile.currentGrade || 1);
+          setLessonProgress(profile.currentLesson || 1);
+          setMaxReachedGrade(profile.maxReachedGrade || profile.currentGrade || 1);
+          setMaxReachedLesson(profile.maxReachedLesson || profile.currentLesson || 1);
+          
+          // Si estamos en el intro, saltar al chat automáticamente
+          if (showIntro) {
+            setShowIntro(false);
+            setIntroStep('chat');
+            fetchGreeting(profile.currentGrade || 1, profile.currentLesson || 1);
+          }
+        } else {
+          // Usuario logueado pero sin perfil (completar registro)
+          setUser(firebaseUser as any);
+          setIntroStep('registration');
+        }
+      } else {
+        // No hay usuario, asegurar que mostramos el intro si no estamos ya allí
+        if (!showIntro && introStep !== 'intro') {
+          setShowIntro(true);
+          setIntroStep('intro');
+        }
+      }
+    });
+
+    return () => unsubscribe();
   }, []);
 
   // ── MOTOR COGNITIVO Y RASTREADOR DE SESIONES ──
@@ -1690,7 +1727,7 @@ function App() {
     let motivationalMessage = "Bienvenido a la Escuela Magnetico-Espiritual de la Comuna Universal. Tu camino de luz comienza hoy.";
     try {
       // Delegar al backend la generación del saludo motivacional
-      const baseUrl = (window as any).Capacitor !== undefined ? 'https://escuela-magnetico-espiritual.onrender.com' : '';
+      const baseUrl = ''; // Usar rutas relativas
       const response = await fetch(`${baseUrl}/api/chat-stream`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -1733,7 +1770,7 @@ function App() {
 
     // Send via our API
     const isCapacitor = (window as any).Capacitor !== undefined;
-    const baseUrl = isCapacitor ? 'https://escuela-magnetico-espiritual.onrender.com' : '';
+    const baseUrl = ''; // Usar rutas relativas ahora que todo está en Vercel
     await fetch(`${baseUrl}/api/send-verification`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

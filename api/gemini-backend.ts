@@ -65,13 +65,25 @@ if (!fs.existsSync(DATA_DIR) && !process.env.VERCEL) {
 const QUOTA_STATE_FILE = path.join(DATA_DIR, 'quota_state.json');
 
 class QuotaStore {
-  static load(): Record<string, Partial<KeyStats>> {
+  static async load(): Promise<Record<string, Partial<KeyStats>>> {
+    // 1. Intentar carga rápida desde /tmp (Memoria de instancia caliente)
     try {
       if (fs.existsSync(QUOTA_STATE_FILE)) {
         return JSON.parse(fs.readFileSync(QUOTA_STATE_FILE, 'utf-8'));
       }
+    } catch (e) {}
+
+    // 2. Si no hay en /tmp o estamos en Vercel, cargar de Firebase
+    try {
+      const { getDoc, doc } = await import("firebase/firestore");
+      const statusDocRef = doc(db, "system", "api_quotas");
+      const snap = await getDoc(statusDocRef);
+      if (snap.exists()) {
+        console.log("[QuotaStore] Memoria recuperada desde Firebase.");
+        return snap.data() as Record<string, Partial<KeyStats>>;
+      }
     } catch (e) {
-      console.error("[QuotaStore] Error cargando memoria de cuotas:", e);
+      console.error("[QuotaStore] Error recuperando memoria desde Firebase:", e);
     }
     return {};
   }
@@ -117,76 +129,33 @@ class ApiManager {
   private currentIndex = 0;
 
   constructor() {
-    this.loadKeys();
-    // ── WATCHDOG DE DESBLOQUEO AUTOMÁTICO ──────────────────────────────────
-    // Se ejecuta cada 30 segundos en segundo plano.
-    // Revisa si alguna llave suspendida ya cumplió su tiempo de castigo
-    // y la reactiva sin necesidad de esperar a que llegue una petición.
-    setInterval(() => {
-      const now = Date.now();
-      let reactivadas = 0;
-      for (const stat of this.keys) {
-        if (stat.suspendedUntil > 0 && now >= stat.suspendedUntil) {
-          stat.suspendedUntil = 0;
-          stat.rpmCount = 0; // Reiniciar también el contador de minuto
-          reactivadas++;
-          console.log(`[Watchdog] ✅ Llave ${stat.provider} reactivada automáticamente tras cumplir su suspensión.`);
-        }
-      }
-      if (reactivadas > 0) {
-        QuotaStore.save(this.keys); // Sincronizar con Firebase el nuevo estado
-      }
-    }, 30000); // Cada 30 segundos
+    // En Serverless, la carga se dispara por petición, no en el constructor global
   }
 
-  private loadKeys() {
-    const savedQuota = QuotaStore.load();
-    // 1. Cargar llaves Gemini desde el .env seguro
+  public async initialize() {
+    if (this.keys.length > 0) return; // Ya inicializado
+    
+    const savedQuota = await QuotaStore.load();
+    // 1. Cargar llaves Gemini
     for (let i = 1; i <= 5; i++) {
       const key = process.env[`VITE_GEMINI_KEY_${i}`];
       if (key && key.trim().length > 10) {
         this.keys.push(this.createKeyStat(key.trim(), 'Gemini'));
       }
     }
-    // 2. Cargar llaves Groq desde el .env seguro (SUSPENDIDO TEMPORALMENTE)
-    /*
-    for (let i = 1; i <= 5; i++) {
-      const key = process.env[`VITE_GROQ_KEY_${i}`];
-      if (key && key.trim().length > 10) {
-        this.keys.push(this.createKeyStat(key.trim(), 'Groq'));
-      }
-    }
-    */
     
-    // Fallback: Si no encuentra en VITE_, busca en las variables por defecto por si acaso
-    if (this.keys.filter(k => k.provider === 'Gemini').length === 0) {
-       const envKey = process.env.GEMINI_API_KEY;
-       if (envKey && envKey.trim().length > 10) {
-         this.keys.push(this.createKeyStat(envKey.trim(), 'Gemini'));
-       }
-    }
-
-    console.log("--------------------------------------------------");
-    console.log(`[Protocolo 0 Abusos] Cargadas ${this.keys.filter(k => k.provider === 'Gemini').length} llaves Gemini y ${this.keys.filter(k => k.provider === 'Groq').length} llaves Groq.`);
-    
-    // Aplicar cuota guardada, pero ignorar suspensiones expiradas
     const now = Date.now();
     this.keys.forEach(k => {
-      if (savedQuota[k.key]) {
-        k.rpdCount = savedQuota[k.key].rpdCount || 0;
-        k.lastDayReset = savedQuota[k.key].lastDayReset || now;
-        // Solo restaurar suspensión si aún no ha expirado
-        const savedSuspension = savedQuota[k.key].suspendedUntil || 0;
+      const prefix = k.key.substring(0, 10) + "...";
+      if (savedQuota[prefix]) {
+        k.rpdCount = (savedQuota[prefix] as any).rpdCount || 0;
+        k.lastDayReset = (savedQuota[prefix] as any).lastDayReset || now;
+        const savedSuspension = (savedQuota[prefix] as any).suspendedUntil || 0;
         k.suspendedUntil = (savedSuspension > now) ? savedSuspension : 0;
-        if (savedSuspension > 0 && savedSuspension <= now) {
-          console.log(`[Protocolo 0 Abusos] Llave ${k.provider} tenía suspensión expirada al iniciar → reactivada automáticamente.`);
-        }
       }
     });
     
-    console.log("--------------------------------------------------");
-    // Sincronizar estado inicial con Firebase (sin generar reinicios)
-    QuotaStore.save(this.keys);
+    console.log(`[Protocolo 0 Abusos] Cerebro inicializado con ${this.keys.length} llaves.`);
   }
 
   private createKeyStat(key: string, provider: Provider): KeyStats {
@@ -254,16 +223,16 @@ class ApiManager {
     return null; // Todas están agotadas
   }
 
-  public registerUsage(stat: KeyStats) {
+  public async registerUsage(stat: KeyStats) {
     stat.rpmCount++;
     stat.rpdCount++;
-    QuotaStore.save(this.keys);
+    await QuotaStore.save(this.keys);
   }
 
-  public suspendKeyOnFail(stat: KeyStats) {
+  public async suspendKeyOnFail(stat: KeyStats) {
     const now = Date.now();
     stat.suspendedUntil = now + 60000;
-    QuotaStore.save(this.keys);
+    await QuotaStore.save(this.keys);
     console.error(`[Protocolo 0 Abusos] Fallo de API detectado. Llave ${stat.provider} bloqueada temporalmente por 1 minuto para evitar baneo agresivo.`);
   }
 
@@ -474,6 +443,7 @@ export async function handleChatStream(req: any, res: any) {
     res.write(`data: ${JSON.stringify(data)}\n\n`);
   };
 
+  await apiManager.initialize();
   const keyStat = apiManager.getNextAvailableKey();
   
   if (!keyStat) {
@@ -483,7 +453,7 @@ export async function handleChatStream(req: any, res: any) {
     return;
   }
 
-  apiManager.registerUsage(keyStat);
+  await apiManager.registerUsage(keyStat);
   console.log(`[Backend Rotador] Petición asignada a Motor: ${keyStat.provider} | Cuota RPM usada: ${keyStat.rpmCount} | Cuota RPD usada: ${keyStat.rpdCount}`);
 
   try {
@@ -640,7 +610,7 @@ REGLA DE IDIOMA: Responde ÚNICAMENTE en "${langLabel}".
     console.error(`[Backend Rotador] Error en motor ${keyStat.provider}: ${errMsg.substring(0, 100)}`);
     
     // Se suspende inmediatamente la llave si falla (para rotar sin abusar del endpoint caído)
-    apiManager.suspendKeyOnFail(keyStat);
+    await apiManager.suspendKeyOnFail(keyStat);
     
     if (errMsg.includes("429") || errMsg.includes("quota")) {
       sendEvent({ error: "QUOTA_EXHAUSTED", text: "El aula está muy concurrida en este momento. La red está limitando la conexión. Por favor, intenta de nuevo en un minuto." });
