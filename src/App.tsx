@@ -998,51 +998,57 @@ function App() {
   const ttsQueueRef = useRef<string[]>([]);
   const isSpeakingQueueRef = useRef(false);
 
-  // Auth Listener
+  // Auth Listener Robusto para Móviles
   useEffect(() => {
-    // Forzar persistencia local para móviles
-    setPersistence(auth as any, browserLocalPersistence).catch(err => console.error("Persistence error:", err));
+    // 1. Forzar persistencia para que no pida login al cerrar el navegador
+    setPersistence(auth as any, browserLocalPersistence)
+      .catch(err => console.error("Persistence error:", err));
 
+    // 2. Escuchar cambios de estado
     const unsubscribe = onAuthStateChanged(auth as any, async (currentUser) => {
       if (currentUser) {
-        if (currentUser.uid !== user?.uid) {
-          setUser(currentUser);
-          try {
-            const profile = await getStudentProfile(currentUser.uid);
-            if (profile) {
-              setStudentProfile(profile);
-              setIsAdminUser(profile.role === 'admin' || currentUser.email === "nelsonosoriogarcia@gmail.com");
-              setCurrentGrade(profile.currentGrade || 1);
-              setLessonProgress(profile.currentLesson || 1);
-              setShowIntro(false);
-              setIntroStep('chat');
-            } else {
-              setIntroStep('registration');
-            }
-          } catch (error) {
-            console.error("Error cargando perfil:", error);
-            setError("Error de conexión al descargar tu perfil.");
+        setUser(currentUser);
+        try {
+          const profile = await getStudentProfile(currentUser.uid);
+          if (profile) {
+            setStudentProfile(profile);
+            setIsAdminUser(profile.role === 'admin' || currentUser.email === "nelsonosoriogarcia@gmail.com");
+            setCurrentGrade(profile.currentGrade || 1);
+            setLessonProgress(profile.currentLesson || 1);
+            setMaxReachedGrade(profile.maxReachedGrade || profile.currentGrade || 1);
+            setMaxReachedLesson(profile.maxReachedLesson || profile.currentLesson || 1);
+            
+            // Transición suave al chat si ya tenemos perfil
+            setShowIntro(false);
+            setIntroStep('chat');
+          } else {
+            // Usuario autenticado pero sin perfil (Google Login por primera vez)
+            setIntroStep('registration');
           }
+        } catch (error) {
+          console.error("Error cargando perfil:", error);
+          setError("Error de sincronización con la Escuela.");
         }
       } else {
-        // Manejar regreso de Google Redirect (Crítico para móviles)
+        // No hay usuario, verificar si estamos volviendo de un Redirect de Google
         try {
           const result = await getRedirectResult(auth as any);
           if (result?.user) {
             await handleAuthUser(result.user);
+          } else {
+            // Definitivamente no hay sesión, mostrar Intro
+            setShowIntro(true);
+            setIntroStep('intro');
           }
         } catch (error: any) {
-          console.error("Error en auth redirect:", error);
-          if (error.code === 'auth/unauthorized-domain') {
-            setError("⚠️ Dominio no autorizado en Firebase. Por favor, añade 'maestro-trincado.vercel.app' a los dominios autorizados en la consola de Firebase.");
-          } else {
-            setError("Error al iniciar sesión: " + error.message);
-          }
+          console.error("Auth redirect error:", error);
+          setError("Error de autenticación: " + (error.message || "Intenta de nuevo."));
         }
       }
     });
+
     return () => unsubscribe();
-  }, [user?.uid]);
+  }, []);
 
   const togglePhotoEnlarge = () => {
     if (isPhotoEnlarged) {
