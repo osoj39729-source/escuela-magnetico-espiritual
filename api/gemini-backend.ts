@@ -54,6 +54,7 @@ interface KeyStats {
   lastMinuteReset: number;
   lastDayReset: number;
   suspendedUntil: number; // 0 if active
+  lastError?: string; // Nuevo campo para diagnóstico
 }
 
 // Guardar fuera del directorio del proyecto para no disparar watchers de Vite/tsx
@@ -256,11 +257,20 @@ class ApiManager {
     await QuotaStore.save(this.keys);
   }
 
-  public async suspendKeyOnFail(stat: KeyStats) {
+  public async suspendKeyOnFail(stat: KeyStats, error?: any) {
     const now = Date.now();
-    stat.suspendedUntil = now + 60000;
+    const errorMessage = error?.message || String(error || "Fallo desconocido");
+    stat.lastError = errorMessage;
+    
+    // Si es un error de cuota, suspendemos por 24h para no "golpear" a Google/Groq en vano
+    if (errorMessage.includes("429") || errorMessage.includes("quota") || errorMessage.includes("limit reached")) {
+      stat.suspendedUntil = now + 86400000;
+    } else {
+      stat.suspendedUntil = now + 60000; // 1 minuto para errores de red o temporales
+    }
+    
     await QuotaStore.save(this.keys);
-    console.error(`[Protocolo 0 Abusos] Fallo de API detectado. Llave ${stat.provider} bloqueada temporalmente por 1 minuto para evitar baneo agresivo.`);
+    console.error(`[Protocolo 0 Abusos] Fallo de API: ${errorMessage}. Llave ${stat.provider} suspendida hasta ${new Date(stat.suspendedUntil).toLocaleTimeString()}.`);
   }
 
   public getStatus() {
@@ -270,7 +280,8 @@ class ApiManager {
       rpm: k.rpmCount,
       rpd: k.rpdCount,
       active: k.suspendedUntil === 0 || Date.now() >= k.suspendedUntil,
-      suspendedUntil: k.suspendedUntil
+      suspendedUntil: k.suspendedUntil,
+      lastError: k.lastError // Enviamos el error al frontend
     }));
   }
 
@@ -647,7 +658,7 @@ REGLA DE IDIOMA: Responde ÚNICAMENTE en "${langLabel}".
     console.error(`[Backend Rotador] Error en motor ${keyStat.provider}: ${errMsg.substring(0, 100)}`);
     
     // Se suspende inmediatamente la llave si falla (para rotar sin abusar del endpoint caído)
-    await apiManager.suspendKeyOnFail(keyStat);
+    await apiManager.suspendKeyOnFail(keyStat, error);
     
     if (errMsg.includes("429") || errMsg.includes("quota")) {
       sendEvent({ error: "QUOTA_EXHAUSTED", text: "El aula está muy concurrida en este momento. La red está limitando la conexión. Por favor, intenta de nuevo en un minuto." });

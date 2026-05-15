@@ -351,8 +351,20 @@ const RegistrationForm = ({ t, onSubmit, onLogin, onSkip, onBack, user, language
 const AdminPanel = ({ t }: { t: any }) => {
   const [students, setStudents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [systemStatus, setSystemStatus] = useState<any>(null);
+
+  const fetchStatus = async () => {
+    try {
+      const res = await fetch('/api/system-status');
+      if (res.ok) setSystemStatus(await res.json());
+    } catch (e) { console.error(e); }
+  };
 
   useEffect(() => {
+    fetchStatus();
+    const interval = setInterval(fetchStatus, 10000); // Actualizar cada 10s
+    return () => clearInterval(interval);
+  }, []);
     const q = query(collection(db, 'students'), orderBy('registrationDate', 'desc'));
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -373,30 +385,59 @@ const AdminPanel = ({ t }: { t: any }) => {
       animate={{ opacity: 1 }}
       className="space-y-6"
     >
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <h2 className="text-2xl font-bold text-amber-400 flex items-center gap-3">
           <Shield className="w-6 h-6" />
           {t.adminPanel}
         </h2>
+        
+        <div className="flex flex-col gap-4">
+          <div className="bg-slate-800/80 p-4 rounded-2xl border border-slate-700/50">
+            <h3 className="text-xs uppercase tracking-widest text-slate-500 mb-3 font-bold">Estado de las Llaves</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+              {systemStatus?.keys?.map((k: any, i: number) => (
+                <div key={i} className={`p-3 rounded-xl border flex flex-col gap-1 ${k.active ? 'bg-green-500/10 border-green-500/30' : 'bg-red-500/10 border-red-500/30'}`}>
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-bold text-slate-300 uppercase">{k.provider}</span>
+                    <span className={`w-2 h-2 rounded-full ${k.active ? 'bg-green-500' : 'bg-red-500 animate-pulse'}`} />
+                  </div>
+                  <div className="flex justify-between text-[10px] text-slate-500 font-mono">
+                    <span>RPM: {k.rpm}</span>
+                    <span>RPD: {k.rpd}</span>
+                  </div>
+                  {!k.active && k.lastError && (
+                    <div className="text-[9px] text-red-400 mt-1 leading-tight line-clamp-2 italic">
+                      Err: {k.lastError.substring(0, 50)}...
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
         <div className="flex gap-4 text-sm">
           <button 
             onClick={async () => {
               if (confirm('¿Estás seguro de que deseas reiniciar todas las cuotas y desbloquear las llaves?')) {
                 try {
                   const res = await fetch('/api/reset-quotas', { method: 'POST' });
-                  if (res.ok) alert('Sistema de cuotas reiniciado con éxito.');
+                  if (res.ok) {
+                    alert('Sistema de cuotas reiniciado con éxito.');
+                    fetchStatus();
+                  }
                 } catch (e) {
                   alert('Error al reiniciar cuotas.');
                 }
               }
             }}
-            className="px-4 py-2 bg-red-500/20 text-red-400 rounded-xl border border-red-500/30 hover:bg-red-500/30 transition-all flex items-center gap-2"
+            className="px-4 py-2 bg-red-500/20 text-red-400 rounded-xl border border-red-500/30 hover:bg-red-500/30 transition-all flex items-center gap-2 h-fit self-end"
           >
             <ShieldAlert className="w-4 h-4" />
-            Reiniciar Sistema de Cuotas
+            Reiniciar Cuotas
           </button>
-          <div className="px-4 py-2 bg-slate-900/50 rounded-xl border border-slate-800 text-slate-400">
-            Total: <span className="text-amber-400 font-bold">{students.length}</span>
+          <div className="px-4 py-2 bg-slate-900/50 rounded-xl border border-slate-800 text-slate-400 h-fit self-end">
+            Total Estudiantes: <span className="text-amber-400 font-bold">{students.length}</span>
           </div>
         </div>
       </div>
