@@ -82,24 +82,7 @@ export const BLOCKED_NODES: Record<string, string[]> = {
     "19280: cando a Dios\", \"Filosofía Austera Racional\", \"Los Extremos se Tocan\"",
     "19286: \"Código de Amor Universal\" Tomos I. Para el Régimen de la"
   ],
-  "cuestionario-espirita-racional": [
-    "78: Pregunta 6: ¿Qué se entiende por \"La: Comuna\"?",
-    "232: Pregunta 16: ",
-    "321: Pregunta 22: ",
-    "372: Pregunta 25: ",
-    "413: Pregunta 28: ",
-    "428: Pregunta 29: ¿El que piensa y raízona fuera de lo: que la iglesia quiere, qué pena tiene?",
-    "463: Pregunta 31: ",
-    "513: Pregunta 34: ",
-    "636: Pregunta 41: ",
-    "809: Pregunta 50: ",
-    "861: Pregunta 53: ",
-    "913: Pregunta 56: ",
-    "1079: Pregunta 66: que, eso del espíritu santo, es: una burda mentira que nadie que raízona debe creer. ¿Cómo se llamaban los padres de Jesús?. . .",
-    "1189: Pregunta 72: ",
-    "1242: Pregunta 75: ",
-    "1321: donde fué llevado por José de Arimatea: a los 88 días después de la crucifixión. Pero este punto culminante, como todos los de Jesús, en la \"Filosofía Austera Racional\", están documentados."
-  ],
+  "cuestionario-espirita-racional": [],
   "el-espiritismo-estudiado": [
     "50: El Universo solidarizado.",
     "52: El mundo todo Comunizado.",
