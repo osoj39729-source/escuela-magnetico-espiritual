@@ -138,17 +138,17 @@ class ApiManager {
     
     const savedQuota = await QuotaStore.load();
     
-    // 1. Cargar llaves Gemini (Soporta VITE_GEMINI_KEY_X y GEMINI_KEY_X)
+    // Inicialización de llaves Gemini
     for (let i = 1; i <= 5; i++) {
-      const key = process.env[`VITE_GEMINI_KEY_${i}`] || process.env[`GEMINI_KEY_${i}`];
+      const key = process.env[`GEMINI_KEY_${i}`];
       if (key && key.trim().length > 10) {
         this.keys.push(this.createKeyStat(key.trim(), 'Gemini'));
       }
     }
 
-    // 2. Cargar llaves Groq (Soporta VITE_GROQ_KEY_X y GROQ_KEY_X)
+    // Inicialización de llaves Groq
     for (let i = 1; i <= 5; i++) {
-      const key = process.env[`VITE_GROQ_KEY_${i}`] || process.env[`GROQ_KEY_${i}`];
+      const key = process.env[`GROQ_KEY_${i}`];
       if (key && key.trim().length > 10) {
         this.keys.push(this.createKeyStat(key.trim(), 'Groq'));
       }
@@ -156,7 +156,7 @@ class ApiManager {
 
     // Fallback: Si no hay ninguna, intentar con GEMINI_API_KEY única
     if (this.keys.length === 0) {
-      const singleKey = process.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
+      const singleKey = process.env.GEMINI_API_KEY;
       if (singleKey) this.keys.push(this.createKeyStat(singleKey, 'Gemini'));
     }
     
