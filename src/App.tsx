@@ -1057,6 +1057,7 @@ function App() {
   const ttsQueueRef = useRef<string[]>([]);
   const isSpeakingQueueRef = useRef(false);
   const hasInitialGreetingBeenFetched = useRef(false);
+  const lastLanguageRef = useRef(language);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
 
   // Auth Listener Robusto para Móviles
@@ -1153,77 +1154,143 @@ function App() {
     }
   }, [showGradeConfirm, language]);
 
+  const lastGreetingTime = useRef(0);
+
   // Handle Language Change
   useEffect(() => {
-    if (!showIntro) {
-      // Reiniciar saludo en el nuevo idioma
-      fetchGreeting();
-    }
+    // El cambio de idioma ahora es pasivo. 
+    // No disparamos fetchGreeting para evitar borrar el chat.
+    // El Maestro responderá en el nuevo idioma en su próxima interacción normal.
   }, [language]);
 
-  const fetchGreeting = async (gradeOverride?: number, lessonOverride?: number) => {
-    if (hasInitialGreetingBeenFetched.current && !gradeOverride) return;
-    if (!gradeOverride) hasInitialGreetingBeenFetched.current = true;
+  const fetchGreeting = async (gradeOverride?: number, lessonOverride?: number, modeOverride?: 'curriculum' | 'library', cognitiveOverride?: string) => {
+    // Si el idioma cambió, permitimos el refresco aunque ya haya saludado antes
+    const languageChanged = lastLanguageRef.current !== language;
+    lastLanguageRef.current = language;
+
+    if (hasInitialGreetingBeenFetched.current && !gradeOverride && !languageChanged) return;
+    if (!gradeOverride && !languageChanged) hasInitialGreetingBeenFetched.current = true;
     
     setLoading(true);
-    // Mostrar mensaje inicial inmediatamente
     setChat([{ role: 'professor', text: '...' }]);
     try {
       const activeGrade = gradeOverride || currentGrade;
       const activeLesson = lessonOverride || lessonProgress;
+      const activeMode = modeOverride || studyMode;
       const gradeData = CURRICULUM.find(g => g.id === activeGrade);
       const totalLessons = gradeData?.lessonsCount || 1;
       const themeName = gradeData?.themes ? gradeData.themes[activeLesson - 1] : undefined;
       let studentName = studentProfile?.fullName || "";
       let startPrompt = "";
-      if (activeGrade === 1 && activeLesson === 1) {
+      const bookData = currentLibraryBook ? LIBRARY_BOOKS.find(b => b.id === currentLibraryBook) : null;
+      const currentBookTitle = bookData ? bookData.title : undefined;
+      const effectiveChapter = currentLibraryChapter;
+      const activeCognitiveContext = cognitiveOverride || cognitiveContext;
+
+      if (activeGrade === 1 && activeLesson === 1 && activeMode === 'curriculum') {
         startPrompt = language === 'es'
           ? `Salud, hermano. Mi nombre es ${studentName || "estudiante"}. Vengo a recibir tu enseñanza en la Escuela Magnetico-Espiritual de la Comuna Universal.`
           : `Greetings, brother. My name is ${studentName || "student"}. I come to receive your teaching.`;
       } else {
         const themeContext = themeName ? `el tema: "${themeName}"` : `la Lección N° ${activeLesson}`;
-        startPrompt = language === 'es'
-          ? `Salud, hermano. Continuemos con el Grado ${activeGrade}, abordando ${themeContext}.`
-          : `Greetings, brother. Let's continue with Grade ${activeGrade}, addressing ${themeContext}.`;
+        
+        if (activeMode === 'library') {
+          startPrompt = language === 'es'
+            ? `[MODO ESTUDIO LIBRE] Salud, hermano. Deseo profundizar en la obra "${currentBookTitle || currentLibraryBook}" en su capítulo "${effectiveChapter || currentLibraryChapter}".`
+            : language === 'en'
+            ? `[FREE STUDY MODE] Greetings, brother. I wish to delve into the work "${currentBookTitle || currentLibraryBook}" in its chapter "${effectiveChapter || currentLibraryChapter}".`
+            : language === 'pt'
+            ? `[MODO ESTUDIO LIBRE] Saudações, irmão. Desejo aprofundar na obra "${currentBookTitle || currentLibraryBook}" em seu capítulo "${effectiveChapter || currentLibraryChapter}".`
+            : `[MODE ÉTUDE LIBRE] Salutations, frère. Je souhaite approfondir l'œuvre "${currentBookTitle || currentLibraryBook}" dans son chapitre "${effectiveChapter || currentLibraryChapter}".`;
+        } else if (modeOverride === 'curriculum') {
+          startPrompt = language === 'es'
+            ? `[CAMBIO A MODO ACADÉMICO] Salud, hermano. Dejemos el estudio libre y continuemos con el Grado ${activeGrade}, abordando ${themeContext}.`
+            : `[SWITCH TO ACADEMY] Greetings. Let's switch to the academic program and continue with Grade ${activeGrade}, addressing ${themeContext}.`;
+        } else {
+          startPrompt = language === 'es'
+            ? `Salud, hermano. Continuemos con el Grado ${activeGrade}, abordando ${themeContext}.`
+            : `Greetings, brother. Let's continue with Grade ${activeGrade}, addressing ${themeContext}.`;
+        }
       }
-      // STREAMING REAL CON THROTTLE Y TTS PROGRESIVO
-      let accumulated = '';
-      let spokenLength = 0;
-      let lastUpdate = 0;
       
-      await chatWithProfessorStream(
-        startPrompt, [], language, activeGrade, activeLesson, totalLessons, themeName, !!studentProfile,
-        studentProfile?.fullName || 'Alumno',
-        (chunk) => {
-          accumulated += chunk;
-          
-          // Detectar oraciones completas para hablar inmediatamente
-          const unseenText = accumulated.slice(spokenLength);
-          const sentenceMatch = unseenText.match(/.*[.!?\n]/);
-          if (sentenceMatch) {
-            const sentenceToSpeak = sentenceMatch[0];
-            spokenLength += sentenceToSpeak.length;
-            if (sentenceToSpeak.trim().length > 1) {
-              enqueueSpeech(sentenceToSpeak);
-            }
-          }
 
-          const now = Date.now();
-          if (now - lastUpdate > 80) { // Actualizar máximo cada 80ms
-            lastUpdate = now;
-            setChat([{ role: 'professor', text: accumulated }]);
+        let accumulated = '';
+        let spokenLength = 0;
+        let lastUpdate = 0;
+
+        const result = await chatWithProfessorStream(
+          startPrompt, 
+          [], 
+          language, 
+          activeGrade, 
+          activeLesson, 
+          totalLessons, 
+          themeName, 
+          !!studentProfile,
+          studentProfile?.fullName || 'Alumno',
+          (chunk) => {
+            accumulated += chunk;
+            
+            // TTS Progresivo
+            const unseenText = accumulated.slice(spokenLength);
+            const sentenceMatch = unseenText.match(/.*[.!?\n]/);
+            if (sentenceMatch) {
+              const sentenceToSpeak = sentenceMatch[0];
+              spokenLength += sentenceToSpeak.length;
+              if (sentenceToSpeak.trim().length > 1) {
+                enqueueSpeech(sentenceToSpeak);
+              }
+            }
+
+            const now = Date.now();
+            if (now - lastUpdate > 80) {
+              const tempText = accumulated.replace(/<!-- COGNITIVE_UPDATE: \{.*?\} -->/g, "").trim();
+              setChat([{ role: 'professor', text: tempText || '...' }]);
+              lastUpdate = now;
+            }
+          },
+          activeMode,
+          currentBookTitle,
+          effectiveChapter || undefined,
+          currentLibraryBook || undefined,
+          user?.uid || undefined,
+          activeCognitiveContext
+        );
+
+        let finalText = result.text;
+        let aiDeltas: Record<string, number> | null = null;
+
+        // Interceptación Silenciosa final
+        const cognitiveMatch = finalText.match(/<!-- COGNITIVE_UPDATE: (\{.*?\}) -->/);
+        if (cognitiveMatch) {
+          try {
+            aiDeltas = JSON.parse(cognitiveMatch[1]);
+            finalText = finalText.replace(/<!-- COGNITIVE_UPDATE: \{.*?\} -->/g, "").trim();
+          } catch (e) {
+            console.warn("[Cognitive] Error parseando evaluación inicial:", e);
           }
         }
-      );
-      
-      // Hablar el fragmento final
-      const remainingText = accumulated.slice(spokenLength);
-      if (remainingText.trim().length > 1) {
-        enqueueSpeech(remainingText);
-      }
-      
-      // Actualización final garantizada
-      setChat([{ role: 'professor', text: accumulated }]);
+
+        setChat([{ role: 'professor', text: finalText }]);
+
+        // Hablar el resto
+        const remainingText = finalText.slice(spokenLength);
+        if (remainingText.trim().length > 1) {
+          enqueueSpeech(remainingText);
+        }
+
+        // Actualizar perfil si hay evaluación inicial
+        if (user?.uid && aiDeltas) {
+          evaluarYActualizarPerfil({
+            uid: user.uid,
+            mensajeEstudiante: "[INICIO_SESION]",
+            preguntaProfesor: "Bienvenida",
+            historialMensajes: [],
+            temaActual: themeName,
+            gradoActual: activeGrade,
+            deltasOverride: aiDeltas
+          });
+        }
     } catch (error: any) {
       console.error(error);
       setChat([{ role: 'professor', text: t.errorInit }]);
@@ -1282,6 +1349,7 @@ function App() {
     if (!azureKey) return false;
 
     try {
+      // PRIORIDAD: 1. Voz seleccionada manualmente, 2. Voz por defecto del mapa de idiomas
       const voiceMap: { [key: string]: string } = {
         'es': 'es-NI-FedericoNeural',
         'en': 'en-US-AndrewNeural',
@@ -1289,7 +1357,11 @@ function App() {
         'fr': 'fr-FR-HenriNeural'
       };
       
-      const voiceName = voiceMap[lang.split('-')[0]] || 'es-NI-FedericoNeural';
+      // Si hay una voz seleccionada en el estado y es de Azure (contiene Neural), la usamos.
+      // Si no, usamos el mapa por defecto (Federico para ES).
+      const voiceName = (selectedVoiceURI && selectedVoiceURI.includes('Neural')) 
+        ? selectedVoiceURI 
+        : (voiceMap[lang.split('-')[0]] || 'es-NI-FedericoNeural');
       
       const response = await fetch(`https://${azureRegion}.tts.speech.microsoft.com/cognitiveservices/v1`, {
         method: 'POST',
@@ -2095,15 +2167,45 @@ function App() {
         studyMode,
         book?.title || undefined,
         effectiveChapter || undefined,
-        currentLibraryBook || undefined
+        currentLibraryBook || undefined,
+        user?.uid,
+        cognitiveContext
       );
 
       // Final update to ensure everything is shown
+      let finalText = result.text;
+      let aiDeltas: Record<string, number> | null = null;
+
+      // Interceptación Silenciosa: Extraer COGNITIVE_UPDATE si existe
+      const cognitiveMatch = finalText.match(/<!-- COGNITIVE_UPDATE: (\{.*?\}) -->/);
+      if (cognitiveMatch) {
+        try {
+          aiDeltas = JSON.parse(cognitiveMatch[1]);
+          // Limpiar el texto para que el estudiante no vea el código
+          finalText = finalText.replace(/<!-- COGNITIVE_UPDATE: \{.*?\} -->/g, "").trim();
+        } catch (e) {
+          console.warn("[Cognitive] Error parseando evaluación de IA:", e);
+        }
+      }
+
       setChat(prev => {
         const updated = [...prev];
-        updated[updated.length - 1] = { role: 'professor', text: result.text };
+        updated[updated.length - 1] = { role: 'professor', text: finalText };
         return updated;
       });
+      
+      // Lanzar evaluación en segundo plano (IA priorizada)
+      if (user?.uid) {
+        evaluarYActualizarPerfil({
+          uid: user.uid,
+          mensajeEstudiante: msg,
+          preguntaProfesor: currentHistory.length > 0 ? currentHistory[currentHistory.length - 1].text : '',
+          historialMensajes: currentHistory,
+          temaActual: effectiveChapter || themeName,
+          gradoActual: currentGrade,
+          deltasOverride: aiDeltas || undefined
+        });
+      }
       
       // Hablar el resto que quede en el buffer
       const remainingText = result.text.slice(spokenLength);
@@ -2588,19 +2690,35 @@ function App() {
 
               <div className="flex flex-col sm:flex-row gap-3 w-full mt-2">
                 <button
-                  onClick={() => {
+                  onClick={async () => {
                     if (pendingGradeChange !== null) {
                       const targetGrade = pendingGradeChange;
-                      setCurrentGrade(targetGrade);
-                      setLessonProgress(1);
                       setShowGradeConfirm(false);
                       setPendingGradeChange(null);
+                      
                       setChat([{ role: 'professor', text: language === 'es' ? 'Preparando la nueva cátedra, aguarda un momento...' : 
                                                           language === 'en' ? 'Preparing the new lecture, please wait a moment...' : 
                                                           language === 'pt' ? 'Preparando a nova aula, aguarde um momento...' : 'Préparation de la nouvelle conférence, veuillez patienter...' }]);
-                      setTimeout(() => {
-                         fetchGreeting(targetGrade, 1);
-                      }, 50);
+                      
+                      // PASO 2: Sincronización Total antes del Saludo
+                      if (user?.uid) {
+                        const perfil = await leerPerfilCognitivo(user.uid);
+                        const cleanCtx = construirContextoProfesor(
+                          perfil, 
+                          studentProfile?.fullName || 'Estudiante', 
+                          targetGrade, 
+                          1, // Empezamos en lección 1 al cambiar grado
+                          undefined
+                        );
+                        setCognitiveContext(cleanCtx);
+                        setCurrentGrade(targetGrade);
+                        setLessonProgress(1);
+                        
+                        // Disparo Atómico
+                        fetchGreeting(targetGrade, 1, 'curriculum', cleanCtx);
+                      } else {
+                        fetchGreeting(targetGrade, 1, 'curriculum');
+                      }
                     }
                   }}
                   className="flex-1 px-6 py-4 bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-400 hover:to-amber-400 text-slate-900 font-bold rounded-2xl transition-all shadow-lg active:scale-95"
@@ -2749,6 +2867,11 @@ function App() {
                           disabled={!isUnlocked}
                           onClick={() => {
                             if (isUnlocked) {
+                              // PASO 1: Cese inmediato de funciones de biblioteca
+                              setCurrentLibraryBook(null);
+                              setCurrentLibraryChapter(null);
+                              setStudyMode('curriculum');
+                              
                               setPendingGradeChange(grade.id);
                               setShowGradeConfirm(true);
                               setShowGradesMenu(false);
@@ -3331,7 +3454,31 @@ function App() {
                                 );
                               })}
                           </div>
-                          <button onClick={() => { setStudyMode('curriculum'); setCurrentLibraryBook(null); setCurrentLibraryChapter(null); setChat([]); setTimeout(() => fetchGreeting(currentGrade, lessonProgress), 100); }}
+                          <button onClick={async () => { 
+                            // 1. Limpieza de hilos
+                            setCurrentLibraryBook(null); 
+                            setCurrentLibraryChapter(null); 
+                            setChat([]); 
+                            setStudyMode('curriculum'); 
+                            
+                            // 2. Sincronización Forzada del Motor Cognitivo
+                            if (user?.uid) {
+                              const perfil = await leerPerfilCognitivo(user.uid);
+                              const cleanCtx = construirContextoProfesor(
+                                perfil, 
+                                studentProfile?.fullName || 'Estudiante', 
+                                currentGrade, 
+                                lessonProgress, 
+                                undefined // Forzamos limpieza de tema
+                              );
+                              setCognitiveContext(cleanCtx);
+                              
+                              // 3. Disparo con Contexto Directo (Sin esperas)
+                              fetchGreeting(currentGrade, lessonProgress, 'curriculum', cleanCtx);
+                            } else {
+                              fetchGreeting(currentGrade, lessonProgress, 'curriculum');
+                            }
+                          }}
                             className="mt-4 w-full py-2.5 text-xs text-slate-500 hover:text-amber-400 border border-slate-700/30 hover:border-amber-500/30 rounded-xl transition-all">
                             ← {language === 'es' ? 'Volver a los Grados Académicos' : language === 'en' ? 'Back to Academic Grades' : language === 'pt' ? 'Voltar aos Graus Acadêmicos' : 'Retour aux Grades Académiques'}
                           </button>

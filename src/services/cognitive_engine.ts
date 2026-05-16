@@ -189,10 +189,10 @@ export async function evaluarYActualizarPerfil(params: {
   historialMensajes: { role: string; text: string }[];
   temaActual?: string;
   gradoActual?: number;
+  deltasOverride?: Record<string, number>; // Nueva opción para evaluación de IA
 }): Promise<void> {
-  if (!uid || !params.mensajeEstudiante.trim() || params.mensajeEstudiante.length < 10) return;
-
-  const { uid, mensajeEstudiante, preguntaProfesor, historialMensajes, temaActual, gradoActual } = params;
+  const { uid, mensajeEstudiante, preguntaProfesor, historialMensajes, temaActual, gradoActual, deltasOverride } = params;
+  if (!uid || (!mensajeEstudiante.trim() && !deltasOverride)) return;
 
   try {
     const profileRef = doc(db, 'students', uid, 'cognitive', 'profile');
@@ -202,8 +202,8 @@ export async function evaluarYActualizarPerfil(params: {
       ? (snap.data() as PerfilCognitivo)
       : crearPerfilInicial();
 
-    // Analizar la respuesta del estudiante
-    const deltas = analizarRespuesta(mensajeEstudiante, preguntaProfesor, historialMensajes);
+    // Analizar la respuesta del estudiante (Priorizar IA sobre Heurística)
+    const deltas = deltasOverride || analizarRespuesta(mensajeEstudiante, preguntaProfesor, historialMensajes);
     const ahora = new Date().toISOString();
 
     // Aplicar deltas a cada facultad (escala 0-100)
