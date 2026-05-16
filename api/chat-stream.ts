@@ -1,3 +1,5 @@
+import { handleChatStream } from './gemini-backend';
+
 export default async function handler(req: any, res: any) {
   // Configurar headers para streaming (SSE)
   res.setHeader('Content-Type', 'text/event-stream');
@@ -16,8 +18,6 @@ export default async function handler(req: any, res: any) {
   }
 
   try {
-    // Importación desde la misma carpeta api
-    const { handleChatStream } = await import('./gemini-backend.js');
     return await handleChatStream(req, res);
   } catch (error: any) {
     console.error("Vercel Function Error:", error);
