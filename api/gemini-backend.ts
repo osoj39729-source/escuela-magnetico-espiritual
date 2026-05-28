@@ -14,7 +14,7 @@ import { fileURLToPath } from "url";
 
 import dotenv from "dotenv";
 
-import { structuralService } from "../src/services/structuralService.ts";
+import { structuralService } from "../src/services/structuralService.js";
 
 
 
