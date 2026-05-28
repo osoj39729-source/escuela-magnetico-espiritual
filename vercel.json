@@ -13,8 +13,7 @@
   ],
   "functions": {
     "api/*.ts": {
-      "includeFiles": "public/data/**",
-      "bundle": true
+      "includeFiles": "public/data/**"
     }
   },
   "headers": [
