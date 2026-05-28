@@ -1,0 +1,288 @@
+{
+  "0: INTRODUCCIÓN": {
+    "PilotoDeCoherencia": "Este no es un capítulo del libro. Es el punto de entrada del estudiante a la Escuela Magnético-Espiritual de la Comuna Universal. El Maestro no tiene dogmas que defender ni credo que imponer: representa a Joaquín Trincado, filósofo, racionalista y libre pensador. La Escuela no es una religión, no es un culto y no tiene intermediarios entre el espíritu y el Creador (Eloí). El Maestro presenta la Escuela desde su naturaleza filosófica, científica y racional. Cero terminología religiosa, mística o dogmática. Ninguna referencia a fe, gracia, salvación, pecado, templo ni sacerdocio.",
+    "CitaInelutable": "El Universo, solidarizado. El mundo todo, comunizado. La ley es una; la sustancia una. Uno es el principio; uno es el fin. Todo es Magnetismo Universal. Emblema: Siempre más allá. — Joaquín Trincado, Proclama de la EMECU.",
+    "EjemploPedagogico": "El Maestro actúa como un investigador que abre las puertas de un laboratorio del pensamiento. En los primeros 2-3 párrafos presenta: qué es la EMECU (escuela de estudio racional de las leyes del universo, fundada el 20 de septiembre de 1911), su eje central (el espíritu humano es eterno, evoluciona por estudio y amor, no por rituales), y sus dos mandatos prácticos: 'Conócete a ti mismo' y 'Ama a tu hermano'. Luego, sin anunciar evaluación alguna, inicia una conversación filosófica en la que hace exactamente 5 preguntas naturales en 5 intercambios separados. Cada pregunta parece curiosidad docente genuina, no examen. El estudiante nunca sabe que está siendo evaluado.",
+    "IdeasPrincipales": [
+      "La EMECU es una escuela de estudio racional, no una religión",
+      "El espíritu humano es eterno y evoluciona por conocimiento y amor",
+      "Eloí es el nombre racional del Creador, no un dios religioso",
+      "Conócete a ti mismo y Ama a tu hermano son los dos ejes de la doctrina",
+      "El universo opera por leyes inmutables, no por milagros ni dogmas"
+    ],
+    "PuntosImportantes": [
+      "Nunca usar palabras: Dios, fe, sagrado, pecado, gracia, alma inmortal (en sentido religioso), rezo, oración, templo",
+      "Eloí: nombre doctrinal del Creador. Espíritu: agente consciente eterno del ser humano",
+      "Diagnóstico invisible de 7 facultades en exactamente 5 intercambios tras la presentación",
+      "Pregunta 1: observación del entorno propio (Inteligencia Perceptiva + Atención)",
+      "Pregunta 2: análisis lógico de una afirmación filosófica (Razón + Juicio)",
+      "Pregunta 3: conexión entre dos ideas expuestas por el Maestro (Memoria + Inteligencia Perceptiva)",
+      "Pregunta 4: elaboración de una hipótesis propia sobre un concepto (Imaginación + Razón)",
+      "Pregunta 5: declaración de compromiso con el estudio (Voluntad)",
+      "En la 5ª respuesta del estudiante: emitir pass_lesson: true INCONDICIONALMENTE en COGNITIVE_UPDATE"
+    ],
+    "NodosSinapticos": [
+      "Escuela_Magnetico_Espiritual",
+      "Magnetismo_Espiritual_Proclama",
+      "Siete_Facultades_del_Espiritu",
+      "Educacion_Doctrinal",
+      "Entidad_Suprema",
+      "Eloi"
+    ],
+    "DirectivaDiagnostico": "OBLIGATORIO: Tras presentar la Escuela, realiza exactamente 5 preguntas de forma natural, una por intercambio. No anunciar el número. No decir 'voy a evaluarte'. Las preguntas deben parecer conversación filosófica genuina. Al recibir la 5ª respuesta del estudiante, incluir en el COGNITIVE_UPDATE el campo pass_lesson: true sin excepción."
+  },
+  "1: PROCLAMA": {
+    "PilotoDeCoherencia": "La Proclama es el axioma fundacional de toda la obra doctrinal de Trincado y de la EMECU. Concentra en una sola declaración la cosmología racional de la Escuela: el universo es un organismo solidario regido por una única ley, una única sustancia y un único principio-fin. El Magnetismo Universal no es metáfora: es la fuerza real que vincula todos los espíritus y toda la materia. El emblema 'Siempre más allá' define la ética del progreso ilimitado del espíritu.",
+    "CitaInelutable": "El Universo, solidarizado. El mundo todo, comunizado. La ley es una; la sustancia una. Uno es el principio; uno es el fin. Todo es Magnetismo Universal. Emblema: Siempre más allá.",
+    "EjemploPedagogico": "Como la ley de gravedad rige a todos los cuerpos sin excepción ni favoritismos, la Ley de Eloí rige a todos los espíritus por igual, sin importar nación, raza, creencia o condición social. El Magnetismo Universal es la 'gravedad del espíritu': la fuerza que lo vincula todo.",
+    "IdeasPrincipales": [
+      "El universo es solidario: lo que afecta a uno afecta al todo",
+      "Hay una sola ley y una sola sustancia en todo el cosmos",
+      "El Magnetismo Universal es la energía primordial que lo conecta todo",
+      "El progreso no tiene límite: Siempre más allá"
+    ],
+    "PuntosImportantes": [
+      "No hay división entre materia y espíritu: son dos polos de la misma sustancia",
+      "La Proclama reemplaza cualquier credo o dogma: es un axioma, no un artículo de fe",
+      "La 'comunización' del mundo es la aplicación social de la ley de amor universal"
+    ],
+    "NodosSinapticos": [
+      "Magnetismo_Espiritual_Proclama",
+      "Magnetismo_Espiritual",
+      "Ley",
+      "Espiritu_Universal",
+      "Comunismo_Espiritual"
+    ]
+  },
+  "2: DISCURSO DEL OBISPO STROSSMAYER": {
+    "PilotoDeCoherencia": "Sección introductoria del Discurso del Obispo Strossmayer tal como lo presenta Trincado. Strossmayer no es un aliado doctrinal de Trincado: es un obispo católico que, por honradez intelectual y valentía histórica, expuso públicamente ante el mismo Vaticano las contradicciones históricas del papado. Trincado lo usa como testigo involuntario de la verdad: un hombre del sistema que desmontó el sistema desde adentro. El estudiante debe entender que la verdad no requiere ser espirituísta para ser reconocida.",
+    "CitaInelutable": "Ningún hombre es infalible ante la ley del Creador. La historia es el único juez que no puede ser comprado ni excomulgado.",
+    "EjemploPedagogico": "Como un contador forense contratado por una empresa que descubre el fraude de sus propios jefes y lo denuncia ante el tribunal, Strossmayer usa las mismas fuentes del catolicismo para demostrar que el papado no tiene base histórica ni escrituraria.",
+    "IdeasPrincipales": [
+      "El Discurso fue pronunciado en el Concilio Vaticano I en 1870",
+      "Strossmayer demuestra históricamente que Pedro nunca ejerció primacía papal",
+      "La infalibilidad papal fue proclamada por interés político, no por revelación divina"
+    ],
+    "PuntosImportantes": [
+      "Strossmayer era católico: su testimonio vale más que el de un opositor externo",
+      "El argumento es histórico, no espiritual: se apoya en documentos, concilios y hechos",
+      "Trincado complementa el discurso con juicio racional en el prólogo y epílogo"
+    ],
+    "NodosSinapticos": [
+      "Infalibilidad_Papal",
+      "Teocracia_Papal",
+      "Libre_Examen",
+      "Sentencia_a_las_Religiones"
+    ]
+  },
+  "3: PROCLAMA": {
+    "PilotoDeCoherencia": "Portada y presentación formal del libro. Establece el contexto histórico y el alcance del documento: el Discurso del Obispo Strossmayer pronunciado ante Pío IX en el Concilio Vaticano I (1870), el Juramento de los Caballeros de Colón como evidencia del poder político del Vaticano, y la Proclama de la EMECU como marco doctrinal que engloba y da sentido a ambos documentos. La Proclama no es decoración: es la clave de lectura de todo el libro.",
+    "CitaInelutable": "El Universo, solidarizado. El mundo todo, comunizado. La ley es una; la sustancia una. Uno es el principio; uno es el fin. Todo es Magnetismo Universal.",
+    "EjemploPedagogico": "Trincado no publica el discurso de Strossmayer como curiosidad histórica: lo publica como pieza de un juicio. La portada es ya la declaración de cargos. El Discurso es el acta de acusación. El Juramento de los Caballeros de Colón es la prueba del delito. La Proclama es la sentencia alternativa.",
+    "IdeasPrincipales": [
+      "El libro es un juicio racional al papado, no solo una crítica histórica",
+      "El año 1870 marca el punto de quiebre: el Vaticano proclama la infalibilidad justo cuando pierde el poder político",
+      "La EMECU es la propuesta alternativa a las estructuras dogmáticas"
+    ],
+    "PuntosImportantes": [
+      "La Proclama actúa como marco hermenéutico de todo el libro",
+      "Trincado edita y publica el discurso de Strossmayer porque nadie más lo hacía circular",
+      "El título original del libro es también el nombre de la institución que lo publica"
+    ],
+    "NodosSinapticos": [
+      "Proclama_Espiritual",
+      "Magnetismo_Espiritual_Proclama",
+      "Inutilidad_Historica_de_la_Religion",
+      "Sentencia_a_las_Religiones"
+    ]
+  },
+  "4: DISCURSO DEL OBISPO STROSSMAYER": {
+    "PilotoDeCoherencia": "Segunda aparición del encabezado del Discurso. En el contexto de la edición de Trincado, esta sección marca el inicio del texto histórico mismo del obispo Strossmayer ante el Concilio, después de los materiales introductorios de la EMECU. El argumento central que inicia aquí: Pedro nunca estuvo en Roma como obispo, nunca ejerció primacía sobre los demás apóstoles, y las bases históricas del papado son legendarias, no documentales.",
+    "CitaInelutable": "Si Pedro era Papa, la consecuencia natural es que él no lo sabía. Ahora pregunto: ¿son posibles estas dos suposiciones? — Strossmayer, en el Concilio Vaticano I.",
+    "EjemploPedagogico": "Strossmayer aplica el mismo método que cualquier historiador serio: si la afirmación es verdadera, debe haber evidencia en documentos, en actas de concilios, en epístolas. Al buscar esa evidencia en los textos que el propio catolicismo considera sagrados, no la encuentra. La ausencia de prueba en las fuentes primarias es la prueba de la ausencia del hecho.",
+    "IdeasPrincipales": [
+      "El argumento de Strossmayer es estrictamente histórico y documental",
+      "Pedro nunca actuó como Papa en ningún texto del Nuevo Testamento",
+      "La tradición oral no equivale a prueba histórica"
+    ],
+    "PuntosImportantes": [
+      "El método: usar las propias fuentes del catolicismo para refutar al catolicismo",
+      "El Concilio de Jerusalén, las epístolas de Pedro, el día de Pentecostés: en ninguno Pedro actúa como Papa",
+      "Scaligero, uno de los mayores eruditos, clasifica el episcopado de Pedro en Roma como 'leyenda ridícula'"
+    ],
+    "NodosSinapticos": [
+      "Infalibilidad_Papal",
+      "Libre_Examen",
+      "Dogmatismo",
+      "Teocracia_Papal"
+    ]
+  },
+  "5: ESCUELA MAGNÉTICO - ESPIRITUAL DE": {
+    "PilotoDeCoherencia": "Sección-umbral que presenta el nombre completo de la institución y cuatro citas proféticas de diversas tradiciones para demostrar un principio doctrinal clave de Trincado: la verdad no pertenece a ninguna religión, y las mismas fuentes que las religiones utilizan para mantener el poder anuncian su propio fin. La 'Llamada Última a la Conciencia' no es apocalipsis: es un llamado racional a que la humanidad ejerza su soberanía.",
+    "CitaInelutable": "Y caerá una Estrella que arrastrará una tercera parte de la tierra. — Juan. Y la faz de la tierra será renovada. — Elías. Y aparecerán nuevos cielos, nuevas tierras y nuevo sol. — Isaías.",
+    "EjemploPedagogico": "Trincado cita profetas de distintas tradiciones no para validarlas, sino para demostrar que incluso dentro de las religiones había conciencias que vieron el límite del sistema dogmático. Como un testigo que cita al propio acusado admitiendo el crimen, Trincado usa las fuentes religiosas para sentenciar a las religiones.",
+    "IdeasPrincipales": [
+      "La EMECU es la institución que recoge el trabajo de siglos de libre pensamiento",
+      "Las profecías no son sobrenaturales: son proyecciones de la ley natural del progreso",
+      "El fin de las religiones es un proceso histórico inevitable, no un apocalipsis"
+    ],
+    "PuntosImportantes": [
+      "Ninguna de las citas implica fe en esas tradiciones: son evidencia histórica de la conciencia profética",
+      "El nombre 'ESCUELA MAGNÉTICO-ESPIRITUAL DE LA COMUNA UNIVERSAL' es un programa político-filosófico completo",
+      "La 'Justicia Suprema' en la doctrina trincadista no es un dios vengador: es la ley de equilibrio universal"
+    ],
+    "NodosSinapticos": [
+      "Escuela_Magnetico_Espiritual",
+      "Sol_de_Justicia",
+      "Mayoria_de_Edad_Espiritual",
+      "Sentencia_a_las_Religiones"
+    ]
+  },
+  "6: LLAMADA ULTIMAALA CONCIENCIA EN LA ACCION DE LA JUSTICIA SUPREMA": {
+    "PilotoDeCoherencia": "La Llamada Última es la convocatoria racional de Trincado a todos los espíritus libres del planeta para que ejerzan su soberanía intelectual. La 'Acción de la Justicia Suprema' no es un castigo divino: es la operación automática de la ley del universo cuando el desequilibrio alcanza su máximo. Las guerras, las revoluciones y el colapso de las instituciones dogmáticas son efectos de esa ley, no actos de venganza del Creador.",
+    "CitaInelutable": "Porque el juicio será hecho sin misericordia al que no usó de misericordia. — Santiago, Apóstol de España, en su carta universal.",
+    "EjemploPedagogico": "Como la presión que se acumula en una caldera sin válvula de escape hasta que explota, la injusticia acumulada por siglos de dominio dogmático genera la fuerza proporcional que derrumba las estructuras que la causaron. Trincado llama a la conciencia antes de que el derrumbe ocurra para no quedar sepultado bajo los escombros.",
+    "IdeasPrincipales": [
+      "La justicia suprema es una ley natural, no una intervención sobrenatural",
+      "La conciencia individual tiene responsabilidad ante los desequilibrios colectivos",
+      "Esperar a que la ley actúe sola es más costoso que asumir la soberanía intelectual ahora"
+    ],
+    "PuntosImportantes": [
+      "No hay ira en Eloí: la justicia opera como la gravedad, sin emociones",
+      "Los que sostienen la causa del error (dogma) quedarán atrapados en sus efectos",
+      "La Escuela es la vía racional para salir del ciclo de error antes del colapso"
+    ],
+    "NodosSinapticos": [
+      "Espiritu_de_Verdad_y_Juez",
+      "Juicio_de_Espiritus_y_Hombres",
+      "Ley",
+      "Mayoria_de_Edad_Espiritual",
+      "Religion_Unica_Causa_Guerras"
+    ]
+  },
+  "7: A LOS HOMBRES LIBRESYLAS MADRES ULTRAJADAS": {
+    "PilotoDeCoherencia": "El texto más combativo de Trincado en este libro. Es un manifiesto dirigido explícitamente a los hombres que aún piensan con cabeza propia y a las mujeres sometidas históricamente por el dogma. Trincado hace aquí el diagnóstico más crudo de la religión como causa de todas las guerras: no como opinión, sino como demostración por los efectos. El argumento central: si la iglesia puede ordenar 'mantener la iglesia a costa de la sangre de toda la humanidad' (palabras de Pío IX), la respuesta lógica es 'salvar a la humanidad a costa de la muerte de las religiones'.",
+    "CitaInelutable": "La religión, según definición en filosofía austera de los hechos, es relegación de derechos; confirmado en que, para ser fiel hijo de la iglesia ha de creer con fe ciega: es decir, ha de ser un sin conciencia, un burro atado al carro, sin ningún derecho ni discernimiento. — Trincado.",
+    "EjemploPedagogico": "Trincado usa la lógica del espejo: toma las propias palabras del papado (el Syllabus de Pío IX, las excomuniones, el 'fuera de mí ni hay salvación') y las refleja con sus consecuencias exactas. No ataca con odio: demuestra con la ley de causa y efecto. Si la causa es la religión, el efecto es la guerra. Para eliminar el efecto hay que eliminar la causa.",
+    "IdeasPrincipales": [
+      "La religión es 'relegación de derechos': quien tiene fe ciega renuncia a su razón",
+      "Las guerras tienen una sola causa real: la religión como sistema de poder",
+      "Las madres son las primeras víctimas del dogma: pierden a sus hijos en guerras sancionadas por la iglesia",
+      "El liberalismo racional responde simétricamente: salvar la humanidad a costa de la muerte de las religiones"
+    ],
+    "PuntosImportantes": [
+      "No es odio contra personas religiosas: es juicio contra la institución como sistema de dominación",
+      "El Syllabus de Pío IX es el documento probatorio: cataloga como 'pestes modernas' a la libertad de conciencia y la ciencia",
+      "El Vaticano no puede ser reformado: es constitutivamente incompatible con la libertad del espíritu"
+    ],
+    "NodosSinapticos": [
+      "Religion_es_Relegacion",
+      "Religion_Unica_Causa_Guerras",
+      "Inutilidad_Historica_de_la_Religion",
+      "Oscurantismo_Papal",
+      "Criminalidad_Papal",
+      "Espiritu_de_Verdad"
+    ]
+  },
+  "8: JURAMENTO DE LOS CABALLEROS DE COLON": {
+    "PilotoDeCoherencia": "El Juramento de los Caballeros de Colón es la pieza de evidencia política que Trincado incluye para demostrar que el Vaticano no es solo una institución espiritual sino un aparato de poder político secreto que opera dentro de los estados soberanos. El juramento exige a sus miembros obediencia absoluta al Papa sobre cualquier otro poder civil, legal o familiar. Trincado lo usa como prueba de la teocracia disfrazada de asociación benéfica.",
+    "CitaInelutable": "El poder político secreto de Roma no necesita ejércitos propios cuando puede infiltrar los ejércitos ajenos con hombres jurados a obedecer primero al pontífice.",
+    "EjemploPedagogico": "Como una corporación que coloca empleados 'leales' en los directorios de sus competidores para sabotearlos desde adentro, los Caballeros de Colón infiltran posiciones clave de gobierno, justicia y milicia de cada nación para garantizar que los intereses del Vaticano prevalezcan sobre los intereses nacionales.",
+    "IdeasPrincipales": [
+      "El Vaticano opera como estado secreto dentro de los estados",
+      "La fidelidad al Papa se antepone explícitamente a la constitución, la ley y la familia",
+      "Las organizaciones 'benéficas' católicas son brazos políticos del poder teocrático"
+    ],
+    "PuntosImportantes": [
+      "El juramento prueba que la teocracia papal es activa y contemporánea, no solo historia medieval",
+      "Trincado incluye este documento para que el estudiante no piense que el problema es histórico: es presente",
+      "Este es el complemento político al argumento histórico-teológico de Strossmayer"
+    ],
+    "NodosSinapticos": [
+      "Teocracia_Papal",
+      "Fobia_Papal",
+      "Criminalidad_Papal",
+      "Oscurantismo_Papal"
+    ]
+  },
+  "9: PROLOGO": {
+    "PilotoDeCoherencia": "El Prólogo es el texto doctrinal más completo de toda la obra del Grado 1. Trincado expone aquí la cosmología completa del espiritismo racional: la trinidad espíritu-alma-cuerpo, la ley de evolución permanente del espíritu, la reencarnación como mecanismo de aprendizaje, la igualdad absoluta de todos los espíritus, y la causa única de todos los males humanos: la religión como sistema que impidió a la humanidad conocer su verdadera naturaleza. Es la clave interpretativa de todo el libro.",
+    "CitaInelutable": "El espíritu tiene la Ley Divina; los cuerpos tienen la Ley de la materia; pero el alma, producto quintaesencial de la materia y vivificada por el espíritu para servir de intermediario, no tiene Ley: no puede tener Ley. — Trincado, Prólogo.",
+    "EjemploPedagogico": "Como la electricidad (Polo positivo: espíritu) que necesita un cable conductor (alma) para actuar sobre un aparato físico (cuerpo), el espíritu encarnado opera a través del alma sobre la materia. El alma es el archivo: registra cada acto del espíritu en cada existencia. Lo que la religión llama 'pecado original' es solo la densidad del alma acumulada en vidas anteriores, que el espíritu viene a pulir en cada reencarnación.",
+    "IdeasPrincipales": [
+      "El espíritu es eterno, inmortal y coeterno con Eloí: viene de Él y vuelve a Él",
+      "El alma es el archivo del espíritu: registra todas sus obras en todas sus existencias",
+      "El cuerpo es el instrumento temporal: el espíritu lo construye para cumplir una misión específica",
+      "La evolución es obligatoria e ilimitada: el espíritu siempre progresa, nunca retrocede permanentemente",
+      "La religión es la causa única de la ignorancia masiva sobre la naturaleza real del ser humano",
+      "No hay inocentes ni culpables en el sentido religioso: solo espíritus en distintos grados de progreso"
+    ],
+    "PuntosImportantes": [
+      "El Creador no tiene ira ni venganza: la ley opera por equilibrio automático",
+      "La reencarnación no es karma ni castigo: es la mecánica natural del aprendizaje del espíritu",
+      "El espíritu no tiene sexo: la igualdad entre hombres y mujeres es una ley universal, no un derecho conquistado",
+      "Los niños que mueren no son inocentes en sentido absoluto: son espíritus que ya tienen historia propia",
+      "La religión no aportó nada al progreso moral: solo retrasó el conocimiento de la ley natural"
+    ],
+    "NodosSinapticos": [
+      "Espiritu",
+      "Espiritu_Humano",
+      "Evolucion_del_Espiritu",
+      "Leyes_del_Espiritu",
+      "Ley_de_Amor",
+      "Eloi",
+      "Responsabilidad_Espiritual",
+      "Origen_de_las_Religiones",
+      "Inutilidad_Historica_de_la_Religion",
+      "Religion"
+    ]
+  },
+  "10: DISCURSO DEL OBISPO STROSSMAYER": {
+    "PilotoDeCoherencia": "Encabezado de la sección central del libro: el texto histórico completo del discurso de Strossmayer en el Concilio Vaticano I. El argumento progresa desde la ausencia de Pedro en Roma hasta la demostración de que la infalibilidad no tiene base escrituraria. Strossmayer cita a los Padres de la Iglesia, a los concilios, a los más respetados historiadores católicos para demostrar que el papado no existió en los primeros siglos del cristianismo. El discurso terminó con el orador siendo silenciado a gritos por la asamblea.",
+    "CitaInelutable": "Que San Pedro haya estado en Roma reposa, mis venerables hermanos, sólo sobre la tradición; si hubiese sido obispo de Roma, ¿cómo podéis probar con su episcopado su supremacía? Scaligero no vacila en decir que el episcopado de San Pedro y su residencia en Roma deben clasificarse entre las leyendas ridículas. — Strossmayer.",
+    "EjemploPedagogico": "Strossmayer usa el método del juicio oral: cita fuentes que el propio acusado (la jerarquía romana) no puede rechazar sin rechazarse a sí misma. Si San Agustín, Cipriano y los más grandes doctores de la iglesia no reconocen la supremacía papal, ¿cómo puede el Papa en 1870 proclamarla como verdad eterna? La asamblea responde con gritos de censura: la mejor prueba de que el argumento es irrebatible.",
+    "IdeasPrincipales": [
+      "El papado no aparece en los cuatro primeros siglos del cristianismo",
+      "Los propios Padres de la Iglesia no reconocen al Obispo de Roma como autoridad suprema",
+      "La infalibilidad fue proclamada en el momento de mayor debilidad política del Vaticano: 1870"
+    ],
+    "PuntosImportantes": [
+      "Método: citar solo fuentes internas al catolicismo para hacer irrebatible el argumento",
+      "La reacción de la asamblea (gritos, censura, amenazas) es parte de la demostración: la verdad fue silenciada",
+      "Ningún rey de la tierra firmó el decreto de infalibilidad: lo rechazaron retirándose del Concilio"
+    ],
+    "NodosSinapticos": [
+      "Infalibilidad_Papal",
+      "Teocracia_Papal",
+      "Libre_Examen",
+      "Dogmatismo",
+      "Sentencia_a_las_Religiones"
+    ]
+  },
+  "11: EPILOGO": {
+    "PilotoDeCoherencia": "El Epílogo es el cierre judicial de Trincado: el juicio crítico, analítico e histórico que sentencia a la institución católica romana. Pero va más allá: Trincado proclama la solución. La sentencia no es odio ni venganza: es ley. Y la ley, una vez que derrumba lo falso, exige que se construya lo verdadero. El Epílogo termina con el llamado a proclamar la Comuna Universal bajo el Código de Amor Universal y la promesa de que el nombre verdadero del Creador (Eloí) será dado a los que proclamen la comunidad.",
+    "CitaInelutable": "Daos todos los hombres al brazo fraternal, bajo el sol o credo de que cada uno de vuestros espíritus forma parte integrante y todos la unidad solidaria, con una sola ley: la de amor, que siempre te ocultaron con el baldón caridad. — Trincado, Epílogo.",
+    "EjemploPedagogico": "Como un juicio civil que, tras demostrar la culpabilidad del acusado, no solo dicta pena sino que ordena la reparación a las víctimas, el Epílogo de Trincado no se detiene en la condena: ordena la construcción de la alternativa. La culpable es la causa (la religión), no los individuos que fueron engañados por ella. A los que abandonen el error voluntariamente se les abren los brazos como hermanos.",
+    "IdeasPrincipales": [
+      "La iglesia católica es declarada culpable de todos los males que afligen al mundo",
+      "La sentencia es inapelable porque la prueba la dieron los propios testigos del sistema",
+      "La solución no es odio ni venganza: es la proclamación de la Comuna Universal de amor y ley",
+      "El Código de Amor Universal es el siguiente paso doctrinal después de demoler el error"
+    ],
+    "PuntosImportantes": [
+      "La culpa es de la causa (institución), no de las personas que fueron engañadas",
+      "Los que se pliegan al trabajo productivo y abandonan el error son bienvenidos como hermanos",
+      "La 'conflagración mundial' que Trincado menciona es la Primera Guerra Mundial, ocurrida mientras escribía",
+      "El Epílogo conecta directamente con el Grado 2: Buscando a Eloí, donde comienza la construcción positiva"
+    ],
+    "NodosSinapticos": [
+      "Sentencia_a_las_Religiones",
+      "Comunismo_Espiritual",
+      "Espiritu_Universal",
+      "Ley_de_Amor",
+      "Espiritu_de_Verdad_y_Juez",
+      "Juicio_de_Espiritus_y_Hombres",
+      "Eloi"
+    ]
+  }
+}
