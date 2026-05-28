@@ -2,6 +2,7 @@
   "name": "react-example",
   "private": true,
   "version": "1.2.3",
+  "type": "module",
   "scripts": {
     "dev": "tsx server.ts",
     "start": "NODE_ENV=production tsx server.ts",
