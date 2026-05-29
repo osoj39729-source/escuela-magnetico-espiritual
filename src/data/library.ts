@@ -2315,7 +2315,7 @@ export const LIBRARY_BOOKS: LibraryBook[] = [
 },
 
   {
-    "id": "-1library-co--discurso-obispo-strossmayer",
+    "id": "discurso-obispo-strossmayer",
     "title": "[1library.co] Discurso Obispo Strossmayer",
     "pdfUrl": "/biblioteca/[1library.co] discurso obispo strossmayer.pdf",
     "index": [

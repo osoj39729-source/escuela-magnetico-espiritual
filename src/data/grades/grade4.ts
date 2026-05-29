@@ -2,7 +2,7 @@ export const GRADE_4 = {
   id: 4,
   title: "Grado 4: El Espiritismo en su Asiento",
   type: "book",
-  book: "espiritismo-en-su-asiento",
+  book: "el-espiritismo-en-su-asiento",
   lessonsCount: 85,
   themes: [
     "8: ESCUELA MAGNÉTICO - ESPIRITUAL DE LA COMUNA UNIVERSAL: ESPIRITISMO EN SU ASIENTO",

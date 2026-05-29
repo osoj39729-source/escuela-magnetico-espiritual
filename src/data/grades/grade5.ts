@@ -2,7 +2,7 @@ export const GRADE_5 = {
   id: 5,
   title: "Grado 5: Filosofía Austera Racional (Partes 1 y 2)",
   type: "book",
-  book: "filosof-a-austera-racional",
+  book: "filosofia-austera-racional",
   lessonsCount: 83,
   themes: [
     "44: NOTA A LA 2a. EDICIÓN",

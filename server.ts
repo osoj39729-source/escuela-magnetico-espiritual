@@ -66,8 +66,15 @@ async function startServer() {
 
   // Importar handlers del backend
   const { handleChatStream, handleSystemStatus } = await import('./api/gemini-backend.ts');
+  const { default: syncStudent } = await import('./api/sync-student.ts');
+  
   app.post("/api/chat-stream", handleChatStream);
-  app.get("/api/status", handleSystemStatus);
+  app.get("/api/system-status", handleSystemStatus);
+  app.post("/api/sync-student", syncStudent as any);
+  
+  // Reset cuotas (invocado desde el Panel de Administración)
+  const { handleResetQuotas } = await import('./api/gemini-backend.ts');
+  app.post("/api/reset-quotas", handleResetQuotas);
 
   app.post("/api/send-verification", async (req, res) => {
     const { email, code, motivationalMessage } = req.body;
@@ -155,15 +162,6 @@ async function startServer() {
 
   app.listen(Number(PORT), "0.0.0.0", () => {
     console.log(`Server running on http://localhost:${PORT}`);
-    
-    // Abrir el navegador automáticamente (Deshabilitado para evitar spam de ventanas en reinicios)
-    /*
-    import('child_process').then(({ exec }) => {
-      const url = `http://localhost:${PORT}`;
-      const start = process.platform === 'darwin' ? 'open' : process.platform === 'win32' ? 'start' : 'xdg-open';
-      exec(`${start} ${url}`);
-    }).catch(err => console.error("Error al abrir navegador:", err));
-    */
   });
 }
 

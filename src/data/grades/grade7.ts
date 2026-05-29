@@ -2,7 +2,7 @@ export const GRADE_7 = {
   id: 7,
   title: "Grado 7: Filosofía Austera Racional (Parte 3) y El Magnetismo en su Origen",
   type: "book",
-  book: "filosof-a-austera-racional",
+  book: "filosofia-austera-racional",
   lessonsCount: 188,
   themes: [
     "10831: TERCERA PARTE: PSICOLOGÍA ESPIRITUAL",

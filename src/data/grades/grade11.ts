@@ -2,7 +2,7 @@ export const GRADE_11 = {
   id: 11,
   title: "Grado 11: Conócete a Ti Mismo y Alfaquí Vademécum",
   type: "book",
-  book: "conocete-a-ti-mismo-1",
+  book: "conocete-a-ti-mismo",
   lessonsCount: 165,
   themes: [
     "523: PrEMISA: Once años después de la firma. ¡cuántos secretos tiene la Ley!",

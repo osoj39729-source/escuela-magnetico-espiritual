@@ -11,3 +11,9 @@ coverage/
 .vercel
 
 DEPOSITO_LLAVES.txt
+firebase-applet-config.json
+scratch/
+vercel_logs*.json
+
+# Capacitor compiled assets (contains environment variables bundled in JS assets)
+android/app/src/main/assets/public/

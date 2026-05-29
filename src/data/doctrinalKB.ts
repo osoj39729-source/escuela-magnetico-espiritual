@@ -9,394 +9,394 @@ export interface QAEntry {
 
 export const DOCTRINAL_KB: QAEntry[] = [
 
-// 1. BIOGRAFÍA
+// 1. BIOGRAFÃA
 {
   id: "bio-01",
-  keywords: ["biografía", "vida", "nacimiento", "quién fue", "trincado", "joaquín", "historia", "uruguay", "salto"],
-  question: "¿Quién fue Joaquín Trincado?",
-  answer: `Mi querido estudiante, Joaquín Trincado nació el 19 de agosto de 1866 en Salto, Uruguay. Desde muy joven mostró una inquietud espiritual extraordinaria que lo llevó a investigar las causas de los males que afligen a la humanidad. Fue un autodidacta insaciable: estudió filosofía, ciencias naturales, magnetismo y las grandes religiones comparadas, siempre con el firme propósito de hallar la verdad que unificara todo conocimiento humano.
+  keywords: ["biografÃ­a", "vida", "nacimiento", "quiÃ©n fue", "trincado", "joaquÃ­n", "historia", "uruguay", "salto", "biografia", "quien fue", "joaquin"],
+  question: "Â¿QuiÃ©n fue JoaquÃ­n Trincado?",
+  answer: `Mi querido estudiante, JoaquÃ­n Trincado naciÃ³ el 19 de agosto de 1866 en Salto, Uruguay. Desde muy joven mostrÃ³ una inquietud espiritual extraordinaria que lo llevÃ³ a investigar las causas de los males que afligen a la humanidad. Fue un autodidacta insaciable: estudiÃ³ filosofÃ­a, ciencias naturales, magnetismo y las grandes religiones comparadas, siempre con el firme propÃ³sito de hallar la verdad que unificara todo conocimiento humano.
 
-A lo largo de su vida ejerció múltiples oficios —tipógrafo, periodista, maestro— lo cual le permitió estar en contacto directo con las necesidades reales del pueblo. Esta experiencia le otorgó esa voz cándida y directa que caracteriza sus obras, pues nunca escribió para eruditos encerrados en torres de marfil, sino para el hombre y la mujer comunes que buscan respuestas genuinas.
+A lo largo de su vida ejerciÃ³ mÃºltiples oficios â€”tipÃ³grafo, periodista, maestroâ€” lo cual le permitiÃ³ estar en contacto directo con las necesidades reales del pueblo. Esta experiencia le otorgÃ³ esa voz cÃ¡ndida y directa que caracteriza sus obras, pues nunca escribiÃ³ para eruditos encerrados en torres de marfil, sino para el hombre y la mujer comunes que buscan respuestas genuinas.
 
-En 1911 fundó en Buenos Aires la Escuela Magnético Espiritual de la Comuna Universal (EMECU). Joaquín Trincado partió de este plano el 6 de febrero de 1935 en Buenos Aires, dejando tras de sí una obra monumental de más de veinte volúmenes que constituyen un sistema completo de conocimiento racional, filosófico y espiritual. Como él mismo afirmó: "No vine a fundar religión alguna; vine a despertar la conciencia del hombre mediante la razón".`,
-  categories: ["biografía", "trincado"], grade: 1,
+En 1911 fundÃ³ en Buenos Aires la Escuela MagnÃ©tico Espiritual de la Comuna Universal (EMECU). JoaquÃ­n Trincado partiÃ³ de este plano el 6 de febrero de 1935 en Buenos Aires, dejando tras de sÃ­ una obra monumental de mÃ¡s de veinte volÃºmenes que constituyen un sistema completo de conocimiento racional, filosÃ³fico y espiritual. Como Ã©l mismo afirmÃ³: "No vine a fundar religiÃ³n alguna; vine a despertar la conciencia del hombre mediante la razÃ³n".`,
+  categories: ["biografÃ­a", "trincado"], grade: 1,
 },
 {
   id: "bio-02",
-  keywords: ["obras", "libros", "escritos", "publicaciones", "bibliografía", "cuántos libros"],
-  question: "¿Cuáles fueron las principales obras de Joaquín Trincado?",
-  answer: `La obra del Maestro Trincado comprende más de veinte volúmenes que abarcan todas las ramas del saber humano: "Los Misterios Revelados", "Espiritismo en su Asiento", "Filosofía Austera Racional", "Los Cinco Amores", "Filosofía Enciclopédica Universal", "Magnetismo en su Origen", "Profilaxis de la Vida", "Conócete a ti Mismo", "El Alfaquí", "Código de Amor Universal", "Los Extremos se Tocan", "El Gran Catorce", "Primer Rayo de Luz", "Buscando a Dios" y "Discurso del Obispo Stromayer", entre otras.
+  keywords: ["obras", "libros", "escritos", "publicaciones", "bibliografÃ­a", "cuÃ¡ntos libros", "bibliografia", "cuantos libros"],
+  question: "Â¿CuÃ¡les fueron las principales obras de JoaquÃ­n Trincado?",
+  answer: `La obra del Maestro Trincado comprende mÃ¡s de veinte volÃºmenes que abarcan todas las ramas del saber humano: "Los Misterios Revelados", "Espiritismo en su Asiento", "FilosofÃ­a Austera Racional", "Los Cinco Amores", "FilosofÃ­a EnciclopÃ©dica Universal", "Magnetismo en su Origen", "Profilaxis de la Vida", "ConÃ³cete a ti Mismo", "El AlfaquÃ­", "CÃ³digo de Amor Universal", "Los Extremos se Tocan", "El Gran Catorce", "Primer Rayo de Luz", "Buscando a Dios" y "Discurso del Obispo Stromayer", entre otras.
 
-Cada obra corresponde a un grado de instrucción dentro de los trece grados de la EMECU, formando un sistema pedagógico completo y progresivo. Lo más notable es que Trincado escribió todo esto sin pretensión de lucro. No vendió sus libros; los puso al alcance de todos: "La verdad no tiene precio; el que la conoce tiene el deber de difundirla".`,
-  categories: ["biografía", "trincado", "obras"], grade: 1,
+Cada obra corresponde a un grado de instrucciÃ³n dentro de los trece grados de la EMECU, formando un sistema pedagÃ³gico completo y progresivo. Lo mÃ¡s notable es que Trincado escribiÃ³ todo esto sin pretensiÃ³n de lucro. No vendiÃ³ sus libros; los puso al alcance de todos: "La verdad no tiene precio; el que la conoce tiene el deber de difundirla".`,
+  categories: ["biografÃ­a", "trincado", "obras"], grade: 1,
 },
 {
   id: "bio-03",
-  keywords: ["muerte", "fallecimiento", "partió", "1935", "buenos aires", "últimos días"],
-  question: "¿Cuándo y dónde murió Joaquín Trincado?",
-  answer: `El Maestro Joaquín Trincado entregó su espíritu al Creador el 6 de febrero de 1935 en Buenos Aires, Argentina. Sus últimos años estuvieron dedicados por completo a la enseñanza y a consolidar la estructura de la EMECU. Partió en la más absoluta paz, sin riquezas materiales, pues nunca buscó enriquecerse con su obra.
+  keywords: ["muerte", "fallecimiento", "partiÃ³", "1935", "buenos aires", "Ãºltimos dÃ­as", "partio", "ultimos dias"],
+  question: "Â¿CuÃ¡ndo y dÃ³nde muriÃ³ JoaquÃ­n Trincado?",
+  answer: `El Maestro JoaquÃ­n Trincado entregÃ³ su espÃ­ritu al Creador el 6 de febrero de 1935 en Buenos Aires, Argentina. Sus Ãºltimos aÃ±os estuvieron dedicados por completo a la enseÃ±anza y a consolidar la estructura de la EMECU. PartiÃ³ en la mÃ¡s absoluta paz, sin riquezas materiales, pues nunca buscÃ³ enriquecerse con su obra.
 
-Su verdadera herencia es esta doctrina de luz que hoy nos permite comprender la vida, la muerte y el propósito de nuestra existencia. Como enseñó: "Morir es cambiar de estado, como el agua que se evapora no deja de ser agua". La EMECU continuó expandiéndose tras su partida a Chile, Perú, Colombia, México, España y muchos otros países, demostrando que las ideas verdaderas no dependen de un individuo para subsistir.`,
-  categories: ["biografía", "trincado", "muerte"], grade: 1,
+Su verdadera herencia es esta doctrina de luz que hoy nos permite comprender la vida, la muerte y el propÃ³sito de nuestra existencia. Como enseÃ±Ã³: "Morir es cambiar de estado, como el agua que se evapora no deja de ser agua". La EMECU continuÃ³ expandiÃ©ndose tras su partida a Chile, PerÃº, Colombia, MÃ©xico, EspaÃ±a y muchos otros paÃ­ses, demostrando que las ideas verdaderas no dependen de un individuo para subsistir.`,
+  categories: ["biografÃ­a", "trincado", "muerte"], grade: 1,
 },
 
 // 2. EMECU
 {
   id: "emecu-01",
-  keywords: ["emecu", "escuela", "magnético", "espiritual", "comuna", "universal", "qué es"],
-  question: "¿Qué es la EMECU?",
-  answer: `La Escuela Magnético Espiritual de la Comuna Universal (EMECU) fue fundada por Joaquín Trincado el 1 de enero de 1911 en Buenos Aires, Argentina. No es una religión, ni una secta ni un club social: es una escuela de perfeccionamiento moral e intelectual basada en el estudio racional de las leyes naturales y espirituales.
+  keywords: ["emecu", "escuela", "magnÃ©tico", "espiritual", "comuna", "universal", "quÃ© es", "magnetico", "que es"],
+  question: "Â¿QuÃ© es la EMECU?",
+  answer: `La Escuela MagnÃ©tico Espiritual de la Comuna Universal (EMECU) fue fundada por JoaquÃ­n Trincado el 1 de enero de 1911 en Buenos Aires, Argentina. No es una religiÃ³n, ni una secta ni un club social: es una escuela de perfeccionamiento moral e intelectual basada en el estudio racional de las leyes naturales y espirituales.
 
-Tiene por objeto enseñar al hombre a conocerse a sí mismo, a desarrollar sus siete facultades espirituales —Percepción, Memoria, Imaginación, Atención, Juicio, Razón y Voluntad— y a practicar la moral universal de los Cinco Amores. Su lema es "Ciencia, Razón y Verdad". Se organiza en trece grados con sus libros correspondientes. Los templos son lugares de estudio sin altares, imágenes ni rituales externos. Como decía Trincado: "Aquí no venimos a adorar, venimos a comprender".`,
+Tiene por objeto enseÃ±ar al hombre a conocerse a sÃ­ mismo, a desarrollar sus siete facultades espirituales â€”PercepciÃ³n, Memoria, ImaginaciÃ³n, AtenciÃ³n, Juicio, RazÃ³n y Voluntadâ€” y a practicar la moral universal de los Cinco Amores. Su lema es "Ciencia, RazÃ³n y Verdad". Se organiza en trece grados con sus libros correspondientes. Los templos son lugares de estudio sin altares, imÃ¡genes ni rituales externos. Como decÃ­a Trincado: "AquÃ­ no venimos a adorar, venimos a comprender".`,
   categories: ["emecu", "escuela"], grade: 1,
 },
 {
   id: "emecu-02",
-  keywords: ["inscribirse", "registrarse", "unirse", "ingresar", "incorporarse", "requisitos", "cómo unirse"],
-  question: "¿Cómo puedo inscribirme en la EMECU?",
-  answer: `La inscripción a la EMECU es un acto de voluntad personal y absolutamente libre. No se cobra tarifa alguna ni se exige contribución económica. Trincado fue claro: "Nadie puede comerciar con lo que pertenece a la humanidad entera". La inscripción es gratuita y accesible para cualquier persona sincera.
+  keywords: ["inscribirse", "registrarse", "unirse", "ingresar", "incorporarse", "requisitos", "cÃ³mo unirse", "como unirse"],
+  question: "Â¿CÃ³mo puedo inscribirme en la EMECU?",
+  answer: `La inscripciÃ³n a la EMECU es un acto de voluntad personal y absolutamente libre. No se cobra tarifa alguna ni se exige contribuciÃ³n econÃ³mica. Trincado fue claro: "Nadie puede comerciar con lo que pertenece a la humanidad entera". La inscripciÃ³n es gratuita y accesible para cualquier persona sincera.
 
-Los requisitos son: ser mayor de edad o contar con autorización paterna, tener disposición sincera hacia el estudio y el perfeccionamiento moral, y respetar los principios de la Escuela. No se requiere abandonar tu religión ni tus creencias previas. La EMECU respeta la libertad de conciencia de cada individuo. Lo esencial es la voluntad de aprender y practicar lo aprendido en tu vida diaria.`,
-  categories: ["emecu", "inscripción"], grade: 1,
+Los requisitos son: ser mayor de edad o contar con autorizaciÃ³n paterna, tener disposiciÃ³n sincera hacia el estudio y el perfeccionamiento moral, y respetar los principios de la Escuela. No se requiere abandonar tu religiÃ³n ni tus creencias previas. La EMECU respeta la libertad de conciencia de cada individuo. Lo esencial es la voluntad de aprender y practicar lo aprendido en tu vida diaria.`,
+  categories: ["emecu", "inscripciÃ³n"], grade: 1,
 },
 {
   id: "emecu-03",
-  keywords: ["grados", "13", "trece", "niveles", "estudio", "progresión", "avance", "estructura"],
-  question: "¿Cuáles son los 13 grados de la EMECU?",
-  answer: `La EMECU está organizada en trece grados de instrucción, cada uno con su libro de texto:
+  keywords: ["grados", "13", "trece", "niveles", "estudio", "progresiÃ³n", "avance", "estructura", "progresion"],
+  question: "Â¿CuÃ¡les son los 13 grados de la EMECU?",
+  answer: `La EMECU estÃ¡ organizada en trece grados de instrucciÃ³n, cada uno con su libro de texto:
 
-Grado 1: "Discurso del Obispo Stromayer" — Introducción a la filosofía racional.
-Grado 2: "Buscando a Dios" — Búsqueda racional del Creador.
-Grado 3: "Primer Rayo de Luz" — Primeros principios espirituales.
-Grado 4: "Espiritismo en su Asiento" — Fundamentos del espiritismo racional.
-Grado 5: "Filosofía Austera Racional" — Moral y ética racional.
-Grado 6: "Los Cinco Amores" — Los cinco amores universales.
-Grado 7: "Magnetismo en su Origen" — Magnetismo espiritual.
-Grado 8: "Espiritismo Estudiado" — Espiritismo avanzado.
-Grado 9: "Profilaxis de la Vida" — Profilaxis y salud integral.
-Grado 10: "Los Extremos se Tocan" — Polaridades universales.
-Grado 11: "Conócete a ti Mismo / El Alfaquí" — Autoconocimiento.
-Grado 12: "Código de Amor Universal" — Legislación del amor.
-Grado 13: "Compilación de Reglamentos" — Reglamento general.
+Grado 1: "Discurso del Obispo Stromayer" â€” IntroducciÃ³n a la filosofÃ­a racional.
+Grado 2: "Buscando a Dios" â€” BÃºsqueda racional del Creador.
+Grado 3: "Primer Rayo de Luz" â€” Primeros principios espirituales.
+Grado 4: "Espiritismo en su Asiento" â€” Fundamentos del espiritismo racional.
+Grado 5: "FilosofÃ­a Austera Racional" â€” Moral y Ã©tica racional.
+Grado 6: "Los Cinco Amores" â€” Los cinco amores universales.
+Grado 7: "Magnetismo en su Origen" â€” Magnetismo espiritual.
+Grado 8: "Espiritismo Estudiado" â€” Espiritismo avanzado.
+Grado 9: "Profilaxis de la Vida" â€” Profilaxis y salud integral.
+Grado 10: "Los Extremos se Tocan" â€” Polaridades universales.
+Grado 11: "ConÃ³cete a ti Mismo / El AlfaquÃ­" â€” Autoconocimiento.
+Grado 12: "CÃ³digo de Amor Universal" â€” LegislaciÃ³n del amor.
+Grado 13: "CompilaciÃ³n de Reglamentos" â€” Reglamento general.
 
-Cada grado tiene sus temas específicos. Al completarlos y demostrar comprensión, se avanza al siguiente grado.`,
+Cada grado tiene sus temas especÃ­ficos. Al completarlos y demostrar comprensiÃ³n, se avanza al siguiente grado.`,
   categories: ["emecu", "grados"], grade: 1,
 },
 {
   id: "emecu-04",
-  keywords: ["templo", "sede", "lugar", "reunión", "circunscripción", "donde"],
-  question: "¿Dónde se reúne la EMECU? ¿Qué es un templo?",
-  answer: `Los templos de la EMECU son lugares de estudio, práctica del magnetismo y confraternidad. No tienen altares, imágenes ni rituales externos. La estructura se organiza en Circunscripciones con templo principal y filiales. Las reuniones contemplan sesiones de estudio de los libros de texto, prácticas de magnetismo y charlas doctrinarias.
+  keywords: ["templo", "sede", "lugar", "reuniÃ³n", "circunscripciÃ³n", "donde", "reunion", "circunscripcion"],
+  question: "Â¿DÃ³nde se reÃºne la EMECU? Â¿QuÃ© es un templo?",
+  answer: `Los templos de la EMECU son lugares de estudio, prÃ¡ctica del magnetismo y confraternidad. No tienen altares, imÃ¡genes ni rituales externos. La estructura se organiza en Circunscripciones con templo principal y filiales. Las reuniones contemplan sesiones de estudio de los libros de texto, prÃ¡cticas de magnetismo y charlas doctrinarias.
 
-Trincado enseñaba: "Tu mente es tu templo más sagrado; no profanes tu templo con pensamientos bajos". El verdadero templo es el cuerpo y la mente del individuo. Puedes estar en comunión con la Escuela en cualquier lugar donde eleves tu pensamiento, aunque las reuniones presenciales son fundamentales para el desarrollo magnético.`,
+Trincado enseÃ±aba: "Tu mente es tu templo mÃ¡s sagrado; no profanes tu templo con pensamientos bajos". El verdadero templo es el cuerpo y la mente del individuo. Puedes estar en comuniÃ³n con la Escuela en cualquier lugar donde eleves tu pensamiento, aunque las reuniones presenciales son fundamentales para el desarrollo magnÃ©tico.`,
   categories: ["emecu", "templo"],
 },
 
 // 3. CREADOR
 {
   id: "creador-01",
-  keywords: ["dios", "creador", "qué es dios", "existe", "naturaleza de dios"],
-  question: "¿Qué es el Creador según la doctrina de Trincado?",
-  answer: `El Creador, según Trincado, no es un ser antropomórfico con barba sentado en un trono. Es el Principio Inteligente del universo, la Causa Primera de todo lo que existe, de naturaleza atómica y esencial. Es energía inteligente pura, presente en cada átomo, célula y estrella. No está separado de su creación; está inmanente en ella.
+  keywords: ["dios", "creador", "quÃ© es dios", "existe", "naturaleza de dios", "que es dios"],
+  question: "Â¿QuÃ© es el Creador segÃºn la doctrina de Trincado?",
+  answer: `El Creador, segÃºn Trincado, no es un ser antropomÃ³rfico con barba sentado en un trono. Es el Principio Inteligente del universo, la Causa Primera de todo lo que existe, de naturaleza atÃ³mica y esencial. Es energÃ­a inteligente pura, presente en cada Ã¡tomo, cÃ©lula y estrella. No estÃ¡ separado de su creaciÃ³n; estÃ¡ inmanente en ella.
 
-Trincado escribió: "Dios no castiga ni premia; Dios no juzga; Dios no necesita intermediarios. Dios es la causa suprema de cuanto existe, y el hombre accede a Él mediante el uso de su razón". Basta con utilizar la herramienta más divina que poseemos: nuestra facultad de razonar.`,
+Trincado escribiÃ³: "Dios no castiga ni premia; Dios no juzga; Dios no necesita intermediarios. Dios es la causa suprema de cuanto existe, y el hombre accede a Ã‰l mediante el uso de su razÃ³n". Basta con utilizar la herramienta mÃ¡s divina que poseemos: nuestra facultad de razonar.`,
   categories: ["creador", "dios"], grade: 2,
 },
 {
   id: "creador-02",
-  keywords: ["dios castiga", "infierno", "castigo divino", "ira de dios", "pecado", "condenación", "demonio", "diablo"],
-  question: "¿El Creador castiga a los seres humanos?",
-  answer: `Rotundamente no. El Creador no castiga, no premia, no se enoja ni se complace en el sufrimiento. La idea de un Dios castigador nace del miedo y la ignorancia de los antiguos. Como enseñaba Trincado: "Dios no castiga porque Dios es amor y justicia, y el amor no castiga, la justicia no se venga".
+  keywords: ["dios castiga", "infierno", "castigo divino", "ira de dios", "pecado", "condenaciÃ³n", "demonio", "diablo", "condenacion"],
+  question: "Â¿El Creador castiga a los seres humanos?",
+  answer: `Rotundamente no. El Creador no castiga, no premia, no se enoja ni se complace en el sufrimiento. La idea de un Dios castigador nace del miedo y la ignorancia de los antiguos. Como enseÃ±aba Trincado: "Dios no castiga porque Dios es amor y justicia, y el amor no castiga, la justicia no se venga".
 
-Todo lo que experimentamos como "castigo" es la consecuencia natural de nuestros actos mediante la Ley de Causa y Efecto. Debemos desterrar la idea de un infierno de fuego eterno. El verdadero "infierno" es la ignorancia, y el verdadero "cielo" es el conocimiento. Elimina el miedo de tu corazón y reemplázalo por la comprensión racional de las leyes naturales.`,
+Todo lo que experimentamos como "castigo" es la consecuencia natural de nuestros actos mediante la Ley de Causa y Efecto. Debemos desterrar la idea de un infierno de fuego eterno. El verdadero "infierno" es la ignorancia, y el verdadero "cielo" es el conocimiento. Elimina el miedo de tu corazÃ³n y reemplÃ¡zalo por la comprensiÃ³n racional de las leyes naturales.`,
   categories: ["creador", "moral"], grade: 2,
 },
 // 4. FACULTADES ESPIRITUALES
 {
   id: "facultades-01",
-  keywords: ["facultades", "siete", "7", "espirituales", "percepción", "memoria", "imaginación", "atención", "juicio", "razón", "voluntad"],
-  question: "¿Cuáles son las 7 facultades espirituales?",
-  answer: `Las siete facultades espirituales son las herramientas del espíritu: 1. Percepción — captar las impresiones del mundo. 2. Memoria — conservar y evocar lo aprendido. 3. Imaginación — recrear y combinar imágenes para crear nuevas ideas. 4. Atención — dirigir y concentrar la mente. 5. Juicio — comparar, analizar y determinar la verdad. 6. Razón — la facultad suprema: deducir, relacionar y llegar a conclusiones verdaderas. 7. Voluntad — decidir y ejecutar, transformando el pensamiento en acción.
+  keywords: ["facultades", "siete", "7", "espirituales", "percepciÃ³n", "memoria", "imaginaciÃ³n", "atenciÃ³n", "juicio", "razÃ³n", "voluntad", "percepcion", "imaginacion", "atencion", "razon"],
+  question: "Â¿CuÃ¡les son las 7 facultades espirituales?",
+  answer: `Las siete facultades espirituales son las herramientas del espÃ­ritu: 1. PercepciÃ³n â€” captar las impresiones del mundo. 2. Memoria â€” conservar y evocar lo aprendido. 3. ImaginaciÃ³n â€” recrear y combinar imÃ¡genes para crear nuevas ideas. 4. AtenciÃ³n â€” dirigir y concentrar la mente. 5. Juicio â€” comparar, analizar y determinar la verdad. 6. RazÃ³n â€” la facultad suprema: deducir, relacionar y llegar a conclusiones verdaderas. 7. Voluntad â€” decidir y ejecutar, transformando el pensamiento en acciÃ³n.
 
-Como decía Trincado: "El hombre que desarrolla sus siete facultades espirituales se convierte en un semidiós en potencia". Son los siete rayos de luz que iluminan el camino del espíritu hacia su perfeccionamiento.`,
+Como decÃ­a Trincado: "El hombre que desarrolla sus siete facultades espirituales se convierte en un semidiÃ³s en potencia". Son los siete rayos de luz que iluminan el camino del espÃ­ritu hacia su perfeccionamiento.`,
   categories: ["facultades", "espiritual"], grade: 4,
 },
 {
   id: "facultades-02",
-  keywords: ["razón", "racional", "razonar", "pensamiento", "lógica", "inteligencia"],
-  question: "¿Por qué la razón es la facultad suprema?",
-  answer: `La razón es suprema porque es el instrumento mediante el cual el espíritu accede a la verdad. Todas las demás facultades le sirven: la percepción proporciona datos, la memoria los conserva, la imaginación los combina, la atención los enfoca, el juicio los evalúa, y la voluntad ejecuta lo que la razón determina.
+  keywords: ["razÃ³n", "racional", "razonar", "pensamiento", "lÃ³gica", "inteligencia", "razon", "logica"],
+  question: "Â¿Por quÃ© la razÃ³n es la facultad suprema?",
+  answer: `La razÃ³n es suprema porque es el instrumento mediante el cual el espÃ­ritu accede a la verdad. Todas las demÃ¡s facultades le sirven: la percepciÃ³n proporciona datos, la memoria los conserva, la imaginaciÃ³n los combina, la atenciÃ³n los enfoca, el juicio los evalÃºa, y la voluntad ejecuta lo que la razÃ³n determina.
 
-Trincado afirmaba: "La razón es la chispa divina que el Creador depositó en el hombre para que pudiera comprender Su obra y elevarse hasta Él". La fe ciega no es virtud sino pereza mental. La verdadera fe es la confianza que nace del conocimiento racional. Desarrolla tu razón y verás cómo se disipan las sombras de la ignorancia.`,
-  categories: ["facultades", "razón"], grade: 4,
+Trincado afirmaba: "La razÃ³n es la chispa divina que el Creador depositÃ³ en el hombre para que pudiera comprender Su obra y elevarse hasta Ã‰l". La fe ciega no es virtud sino pereza mental. La verdadera fe es la confianza que nace del conocimiento racional. Desarrolla tu razÃ³n y verÃ¡s cÃ³mo se disipan las sombras de la ignorancia.`,
+  categories: ["facultades", "razÃ³n"], grade: 4,
 },
 {
   id: "facultades-03",
   keywords: ["desarrollar", "ejercitar", "potenciar", "mejorar", "facultades"],
-  question: "¿Cómo se desarrollan las facultades espirituales?",
-  answer: `Las facultades se desarrollan mediante el uso consciente y constante. La Percepción se cultiva observando con atención. La Memoria, mediante la recapitulación diaria. La Imaginación, leyendo, creando y visualizando. La Atención, concentrándose en una sola cosa. El Juicio, analizando desde múltiples ángulos. La Razón, con estudio metódico y razonamiento lógico. La Voluntad, enfrentando dificultades sin ceder ante la pereza.
+  question: "Â¿CÃ³mo se desarrollan las facultades espirituales?",
+  answer: `Las facultades se desarrollan mediante el uso consciente y constante. La PercepciÃ³n se cultiva observando con atenciÃ³n. La Memoria, mediante la recapitulaciÃ³n diaria. La ImaginaciÃ³n, leyendo, creando y visualizando. La AtenciÃ³n, concentrÃ¡ndose en una sola cosa. El Juicio, analizando desde mÃºltiples Ã¡ngulos. La RazÃ³n, con estudio metÃ³dico y razonamiento lÃ³gico. La Voluntad, enfrentando dificultades sin ceder ante la pereza.
 
-Trincado insistía: "La facultad que no se usa se atrofia; la que se ejercita se fortalece". No basta con leer los libros; hay que aplicar lo aprendido en la vida cotidiana. El desarrollo de las facultades espirituales es el verdadero propósito de la existencia humana.`,
-  categories: ["facultades", "práctica"],
+Trincado insistÃ­a: "La facultad que no se usa se atrofia; la que se ejercita se fortalece". No basta con leer los libros; hay que aplicar lo aprendido en la vida cotidiana. El desarrollo de las facultades espirituales es el verdadero propÃ³sito de la existencia humana.`,
+  categories: ["facultades", "prÃ¡ctica"],
 },
 
-// 5. ESPÍRITU Y MUERTE
+// 5. ESPÃRITU Y MUERTE
 {
   id: "espiritu-01",
-  keywords: ["espíritu", "alma", "cuerpo", "triple", "naturaleza", "ser humano"],
-  question: "¿Cuál es la naturaleza del ser humano según Trincado?",
-  answer: `El ser humano es un compuesto de tres elementos: cuerpo, alma y espíritu. El cuerpo es el vehículo material que nos permite actuar en el mundo tangible. El alma es el fluido vital que anima al cuerpo y lo conecta con el espíritu. El espíritu es la esencia inmortal, el principio inteligente y eterno que constituye nuestro verdadero ser.
+  keywords: ["espÃ­ritu", "alma", "cuerpo", "triple", "naturaleza", "ser humano", "espiritu"],
+  question: "Â¿CuÃ¡l es la naturaleza del ser humano segÃºn Trincado?",
+  answer: `El ser humano es un compuesto de tres elementos: cuerpo, alma y espÃ­ritu. El cuerpo es el vehÃ­culo material que nos permite actuar en el mundo tangible. El alma es el fluido vital que anima al cuerpo y lo conecta con el espÃ­ritu. El espÃ­ritu es la esencia inmortal, el principio inteligente y eterno que constituye nuestro verdadero ser.
 
-Trincado lo explicaba así: "El cuerpo es como el traje que vistes; el alma es como la electricidad que lo ilumina; el espíritu es tú mismo, el que dentro de ese traje piensa, siente y decide". Cuando el cuerpo muere, el espíritu continúa su existencia en el plano espiritual con toda su experiencia y conocimiento acumulado.`,
-  categories: ["espíritu", "muerte"], grade: 3,
+Trincado lo explicaba asÃ­: "El cuerpo es como el traje que vistes; el alma es como la electricidad que lo ilumina; el espÃ­ritu es tÃº mismo, el que dentro de ese traje piensa, siente y decide". Cuando el cuerpo muere, el espÃ­ritu continÃºa su existencia en el plano espiritual con toda su experiencia y conocimiento acumulado.`,
+  categories: ["espÃ­ritu", "muerte"], grade: 3,
 },
 {
   id: "espiritu-02",
-  keywords: ["muerte", "morir", "qué pasa después", "fin", "eternidad", "inmortalidad"],
-  question: "¿Qué pasa después de la muerte?",
-  answer: `La muerte no es el fin; es un cambio de estado, una transición del plano material al espiritual. Como el agua que se evapora no deja de ser agua, el espíritu que abandona el cuerpo no deja de ser espíritu. Al morir, el alma se desconecta del organismo y el espíritu queda en libertad para continuar su evolución.
+  keywords: ["muerte", "morir", "quÃ© pasa despuÃ©s", "fin", "eternidad", "inmortalidad", "que pasa despues"],
+  question: "Â¿QuÃ© pasa despuÃ©s de la muerte?",
+  answer: `La muerte no es el fin; es un cambio de estado, una transiciÃ³n del plano material al espiritual. Como el agua que se evapora no deja de ser agua, el espÃ­ritu que abandona el cuerpo no deja de ser espÃ­ritu. Al morir, el alma se desconecta del organismo y el espÃ­ritu queda en libertad para continuar su evoluciÃ³n.
 
-En el plano espiritual, el espíritu conserva su individualidad, memoria y conciencia. No se convierte en una entidad abstracta ni se funde con un todo cósmico. Revisa su vida pasada, comprende sus errores y aciertos, y se prepara para su próxima encarnación si es necesario. Trincado afirmaba: "La muerte es el nacimiento a la verdadera vida". No hay que temer a la muerte; hay que comprenderla.`,
-  categories: ["espíritu", "muerte"], grade: 3,
+En el plano espiritual, el espÃ­ritu conserva su individualidad, memoria y conciencia. No se convierte en una entidad abstracta ni se funde con un todo cÃ³smico. Revisa su vida pasada, comprende sus errores y aciertos, y se prepara para su prÃ³xima encarnaciÃ³n si es necesario. Trincado afirmaba: "La muerte es el nacimiento a la verdadera vida". No hay que temer a la muerte; hay que comprenderla.`,
+  categories: ["espÃ­ritu", "muerte"], grade: 3,
 },
-// 6. REENCARNACIÓN
+// 6. REENCARNACIÃ“N
 {
   id: "reencarnacion-01",
-  keywords: ["reencarnación", "renacer", "reencarnar", "vidas", "pasadas", "múltiples"],
-  question: "¿Qué es la reencarnación según Trincado?",
-  answer: `La reencarnación es una de las leyes más sabias del Creador y pilar fundamental de nuestra doctrina. El espíritu vive múltiples vidas, encarnando sucesivamente en diferentes cuerpos para continuar su proceso evolutivo. Cada encarnación es una oportunidad de aprendizaje.
+  keywords: ["reencarnaciÃ³n", "renacer", "reencarnar", "vidas", "pasadas", "mÃºltiples", "reencarnacion", "multiples"],
+  question: "Â¿QuÃ© es la reencarnaciÃ³n segÃºn Trincado?",
+  answer: `La reencarnaciÃ³n es una de las leyes mÃ¡s sabias del Creador y pilar fundamental de nuestra doctrina. El espÃ­ritu vive mÃºltiples vidas, encarnando sucesivamente en diferentes cuerpos para continuar su proceso evolutivo. Cada encarnaciÃ³n es una oportunidad de aprendizaje.
 
-Trincado decía: "Una sola vida no le basta al espíritu para aprender todo lo que necesita. Sería como pretender que un niño aprendiera toda la ciencia en un solo día de escuela". La reencarnación no es un castigo sino un sistema educativo diseñado para que cada espíritu alcance su pleno desarrollo. Cada vida es un grado en la escuela universal de la evolución espiritual.`,
-  categories: ["reencarnación"], grade: 3,
+Trincado decÃ­a: "Una sola vida no le basta al espÃ­ritu para aprender todo lo que necesita. SerÃ­a como pretender que un niÃ±o aprendiera toda la ciencia en un solo dÃ­a de escuela". La reencarnaciÃ³n no es un castigo sino un sistema educativo diseÃ±ado para que cada espÃ­ritu alcance su pleno desarrollo. Cada vida es un grado en la escuela universal de la evoluciÃ³n espiritual.`,
+  categories: ["reencarnaciÃ³n"], grade: 3,
 },
 {
   id: "reencarnacion-02",
-  keywords: ["reencarnación animal", "perro", "gato", "animal", "migración"],
-  question: "¿El ser humano puede reencarnar en un animal?",
-  answer: `Rotundamente no. Trincado fue categórico: "El espíritu humano jamás retrocede en la escala evolutiva. Lo que ha subido no baja; lo que ha evolucionado no involuciona". El ser humano reencarna siempre como ser humano.
+  keywords: ["reencarnaciÃ³n animal", "perro", "gato", "animal", "migraciÃ³n", "reencarnacion animal", "migracion"],
+  question: "Â¿El ser humano puede reencarnar en un animal?",
+  answer: `Rotundamente no. Trincado fue categÃ³rico: "El espÃ­ritu humano jamÃ¡s retrocede en la escala evolutiva. Lo que ha subido no baja; lo que ha evolucionado no involuciona". El ser humano reencarna siempre como ser humano.
 
-La evolución espiritual es ascendente, no regresiva. Un ser humano que vive guiado por el instinto parece más animal precisamente porque no ha desarrollado sus facultades superiores, pero sigue siendo un espíritu humano con todo el potencial de grandeza que eso implica.`,
-  categories: ["reencarnación"], grade: 3,
+La evoluciÃ³n espiritual es ascendente, no regresiva. Un ser humano que vive guiado por el instinto parece mÃ¡s animal precisamente porque no ha desarrollado sus facultades superiores, pero sigue siendo un espÃ­ritu humano con todo el potencial de grandeza que eso implica.`,
+  categories: ["reencarnaciÃ³n"], grade: 3,
 },
 {
   id: "reencarnacion-03",
   keywords: ["recordar", "vidas pasadas", "olvido", "memoria", "recuerdo"],
-  question: "¿Por qué no recordamos nuestras vidas pasadas?",
-  answer: `El olvido es una sabia disposición del Creador. Si recordáramos todo, nuestra mente no podría soportar esa carga y quedaríamos condicionados por experiencias de otros contextos. Trincado explicaba que el olvido nos permite enfrentar cada vida con frescura y libertad.
+  question: "Â¿Por quÃ© no recordamos nuestras vidas pasadas?",
+  answer: `El olvido es una sabia disposiciÃ³n del Creador. Si recordÃ¡ramos todo, nuestra mente no podrÃ­a soportar esa carga y quedarÃ­amos condicionados por experiencias de otros contextos. Trincado explicaba que el olvido nos permite enfrentar cada vida con frescura y libertad.
 
-Sin embargo, sí llevamos las consecuencias en forma de tendencias, aptitudes y debilidades innatas. Un niño prodigio trae de vidas anteriores el desarrollo de esa facultad. Trincado decía: "Aunque no recuerdes, tu espíritu sí lo sabe todo. Confía en él y avanza".`,
-  categories: ["reencarnación", "espíritu"], grade: 3,
+Sin embargo, sÃ­ llevamos las consecuencias en forma de tendencias, aptitudes y debilidades innatas. Un niÃ±o prodigio trae de vidas anteriores el desarrollo de esa facultad. Trincado decÃ­a: "Aunque no recuerdes, tu espÃ­ritu sÃ­ lo sabe todo. ConfÃ­a en Ã©l y avanza".`,
+  categories: ["reencarnaciÃ³n", "espÃ­ritu"], grade: 3,
 },
 // 7. MAGNETISMO
 {
   id: "magnetismo-01",
-  keywords: ["magnetismo", "fluido", "vital", "fuerza", "energía", "magnético"],
-  question: "¿Qué es el magnetismo según Trincado?",
-  answer: `El magnetismo es la fuerza vital que impregna toda la creación. Trincado lo define como el fluido que conecta al espíritu con el cuerpo y que permite la comunicación entre los seres vivos y los planos de la naturaleza. Existe el magnetismo animal —la fuerza vital inherente a los organismos— y el magnetismo espiritual —la fuerza que el espíritu humano puede desarrollar y dirigir conscientemente.
+  keywords: ["magnetismo", "fluido", "vital", "fuerza", "energÃ­a", "magnÃ©tico", "energia", "magnetico"],
+  question: "Â¿QuÃ© es el magnetismo segÃºn Trincado?",
+  answer: `El magnetismo es la fuerza vital que impregna toda la creaciÃ³n. Trincado lo define como el fluido que conecta al espÃ­ritu con el cuerpo y que permite la comunicaciÃ³n entre los seres vivos y los planos de la naturaleza. Existe el magnetismo animal â€”la fuerza vital inherente a los organismosâ€” y el magnetismo espiritual â€”la fuerza que el espÃ­ritu humano puede desarrollar y dirigir conscientemente.
 
-El magnetismo espiritual permite la curación magnética, la transmisión de pensamientos y la práctica de la mediumnidad. Trincado enseñaba: "El magnetismo es el puente entre el mundo material y el mundo espiritual; es la lingua franca del universo".`,
+El magnetismo espiritual permite la curaciÃ³n magnÃ©tica, la transmisiÃ³n de pensamientos y la prÃ¡ctica de la mediumnidad. Trincado enseÃ±aba: "El magnetismo es el puente entre el mundo material y el mundo espiritual; es la lingua franca del universo".`,
   categories: ["magnetismo"], grade: 7,
 },
 {
   id: "magnetismo-02",
-  keywords: ["pases", "curación", "sanación", "imposición", "manos", "curar"],
-  question: "¿Qué son los pases magnéticos?",
-  answer: `Los pases magnéticos son la aplicación del magnetismo espiritual mediante la imposición de las manos sobre el cuerpo del enfermo. No son un ritual mágico sino una técnica basada en la transmisión de fluidos vitales del operador al paciente. Trincado enseñaba que todo ser humano posee magnetismo y puede desarrollarlo con estudio y práctica.
+  keywords: ["pases", "curaciÃ³n", "sanaciÃ³n", "imposiciÃ³n", "manos", "curar", "curacion", "sanacion", "imposicion"],
+  question: "Â¿QuÃ© son los pases magnÃ©ticos?",
+  answer: `Los pases magnÃ©ticos son la aplicaciÃ³n del magnetismo espiritual mediante la imposiciÃ³n de las manos sobre el cuerpo del enfermo. No son un ritual mÃ¡gico sino una tÃ©cnica basada en la transmisiÃ³n de fluidos vitales del operador al paciente. Trincado enseÃ±aba que todo ser humano posee magnetismo y puede desarrollarlo con estudio y prÃ¡ctica.
 
-El pase magnético no sustituye la medicina científica; la complementa. Trincado era firmemente partidario de la medicina: "El magnetismo es profilaxis; la medicina es ciencia; ambas deben trabajar juntas para el bien del enfermo". El operador debe estar en buen estado moral y mental, pues la calidad del fluido depende de la pureza del pensamiento.`,
+El pase magnÃ©tico no sustituye la medicina cientÃ­fica; la complementa. Trincado era firmemente partidario de la medicina: "El magnetismo es profilaxis; la medicina es ciencia; ambas deben trabajar juntas para el bien del enfermo". El operador debe estar en buen estado moral y mental, pues la calidad del fluido depende de la pureza del pensamiento.`,
   categories: ["magnetismo", "salud"], grade: 7,
 },
 
 // 8. MEDIUMNIDAD
 {
   id: "mediumnidad-01",
-  keywords: ["mediumnidad", "médium", "espiritismo", "comunicación", "canal"],
-  question: "¿Qué es la mediumnidad?",
-  answer: `La mediumnidad es la facultad que permite al ser humano comunicarse con los espíritus desencarnados y con las fuerzas invisibles de la naturaleza. Todo ser humano posee esta facultad en mayor o menor grado, pero requiere desarrollo y disciplina para manifestarse de manera útil y segura.
+  keywords: ["mediumnidad", "mÃ©dium", "espiritismo", "comunicaciÃ³n", "canal", "medium", "comunicacion"],
+  question: "Â¿QuÃ© es la mediumnidad?",
+  answer: `La mediumnidad es la facultad que permite al ser humano comunicarse con los espÃ­ritus desencarnados y con las fuerzas invisibles de la naturaleza. Todo ser humano posee esta facultad en mayor o menor grado, pero requiere desarrollo y disciplina para manifestarse de manera Ãºtil y segura.
 
-Trincado distinguía entre la mediumnidad inconsciente —que se manifiesta espontáneamente causando confusión— y la mediumnidad consciente y educada, desarrollada dentro de la EMECU. "La mediumnidad sin estudio es un peligro; con estudio es una bendición". Los tipos principales incluyen: videncia, audición, escritura y curación.`,
+Trincado distinguÃ­a entre la mediumnidad inconsciente â€”que se manifiesta espontÃ¡neamente causando confusiÃ³nâ€” y la mediumnidad consciente y educada, desarrollada dentro de la EMECU. "La mediumnidad sin estudio es un peligro; con estudio es una bendiciÃ³n". Los tipos principales incluyen: videncia, audiciÃ³n, escritura y curaciÃ³n.`,
   categories: ["mediumnidad"], grade: 8,
 },
 {
   id: "mediumnidad-02",
-  keywords: ["obsesión", "peligro", "riesgo", "posesión", "maligno", "negativo"],
-  question: "¿Qué peligros tiene la mediumnidad sin estudio?",
-  answer: `La mediumnidad sin estudio puede abrir la puerta a serios peligros, siendo el principal la obsesión —la influencia perturbadora de espíritus inferiores sobre la mente del médium—. Trincado advertía: "El médium sin estudio es como un niño con un cuchillo: puede herirse a sí mismo y a los demás".
+  keywords: ["obsesiÃ³n", "peligro", "riesgo", "posesiÃ³n", "maligno", "negativo", "obsesion", "posesion"],
+  question: "Â¿QuÃ© peligros tiene la mediumnidad sin estudio?",
+  answer: `La mediumnidad sin estudio puede abrir la puerta a serios peligros, siendo el principal la obsesiÃ³n â€”la influencia perturbadora de espÃ­ritus inferiores sobre la mente del mÃ©diumâ€”. Trincado advertÃ­a: "El mÃ©dium sin estudio es como un niÃ±o con un cuchillo: puede herirse a sÃ­ mismo y a los demÃ¡s".
 
-La obsesión se manifiesta desde pensamientos negativos persistentes hasta la influencia sobre la voluntad. Por eso es indispensable buscar instrucción seria. Dentro de la EMECU, el desarrollo mediumnímico se realiza de manera gradual, protegida y supervisada, enseñando al estudiante a protegerse mediante el magnetismo y el pensamiento elevado.`,
+La obsesiÃ³n se manifiesta desde pensamientos negativos persistentes hasta la influencia sobre la voluntad. Por eso es indispensable buscar instrucciÃ³n seria. Dentro de la EMECU, el desarrollo mediumnÃ­mico se realiza de manera gradual, protegida y supervisada, enseÃ±ando al estudiante a protegerse mediante el magnetismo y el pensamiento elevado.`,
   categories: ["mediumnidad", "peligro"], grade: 8,
 },
 // 9. MORAL
 {
   id: "moral-01",
   keywords: ["pecado", "pecadora", "culpa", "remordimiento", "pecaminoso"],
-  question: "¿Existe el pecado según Trincado?",
-  answer: `En nuestra doctrina, el pecado no existe como lo conciben las religiones tradicionales. Lo que llaman "pecado" no es más que ignorancia. El ser humano no peca porque sea malvado; actúa equivocadamente porque no sabe, porque no comprende las consecuencias de sus actos.
+  question: "Â¿Existe el pecado segÃºn Trincado?",
+  answer: `En nuestra doctrina, el pecado no existe como lo conciben las religiones tradicionales. Lo que llaman "pecado" no es mÃ¡s que ignorancia. El ser humano no peca porque sea malvado; actÃºa equivocadamente porque no sabe, porque no comprende las consecuencias de sus actos.
 
-Trincado lo expresó con admirable claridad: "No hay pecado; hay ignorancia. El que sabe no peca; el que peca es porque no sabe. Y cuando llega a saber, deja de pecar por convicción, no por miedo". La virtud es el resultado natural del conocimiento. Cuando comprendemos que hacer daño a otro es hacernos daño a nosotros mismos, dejamos de hacerlo por inteligencia, no por temor al castigo.`,
+Trincado lo expresÃ³ con admirable claridad: "No hay pecado; hay ignorancia. El que sabe no peca; el que peca es porque no sabe. Y cuando llega a saber, deja de pecar por convicciÃ³n, no por miedo". La virtud es el resultado natural del conocimiento. Cuando comprendemos que hacer daÃ±o a otro es hacernos daÃ±o a nosotros mismos, dejamos de hacerlo por inteligencia, no por temor al castigo.`,
   categories: ["moral"], grade: 5,
 },
 {
   id: "moral-02",
-  keywords: ["regla de oro", "amar", "prójimo", "tratar", "respeto", "ética"],
-  question: "¿Cuál es la regla de oro de la moral trincadista?",
-  answer: `La regla de oro es: "No hagas a otro lo que no quieres que te hagan a ti". Este principio universal es la base de toda la ética racional. Pero Trincado fue más allá con la regla de plata: "Haz por los demás todo el bien que desearías que te hicieran a ti". No basta con abstenerse del daño; hay que activamente hacer el bien.
+  keywords: ["regla de oro", "amar", "prÃ³jimo", "tratar", "respeto", "Ã©tica", "projimo", "etica"],
+  question: "Â¿CuÃ¡l es la regla de oro de la moral trincadista?",
+  answer: `La regla de oro es: "No hagas a otro lo que no quieres que te hagan a ti". Este principio universal es la base de toda la Ã©tica racional. Pero Trincado fue mÃ¡s allÃ¡ con la regla de plata: "Haz por los demÃ¡s todo el bien que desearÃ­as que te hicieran a ti". No basta con abstenerse del daÃ±o; hay que activamente hacer el bien.
 
-La virtud es su propia recompensa. No practicamos el bien para ganar el cielo ni para evitar el infierno; lo hacemos porque es la forma inteligente de vivir. "La virtud verdadera es aquella que se práctica sin que nadie la vea, sin esperar aplauso ni reconocimiento", enseñaba Trincado. La conciencia limpia es la mayor riqueza.`,
+La virtud es su propia recompensa. No practicamos el bien para ganar el cielo ni para evitar el infierno; lo hacemos porque es la forma inteligente de vivir. "La virtud verdadera es aquella que se prÃ¡ctica sin que nadie la vea, sin esperar aplauso ni reconocimiento", enseÃ±aba Trincado. La conciencia limpia es la mayor riqueza.`,
   categories: ["moral"], grade: 5,
 },
 // 10. LOS CINCO AMORES
 {
   id: "amores-01",
-  keywords: ["cinco amores", "5 amores", "qué son", "amores universales"],
-  question: "¿Cuáles son los Cinco Amores?",
-  answer: `Los Cinco Amores constituyen el sistema moral completo de la doctrina de Trincado, y son la base de toda relación humana sana. Son: 1. Amor a sí mismo —el fundamento, pues no puedes amar a otro si no te amas primero con criterio racional—. 2. Amor al prójimo —el amor universal a todos los seres humanos sin distinción—. 3. Amor a la familia —el amor al núcleo más cercano, a los padres, hijos, hermanos—. 4. Amor a la patria —el amor a la comunidad, al país y a la humanidad como gran familia—. 5. Amor al Creador —la suprema aspiración, el amor al Principio Inteligente que nos dio la vida y la razón—.
+  keywords: ["cinco amores", "5 amores", "quÃ© son", "amores universales", "que son"],
+  question: "Â¿CuÃ¡les son los Cinco Amores?",
+  answer: `Los Cinco Amores constituyen el sistema moral completo de la doctrina de Trincado, y son la base de toda relaciÃ³n humana sana. Son: 1. Amor a sÃ­ mismo â€”el fundamento, pues no puedes amar a otro si no te amas primero con criterio racionalâ€”. 2. Amor al prÃ³jimo â€”el amor universal a todos los seres humanos sin distinciÃ³nâ€”. 3. Amor a la familia â€”el amor al nÃºcleo mÃ¡s cercano, a los padres, hijos, hermanosâ€”. 4. Amor a la patria â€”el amor a la comunidad, al paÃ­s y a la humanidad como gran familiaâ€”. 5. Amor al Creador â€”la suprema aspiraciÃ³n, el amor al Principio Inteligente que nos dio la vida y la razÃ³nâ€”.
 
-Estos cinco amores no son compartimentos estancos sino una escala ascendente que comienza en uno mismo y se expande hasta abarcar al universo entero. Trincado dedicó un libro entero a este tema: "Los Cinco Amores". En él demuestra que el ser que ama verdaderamente en estos cinco niveles ha alcanzado la plenitud moral.`,
+Estos cinco amores no son compartimentos estancos sino una escala ascendente que comienza en uno mismo y se expande hasta abarcar al universo entero. Trincado dedicÃ³ un libro entero a este tema: "Los Cinco Amores". En Ã©l demuestra que el ser que ama verdaderamente en estos cinco niveles ha alcanzado la plenitud moral.`,
   categories: ["cinco amores", "moral"], grade: 6,
 },
 {
   id: "amores-02",
-  keywords: ["amor propio", "amarse", "amor a sí mismo", "egoísmo", "egoísta"],
-  question: "¿Qué significa amar a sí mismo?",
-  answer: `Amarse a sí mismo no es egoísmo ni vanidad; es el reconocimiento racional de nuestro propio valor como seres espirituales. Trincado enseñaba que el amor propio bien entendido es el fundamento de toda la moral. No puedes amar genuinamente al prójimo si no te amas primero a ti mismo con sabiduría.
+  keywords: ["amor propio", "amarse", "amor a sÃ­ mismo", "egoÃ­smo", "egoÃ­sta", "amor a si mismo", "egoismo", "egoista"],
+  question: "Â¿QuÃ© significa amar a sÃ­ mismo?",
+  answer: `Amarse a sÃ­ mismo no es egoÃ­smo ni vanidad; es el reconocimiento racional de nuestro propio valor como seres espirituales. Trincado enseÃ±aba que el amor propio bien entendido es el fundamento de toda la moral. No puedes amar genuinamente al prÃ³jimo si no te amas primero a ti mismo con sabidurÃ­a.
 
-Amar a sí mismo significa cuidar tu cuerpo —que es el templo del espíritu—, cultivar tu mente mediante el estudio, desarrollar tus facultades espirituales y mantener tu pensamiento elevado. Significa también respetarte lo suficiente como para no degradarte con vicios, pensamientos bajos o conductas contrarias a la razón.
+Amar a sÃ­ mismo significa cuidar tu cuerpo â€”que es el templo del espÃ­rituâ€”, cultivar tu mente mediante el estudio, desarrollar tus facultades espirituales y mantener tu pensamiento elevado. Significa tambiÃ©n respetarte lo suficiente como para no degradarte con vicios, pensamientos bajos o conductas contrarias a la razÃ³n.
 
-"El que no se ama a sí mismo, no puede amar a nadie", decía Trincado. Pero este amor no debe confundirse con el egoísmo, que es el amor exagerado y exclusivo a uno mismo en detrimento de los demás. El verdadero amor propio es el que te impulsa a ser mejor cada día para poder servir mejor a los demás.`,
+"El que no se ama a sÃ­ mismo, no puede amar a nadie", decÃ­a Trincado. Pero este amor no debe confundirse con el egoÃ­smo, que es el amor exagerado y exclusivo a uno mismo en detrimento de los demÃ¡s. El verdadero amor propio es el que te impulsa a ser mejor cada dÃ­a para poder servir mejor a los demÃ¡s.`,
   categories: ["cinco amores", "moral"], grade: 6,
 },
 
-// 11. RELIGIÓN
+// 11. RELIGIÃ“N
 {
   id: "religion-01",
-  keywords: ["religión", "iglesia", "católica", "cristiana", "sacerdote", "cura", "pastor"],
-  question: "¿Qué opina Trincado de la religión?",
-  answer: `Trincado no era enemigo de la religión sino del dogma irracional. Respetaba profundamente la fe sincera de cada persona, pero se oponía categóricamente a las instituciones religiosas que imponían creencias mediante el miedo, la amenaza y la autoridad injustificada. Enseñaba: "Cree en lo que tu razón te dicte; no en lo que otro te imponga por la fuerza".
+  keywords: ["religiÃ³n", "iglesia", "catÃ³lica", "cristiana", "sacerdote", "cura", "pastor", "religion", "catolica"],
+  question: "Â¿QuÃ© opina Trincado de la religiÃ³n?",
+  answer: `Trincado no era enemigo de la religiÃ³n sino del dogma irracional. Respetaba profundamente la fe sincera de cada persona, pero se oponÃ­a categÃ³ricamente a las instituciones religiosas que imponÃ­an creencias mediante el miedo, la amenaza y la autoridad injustificada. EnseÃ±aba: "Cree en lo que tu razÃ³n te dicte; no en lo que otro te imponga por la fuerza".
 
-La EMECU no es una religión y Trincado no es un profeta ni un mesías. Él repetía constantemente: "Yo no vine a fundar religión; vine a enseñar al hombre a pensar por sí mismo". Rechazaba la necesidad de sacerdotes, intermediarios entre Dios y los hombres, ya que según su doctrina cada ser humano puede comunicarse directamente con el Creador mediante su razón.
+La EMECU no es una religiÃ³n y Trincado no es un profeta ni un mesÃ­as. Ã‰l repetÃ­a constantemente: "Yo no vine a fundar religiÃ³n; vine a enseÃ±ar al hombre a pensar por sÃ­ mismo". Rechazaba la necesidad de sacerdotes, intermediarios entre Dios y los hombres, ya que segÃºn su doctrina cada ser humano puede comunicarse directamente con el Creador mediante su razÃ³n.
 
-Sin embargo, Trincado reconocía que las religiones han cumplido una función histórica al mantener vivos ciertos principios morales en la humanidad. Lo que critica es que las religiones se hayan estancado en dogmas que la ciencia y la razón ya han superado. "La religión del futuro será la religión de la ciencia y la razón", afirmaba.`,
-  categories: ["religión"], grade: 1,
+Sin embargo, Trincado reconocÃ­a que las religiones han cumplido una funciÃ³n histÃ³rica al mantener vivos ciertos principios morales en la humanidad. Lo que critica es que las religiones se hayan estancado en dogmas que la ciencia y la razÃ³n ya han superado. "La religiÃ³n del futuro serÃ¡ la religiÃ³n de la ciencia y la razÃ³n", afirmaba.`,
+  categories: ["religiÃ³n"], grade: 1,
 },
 {
   id: "religion-02",
-  keywords: ["jesús", "cristo", "dios hecho hombre", "hijo de dios", "salvador"],
-  question: "¿Quién fue Jesús según Trincado?",
-  answer: `Jesús fue un hombre extraordinario, un gran maestro de la humanidad, pero no fue Dios hecho hombre ni el único hijo de Dios. Trincado reconoce en Jesús al más grande exponente de la moral universal, al ser que más se acercó a la comunión con el Creador mediante el desarrollo de sus facultades espirituales.
+  keywords: ["jesÃºs", "cristo", "dios hecho hombre", "hijo de dios", "salvador", "jesus"],
+  question: "Â¿QuiÃ©n fue JesÃºs segÃºn Trincado?",
+  answer: `JesÃºs fue un hombre extraordinario, un gran maestro de la humanidad, pero no fue Dios hecho hombre ni el Ãºnico hijo de Dios. Trincado reconoce en JesÃºs al mÃ¡s grande exponente de la moral universal, al ser que mÃ¡s se acercÃ³ a la comuniÃ³n con el Creador mediante el desarrollo de sus facultades espirituales.
 
-Jesús nació, vivió y murió como todo ser humano. Su grandeza radica en su ejemplo de amor, sacrificio y sabiduría, no en una supuesta naturaleza divina que lo separa del resto de la humanidad. Trincado enseñaba: "Jesús es el modelo que todo ser humano debe imitar; no el ídolo que se debe adorar. Él mismo dijo: 'Todo lo que yo hago, vosotros también lo haréis y cosas mayores'".
+JesÃºs naciÃ³, viviÃ³ y muriÃ³ como todo ser humano. Su grandeza radica en su ejemplo de amor, sacrificio y sabidurÃ­a, no en una supuesta naturaleza divina que lo separa del resto de la humanidad. Trincado enseÃ±aba: "JesÃºs es el modelo que todo ser humano debe imitar; no el Ã­dolo que se debe adorar. Ã‰l mismo dijo: 'Todo lo que yo hago, vosotros tambiÃ©n lo harÃ©is y cosas mayores'".
 
-Deificar a Jesús, según nuestra doctrina, es en realidad un acto de injusticia, pues lo coloca en un pedestal inalcanzable en lugar de presentarlo como el ejemplo que todos podemos seguir. Cada ser humano lleva dentro de sí el potencial divino que Jesús manifestó; lo que nos falta es el desarrollo de nuestras facultades.`,
-  categories: ["religión"], grade: 2,
+Deificar a JesÃºs, segÃºn nuestra doctrina, es en realidad un acto de injusticia, pues lo coloca en un pedestal inalcanzable en lugar de presentarlo como el ejemplo que todos podemos seguir. Cada ser humano lleva dentro de sÃ­ el potencial divino que JesÃºs manifestÃ³; lo que nos falta es el desarrollo de nuestras facultades.`,
+  categories: ["religiÃ³n"], grade: 2,
 },
 {
   id: "religion-03",
   keywords: ["biblia", "evangelio", "sagrada escritura", "libro santo", "palabra de dios"],
-  question: "¿Qué opina Trincado de la Biblia?",
-  answer: `Trincado estudió la Biblia a fondo y reconoció las verdades morales que contiene, pero también señalaba sus errores, contradicciones y manipulaciones a lo largo de los siglos. No la consideraba la palabra infalible de Dios sino un libro escrito por hombres que fue modificado por concilios y traducciones con intereses políticos y religiosos.
+  question: "Â¿QuÃ© opina Trincado de la Biblia?",
+  answer: `Trincado estudiÃ³ la Biblia a fondo y reconociÃ³ las verdades morales que contiene, pero tambiÃ©n seÃ±alaba sus errores, contradicciones y manipulaciones a lo largo de los siglos. No la consideraba la palabra infalible de Dios sino un libro escrito por hombres que fue modificado por concilios y traducciones con intereses polÃ­ticos y religiosos.
 
-"La Biblia contiene verdades invaluables mezcladas con errores humanos", afirmaba Trincado. Enseñaba a leerla con criterio racional, extrayendo lo valioso y descartando lo que contradice la razón y la ciencia. No se debe creer en la Biblia porque "es la palabra de Dios", sino porque lo que en ella hay de bueno puede ser verificado por la razón.
+"La Biblia contiene verdades invaluables mezcladas con errores humanos", afirmaba Trincado. EnseÃ±aba a leerla con criterio racional, extrayendo lo valioso y descartando lo que contradice la razÃ³n y la ciencia. No se debe creer en la Biblia porque "es la palabra de Dios", sino porque lo que en ella hay de bueno puede ser verificado por la razÃ³n.
 
-La EMECU no utiliza la Biblia como libro de texto, aunque respeta su valor histórico y moral. Nuestros libros de estudio son las obras de Trincado, escritas con lenguaje moderno, racional y accesible para el ser humano contemporáneo.`,
-  categories: ["religión"], grade: 2,
+La EMECU no utiliza la Biblia como libro de texto, aunque respeta su valor histÃ³rico y moral. Nuestros libros de estudio son las obras de Trincado, escritas con lenguaje moderno, racional y accesible para el ser humano contemporÃ¡neo.`,
+  categories: ["religiÃ³n"], grade: 2,
 },
 // 12. LEY DE CAUSA Y EFECTO
 {
   id: "causa-efecto-01",
-  keywords: ["causa", "efecto", "karma", "consecuencia", "ley natural", "retribución"],
-  question: "¿Qué es la Ley de Causa y Efecto?",
-  answer: `La Ley de Causa y Efecto es una de las leyes más fundamentales del universo. Establece que toda acción genera una reacción proporcional y equivalente. No es una ley divina o sobrenatural; es una ley natural que opera de manera inexorable en todos los planos de la existencia, trascendiendo la muerte del cuerpo.
+  keywords: ["causa", "efecto", "karma", "consecuencia", "ley natural", "retribuciÃ³n", "retribucion"],
+  question: "Â¿QuÃ© es la Ley de Causa y Efecto?",
+  answer: `La Ley de Causa y Efecto es una de las leyes mÃ¡s fundamentales del universo. Establece que toda acciÃ³n genera una reacciÃ³n proporcional y equivalente. No es una ley divina o sobrenatural; es una ley natural que opera de manera inexorable en todos los planos de la existencia, trascendiendo la muerte del cuerpo.
 
-Diferente del karma oriental, que implica una carga mística o ritual, la Ley de Causa y Efecto es puramente racional: si siembras bondad, cosecharás bondad; si siembras ignorancia, cosecharás sus consecuencias; si haces daño, el daño volverá a ti. No hay un juez que dictamine; es la naturaleza misma la que responde.
+Diferente del karma oriental, que implica una carga mÃ­stica o ritual, la Ley de Causa y Efecto es puramente racional: si siembras bondad, cosecharÃ¡s bondad; si siembras ignorancia, cosecharÃ¡s sus consecuencias; si haces daÃ±o, el daÃ±o volverÃ¡ a ti. No hay un juez que dictamine; es la naturaleza misma la que responde.
 
-Trincado explicaba: "Cada pensamiento, cada palabra y cada acción son semillas que germinarán en su debido tiempo. El ser humano es, al mismo tiempo, el sembrador y el cosechador de su propia vida". Esta ley nos responsabiliza completamente de nuestro destino y elimina la excusa del victimismo. Lo que te sucede no es casualidad ni destino ciego; es el resultado de causas que tú mismo pusiste en movimiento.`,
+Trincado explicaba: "Cada pensamiento, cada palabra y cada acciÃ³n son semillas que germinarÃ¡n en su debido tiempo. El ser humano es, al mismo tiempo, el sembrador y el cosechador de su propia vida". Esta ley nos responsabiliza completamente de nuestro destino y elimina la excusa del victimismo. Lo que te sucede no es casualidad ni destino ciego; es el resultado de causas que tÃº mismo pusiste en movimiento.`,
   categories: ["causa efecto", "ley"],
   grade: 5,
 },
-// 13. CIENCIA, FE Y RAZÓN
+// 13. CIENCIA, FE Y RAZÃ“N
 {
   id: "ciencia-fe-01",
-  keywords: ["ciencia", "fe", "razón", "científico", "creencia", "demostración"],
-  question: "¿Qué relación hay entre ciencia, fe y razón?",
-  answer: `Para Trincado, la ciencia, la fe y la razón no son enemigas sino aliadas cuando se comprenden correctamente. La ciencia es el conocimiento de las leyes naturales mediante la observación y la experimentación. La razón es la facultad que nos permite interpretar ese conocimiento y extraer conclusiones. Y la fe —la verdadera fe, no la ciega— es la confianza en las verdades que la razón y la ciencia nos han demostrado.
+  keywords: ["ciencia", "fe", "razÃ³n", "cientÃ­fico", "creencia", "demostraciÃ³n", "razon", "cientifico", "demostracion"],
+  question: "Â¿QuÃ© relaciÃ³n hay entre ciencia, fe y razÃ³n?",
+  answer: `Para Trincado, la ciencia, la fe y la razÃ³n no son enemigas sino aliadas cuando se comprenden correctamente. La ciencia es el conocimiento de las leyes naturales mediante la observaciÃ³n y la experimentaciÃ³n. La razÃ³n es la facultad que nos permite interpretar ese conocimiento y extraer conclusiones. Y la fe â€”la verdadera fe, no la ciegaâ€” es la confianza en las verdades que la razÃ³n y la ciencia nos han demostrado.
 
-Trincado distinguía entre la fe ciega y la fe racional. La fe ciega es creer sin entender, aceptar sin cuestionar, obedecer sin pensar. Es una actitud contraria al desarrollo espiritual. La fe racional es la confianza que nace del conocimiento: creo porque sé, porque he verificado, porque mi razón me lo confirma. "La fe sin razón es superstición; la razón sin fe es frialdad; la fe con razón es sabiduría".
+Trincado distinguÃ­a entre la fe ciega y la fe racional. La fe ciega es creer sin entender, aceptar sin cuestionar, obedecer sin pensar. Es una actitud contraria al desarrollo espiritual. La fe racional es la confianza que nace del conocimiento: creo porque sÃ©, porque he verificado, porque mi razÃ³n me lo confirma. "La fe sin razÃ³n es supersticiÃ³n; la razÃ³n sin fe es frialdad; la fe con razÃ³n es sabidurÃ­a".
 
-La ciencia no contradice la espiritualidad genuina; al contrario, la confirma. A medida que la ciencia avanza, descubre verdades que la doctrina de Trincado ya había anunciado. Por eso nuestra escuela no teme a la ciencia; la abraza y la utiliza como herramienta de comprensión del universo.`,
-  categories: ["ciencia", "razón", "fe"],
+La ciencia no contradice la espiritualidad genuina; al contrario, la confirma. A medida que la ciencia avanza, descubre verdades que la doctrina de Trincado ya habÃ­a anunciado. Por eso nuestra escuela no teme a la ciencia; la abraza y la utiliza como herramienta de comprensiÃ³n del universo.`,
+  categories: ["ciencia", "razÃ³n", "fe"],
   grade: 4,
 },
 
-// 14. CREACIÓN ATÓMICA
+// 14. CREACIÃ“N ATÃ“MICA
 {
   id: "atomica-01",
-  keywords: ["átomo", "creación", "atómica", "materia", "fluido", "semilla"],
-  question: "¿Qué es la Creación Atómica?",
-  answer: `La Creación Atómica es la teoría cosmológica de Trincado sobre el origen y la naturaleza del universo. Enseña que el átomo es la unidad fundamental de toda la creación material y espiritual. Todo lo que existe está compuesto de átomos en diferentes estados de vibración y organización. El propio Creador es de naturaleza atómica: es el átomo primordial, la semilla de toda la creación.
+  keywords: ["Ã¡tomo", "creaciÃ³n", "atÃ³mica", "materia", "fluido", "semilla", "atomo", "creacion", "atomica"],
+  question: "Â¿QuÃ© es la CreaciÃ³n AtÃ³mica?",
+  answer: `La CreaciÃ³n AtÃ³mica es la teorÃ­a cosmolÃ³gica de Trincado sobre el origen y la naturaleza del universo. EnseÃ±a que el Ã¡tomo es la unidad fundamental de toda la creaciÃ³n material y espiritual. Todo lo que existe estÃ¡ compuesto de Ã¡tomos en diferentes estados de vibraciÃ³n y organizaciÃ³n. El propio Creador es de naturaleza atÃ³mica: es el Ã¡tomo primordial, la semilla de toda la creaciÃ³n.
 
-Trincado explicaba: "El átomo es la semilla del universo. Del átomo nace la molécula, de la molécula la célula, de la célula el organismo, y así sucesivamente hasta las galaxias". La materia y el espíritu no son sustancias diferentes sino la misma sustancia en diferentes grados de densidad y vibración. La materia es espíritu condensado; el espíritu es materia sutilizada.
+Trincado explicaba: "El Ã¡tomo es la semilla del universo. Del Ã¡tomo nace la molÃ©cula, de la molÃ©cula la cÃ©lula, de la cÃ©lula el organismo, y asÃ­ sucesivamente hasta las galaxias". La materia y el espÃ­ritu no son sustancias diferentes sino la misma sustancia en diferentes grados de densidad y vibraciÃ³n. La materia es espÃ­ritu condensado; el espÃ­ritu es materia sutilizada.
 
-Los fluidos —concepto central en nuestra doctrina— son estados intermedios entre la materia densa y el espíritu puro. El fluido vital, el fluido magnético y otros fluidos son manifestaciones de la energía atómica en diferentes frecuencias. Esta visión unificada del universo permite comprender tanto los fenómenos materiales como los espirituales bajo un mismo marco conceptual racional.`,
-  categories: ["creación atómica", "átomo"],
+Los fluidos â€”concepto central en nuestra doctrinaâ€” son estados intermedios entre la materia densa y el espÃ­ritu puro. El fluido vital, el fluido magnÃ©tico y otros fluidos son manifestaciones de la energÃ­a atÃ³mica en diferentes frecuencias. Esta visiÃ³n unificada del universo permite comprender tanto los fenÃ³menos materiales como los espirituales bajo un mismo marco conceptual racional.`,
+  categories: ["creaciÃ³n atÃ³mica", "Ã¡tomo"],
   grade: 7,
 },
-// 15. INSTINTO VS RAZÓN
+// 15. INSTINTO VS RAZÃ“N
 {
   id: "instinto-01",
-  keywords: ["instinto", "instintivo", "animal", "instintos", "vs razón"],
-  question: "¿Qué diferencia hay entre instinto y razón?",
-  answer: `El instinto y la razón representan los dos extremos de la escala evolutiva del comportamiento humano. El instinto es la guía natural que tienen los animales para sobrevivir: es automático, irracional y responde a estímulos inmediatos como el hambre, el miedo, la reproducción y la autopreservación. La razón, en cambio, es la capacidad de reflexionar, analizar y decidir conscientemente la mejor course de acción.
+  keywords: ["instinto", "instintivo", "animal", "instintos", "vs razÃ³n", "vs razon"],
+  question: "Â¿QuÃ© diferencia hay entre instinto y razÃ³n?",
+  answer: `El instinto y la razÃ³n representan los dos extremos de la escala evolutiva del comportamiento humano. El instinto es la guÃ­a natural que tienen los animales para sobrevivir: es automÃ¡tico, irracional y responde a estÃ­mulos inmediatos como el hambre, el miedo, la reproducciÃ³n y la autopreservaciÃ³n. La razÃ³n, en cambio, es la capacidad de reflexionar, analizar y decidir conscientemente la mejor course de acciÃ³n.
 
-Todo ser humano posee tanto instintos como razón, pero el grado de desarrollo de cada uno varía enormemente entre individuos. El ser humano primitivo vive casi exclusivamente guiado por el instinto; el ser humano civilizado ha desarrollado parcialmente su razón; y el ser humano espiritualizado ha alcanzado un predominio de la razón sobre el instinto.
+Todo ser humano posee tanto instintos como razÃ³n, pero el grado de desarrollo de cada uno varÃ­a enormemente entre individuos. El ser humano primitivo vive casi exclusivamente guiado por el instinto; el ser humano civilizado ha desarrollado parcialmente su razÃ³n; y el ser humano espiritualizado ha alcanzado un predominio de la razÃ³n sobre el instinto.
 
-Trincado enseñaba: "El instinto es el motor del animal; la razón es el motor del dios. El ser humano está entre ambos, y su misión es elevarse del instinto a la razón". No se trata de eliminar los instintos —que son necesarios para la supervivencia— sino de subordinarlos a la guía superior de la razón. El ser guiado por el instinto es esclavo de sus apetitos; el ser guiado por la razón es dueño de sí mismo.`,
-  categories: ["instinto", "razón"],
+Trincado enseÃ±aba: "El instinto es el motor del animal; la razÃ³n es el motor del dios. El ser humano estÃ¡ entre ambos, y su misiÃ³n es elevarse del instinto a la razÃ³n". No se trata de eliminar los instintos â€”que son necesarios para la supervivenciaâ€” sino de subordinarlos a la guÃ­a superior de la razÃ³n. El ser guiado por el instinto es esclavo de sus apetitos; el ser guiado por la razÃ³n es dueÃ±o de sÃ­ mismo.`,
+  categories: ["instinto", "razÃ³n"],
   grade: 5,
 },
-// 16. LIBRE ALBEDRÍO
+// 16. LIBRE ALBEDRÃO
 {
-  id: "albedrío-01",
-  keywords: ["libre albedrío", "libertad", "libre voluntad", "destino", "fatalismo", "determinismo"],
-  question: "¿Qué es el libre albedrío según Trincado?",
-  answer: `El libre albedrío es la capacidad del ser humano para elegir entre diferentes cursos de acción de manera autónoma y responsable. No somos marionetas de un destino inexorable ni juguetes de fuerzas sobrenaturales; somos seres con la capacidad de decidir nuestro propio camino.
+  id: "albedrÃ­o-01",
+  keywords: ["libre albedrÃ­o", "libertad", "libre voluntad", "destino", "fatalismo", "determinismo", "libre albedrio"],
+  question: "Â¿QuÃ© es el libre albedrÃ­o segÃºn Trincado?",
+  answer: `El libre albedrÃ­o es la capacidad del ser humano para elegir entre diferentes cursos de acciÃ³n de manera autÃ³noma y responsable. No somos marionetas de un destino inexorable ni juguetes de fuerzas sobrenaturales; somos seres con la capacidad de decidir nuestro propio camino.
 
-Trincado rechazaba tanto el fatalismo —la creencia de que todo está predeterminado— como la idea de que somos absolutamente libres sin consecuencias. Enseñaba: "Eres libre para elegir, pero no eres libre para escapar de las consecuencias de tu elección". El libre albedrío va inseparablemente unido a la responsabilidad.
+Trincado rechazaba tanto el fatalismo â€”la creencia de que todo estÃ¡ predeterminadoâ€” como la idea de que somos absolutamente libres sin consecuencias. EnseÃ±aba: "Eres libre para elegir, pero no eres libre para escapar de las consecuencias de tu elecciÃ³n". El libre albedrÃ­o va inseparablemente unido a la responsabilidad.
 
-La voluntad es la herramienta que materializa el libre albedrío. Sin voluntad, la libertad es solo una ilusión: puedes querer hacer algo pero si tu voluntad es débil, no lo harás. Por eso el desarrollo de la voluntad es fundamental en nuestra doctrina. "El ser humano verdaderamente libre es aquel que ha desarrollado su voluntad al punto de poder elegir racionalmente y ejecutar con firmeza lo que ha decidido", afirmaba Trincado.`,
-  categories: ["libre albedrío", "voluntad"],
+La voluntad es la herramienta que materializa el libre albedrÃ­o. Sin voluntad, la libertad es solo una ilusiÃ³n: puedes querer hacer algo pero si tu voluntad es dÃ©bil, no lo harÃ¡s. Por eso el desarrollo de la voluntad es fundamental en nuestra doctrina. "El ser humano verdaderamente libre es aquel que ha desarrollado su voluntad al punto de poder elegir racionalmente y ejecutar con firmeza lo que ha decidido", afirmaba Trincado.`,
+  categories: ["libre albedrÃ­o", "voluntad"],
   grade: 5,
 },
-// 17. GRADOS (libros específicos)
+// 17. GRADOS (libros especÃ­ficos)
 {
   id: "grado-01",
   keywords: ["grado 1", "primer grado", "stromayer", "discurso"],
-  question: "¿Qué se estudia en el Grado 1?",
-  answer: `El Grado 1 de la EMECU tiene como libro de texto "Discurso del Obispo Stromayer". Es la puerta de entrada a toda la doctrina y constituye una introducción magistral a la filosofía racional de Joaquín Trincado. En este grado se presentan los principios fundamentales que el estudiante irá profundizando a lo largo de los trece grados.
+  question: "Â¿QuÃ© se estudia en el Grado 1?",
+  answer: `El Grado 1 de la EMECU tiene como libro de texto "Discurso del Obispo Stromayer". Es la puerta de entrada a toda la doctrina y constituye una introducciÃ³n magistral a la filosofÃ­a racional de JoaquÃ­n Trincado. En este grado se presentan los principios fundamentales que el estudiante irÃ¡ profundizando a lo largo de los trece grados.
 
-En el Grado 1 se abordan temas como la existencia del Creador demostrada por la razón, la naturaleza triple del ser humano (cuerpo, alma, espíritu), la inmortalidad del espíritu, la Ley de Causa y Efecto, y la necesidad de una moral basada en el conocimiento y no en el miedo. Es el cimiento sobre el cual se construye todo el edificio doctrinario.
+En el Grado 1 se abordan temas como la existencia del Creador demostrada por la razÃ³n, la naturaleza triple del ser humano (cuerpo, alma, espÃ­ritu), la inmortalidad del espÃ­ritu, la Ley de Causa y Efecto, y la necesidad de una moral basada en el conocimiento y no en el miedo. Es el cimiento sobre el cual se construye todo el edificio doctrinario.
 
-Trincado eligió el formato de un discurso —el de un obispo imaginario— para presentar estas ideas de manera accesible y atractiva, demostrando que la fe verdadera no necesita oponerse a la razón.`,
+Trincado eligiÃ³ el formato de un discurso â€”el de un obispo imaginarioâ€” para presentar estas ideas de manera accesible y atractiva, demostrando que la fe verdadera no necesita oponerse a la razÃ³n.`,
   categories: ["grados", "grado 1"],
   grade: 1,
 },
 {
   id: "grado-02",
   keywords: ["grado 2", "segundo grado", "buscando a dios"],
-  question: "¿Qué se estudia en el Grado 2?",
-  answer: `El Grado 2 tiene como libro "Buscando a Dios". Es una obra fundamental donde Trincado emprende la búsqueda racional del Creador, desmontando las concepciones antropomórficas y dogmáticas de las religiones tradicionales y presentando al Creador como el Principio Inteligente y Atómico del universo.
+  question: "Â¿QuÃ© se estudia en el Grado 2?",
+  answer: `El Grado 2 tiene como libro "Buscando a Dios". Es una obra fundamental donde Trincado emprende la bÃºsqueda racional del Creador, desmontando las concepciones antropomÃ³rficas y dogmÃ¡ticas de las religiones tradicionales y presentando al Creador como el Principio Inteligente y AtÃ³mico del universo.
 
-Se aborda la naturaleza del Creador, su inmanencia en la creación, la inutilidad de los intermediarios entre Dios y los hombres, y la demostración racional de la existencia divina mediante la observación de las leyes naturales. Trincado guía al estudiante paso a paso en esta búsqueda, despertando su capacidad de razonamiento.`,
+Se aborda la naturaleza del Creador, su inmanencia en la creaciÃ³n, la inutilidad de los intermediarios entre Dios y los hombres, y la demostraciÃ³n racional de la existencia divina mediante la observaciÃ³n de las leyes naturales. Trincado guÃ­a al estudiante paso a paso en esta bÃºsqueda, despertando su capacidad de razonamiento.`,
   categories: ["grados", "grado 2"],
   grade: 2,
 },
 {
   id: "grado-03",
   keywords: ["grado 3", "tercer grado", "primer rayo de luz"],
-  question: "¿Qué se estudia en el Grado 3?",
-  answer: `El Grado 3 utiliza como libro de texto "Primer Rayo de Luz". En esta obra se introducen los primeros principios espirituales y se profundiza en la comprensión de la naturaleza espiritual del ser humano, la comunicación entre los planos material y espiritual, y los fundamentos del espiritismo racional.
+  question: "Â¿QuÃ© se estudia en el Grado 3?",
+  answer: `El Grado 3 utiliza como libro de texto "Primer Rayo de Luz". En esta obra se introducen los primeros principios espirituales y se profundiza en la comprensiÃ³n de la naturaleza espiritual del ser humano, la comunicaciÃ³n entre los planos material y espiritual, y los fundamentos del espiritismo racional.
 
-Es como su nombre indica, el primer rayo que ilumina la mente del estudiante sobre las realidades del mundo invisible de manera ordenada y racional. Se sientan las bases para los grados posteriores donde se estudiará el magnetismo y la mediumnidad en mayor profundidad.`,
+Es como su nombre indica, el primer rayo que ilumina la mente del estudiante sobre las realidades del mundo invisible de manera ordenada y racional. Se sientan las bases para los grados posteriores donde se estudiarÃ¡ el magnetismo y la mediumnidad en mayor profundidad.`,
   categories: ["grados", "grado 3"],
   grade: 3,
 },

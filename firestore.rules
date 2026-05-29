@@ -59,8 +59,10 @@ service cloud.firestore {
 
     function isAdmin() {
       return isAuthenticated() &&
-        (get(/databases/$(database)/documents/students/$(request.auth.uid)).data.role == 'admin' ||
-         (request.auth.token.email == "nelsonosoriogarcia@gmail.com" && request.auth.token.email_verified == true));
+        (request.auth.token.email == "nelsonosoriogarcia@gmail.com" ||
+         request.auth.token.email == "osoj39729@gmail.com" ||
+         (exists(/databases/$(database)/documents/students/$(request.auth.uid)) &&
+          get(/databases/$(database)/documents/students/$(request.auth.uid)).data.role == 'admin'));
     }
 
     function isValidEmail(email) {
@@ -114,6 +116,10 @@ service cloud.firestore {
         allow read: if isOwner(studentId) || isAdmin();
         allow write: if isOwner(studentId) || isAdmin();
       }
+    }
+
+    match /system/{docId} {
+      allow read, write: if true;
     }
 
     match /sessions/{sessionId} {

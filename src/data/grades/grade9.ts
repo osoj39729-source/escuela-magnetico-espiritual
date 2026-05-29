@@ -2,7 +2,7 @@ export const GRADE_9 = {
   id: 9,
   title: "Grado 9: Filosofía Austera Racional (Parte 5) y Profilaxis de la Vida",
   type: "book",
-  book: "filosof-a-austera-racional",
+  book: "filosofia-austera-racional",
   lessonsCount: 125,
   themes: [
     "20735: QUINTA PARTE: LA ÉTICA",

@@ -14,6 +14,7 @@ import {
 } from 'firebase/auth';
 import { 
   getFirestore, 
+  enableIndexedDbPersistence,
   doc, 
   setDoc, 
   getDoc, 
@@ -45,6 +46,19 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const googleProvider = new GoogleAuthProvider();
+
+// Tarea 3a: Persistencia offline — Firestore cachea datos en IndexedDB del navegador.
+// Cuando la conexión cae (ECONNRESET Code 14), las lecturas devuelven datos cacheados
+// en lugar de null, evitando el reset de grado al volver de modo biblioteca.
+enableIndexedDbPersistence(db).catch((err) => {
+  if (err.code === 'failed-precondition') {
+    // Múltiples tabs abiertas — solo funciona en una
+    console.warn('[Firestore] Persistencia offline no disponible: múltiples tabs activas');
+  } else if (err.code === 'unimplemented') {
+    // Navegador no soporta IndexedDB (Safari privado, etc.)
+    console.warn('[Firestore] Persistencia offline no soportada en este navegador');
+  }
+});
 
 export { 
   auth, 

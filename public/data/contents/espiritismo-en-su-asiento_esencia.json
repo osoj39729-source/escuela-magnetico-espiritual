@@ -1,23 +1,25 @@
 {
   "8: ESCUELA MAGNÉTICO - ESPIRITUAL DE LA COMUNA UNIVERSAL: ESPIRITISMO EN SU ASIENTO": {
-    "PilotoDeCoherencia": "El establecimiento jurídico y moral de la doctrina en su asiento inamovible de razón y justicia.",
-    "CitaInelutable": "El espiritismo está en su asiento y nadie podrá moverlo.",
-    "EjemploPedagogico": "Como la brújula que marca el norte, este manual guía al adepto por el camino recto.",
+    "PilotoDeCoherencia": "Presentación institucional de la obra definitiva que establece el espiritismo en su base inamovible de razón y justicia, bajo la autoría de Joaquín Trincado y la EMECU.",
+    "CitaInelutable": "ESPIRITISMO EN SU ASIENTO. JOAQUÍN TRINCADO.",
+    "EjemploPedagogico": "El acta de fundación de una nación que define sus leyes supremas e irrevocables. Este libro es el acta constitutiva del espiritismo racional.",
     "IdeasPrincipales": [
-      "Razón y Justicia",
-      "Ley de Amor"
+      "Fundamentación Doctrinal",
+      "Autoría de Trincado",
+      "Asiento de Justicia"
     ],
     "PuntosImportantes": [
-      "Eloí es el único Padre",
-      "La Comuna es el fin"
+      "Establece el Espiritismo Luz y Verdad como el régimen definitivo de la Tierra",
+      "Define la Escuela Magnético-Espiritual como el vehículo de la Comuna Universal",
+      "Marca el fin de la era del crepúsculo y el inicio del reinado del espíritu"
     ],
     "NodosSinapticos": [
-      "Rigor",
-      "Justicia",
-      "Orden"
+      "EMECU",
+      "Joaquin_Trincado",
+      "Asiento_Doctrinal"
     ],
     "ContextoDiccionario": {
-      "Justicia": "La ley inexorable de dar a cada uno lo que ha ganado."
+      "Asiento_Doctrinal": "La base firme e inamovible de principios racionales sobre la cual se edifica la doctrina espírita, impidiendo desviaciones místicas."
     }
   },
   "24: PROCLAMA": {
@@ -159,24 +161,26 @@
     }
   },
   "38: MÁXIMA: Por el Fruto conocerás el árbol.": {
-    "PilotoDeCoherencia": "El establecimiento jurídico y moral de la doctrina en su asiento inamovible de razón y justicia.",
-    "CitaInelutable": "El espiritismo está en su asiento y nadie podrá moverlo.",
-    "EjemploPedagogico": "Como la brújula que marca el norte, este manual guía al adepto por el camino recto.",
+    "PilotoDeCoherencia": "El principio de validación por obras: la única forma de juzgar la elevación de un espíritu o la veracidad de una idea es a través de sus resultados prácticos.",
+    "CitaInelutable": "MÁXIMA: Por el Fruto conocerás el árbol.",
+    "EjemploPedagogico": "Probar una manzana para saber si el árbol está sano. No importa cuánto brille la cáscara; si el sabor es amargo, el árbol tiene un problema. Las obras son el sabor del espíritu.",
     "IdeasPrincipales": [
-      "Razón y Justicia",
-      "Ley de Amor"
+      "Ley de Obras",
+      "Validación por Frutos",
+      "Justicia de Hechos"
     ],
     "PuntosImportantes": [
-      "Eloí es el único Padre",
-      "La Comuna es el fin"
+      "Las palabras no valen nada sin hechos que las respalden",
+      "Es la defensa contra los falsos maestros y mixtificadores",
+      "La justicia universal premia frutos, no intenciones ni rezos"
     ],
     "NodosSinapticos": [
-      "Rigor",
-      "Justicia",
-      "Orden"
+      "Ley_de_Obras",
+      "Validacion_por_Frutos",
+      "Justicia_de_Hechos"
     ],
     "ContextoDiccionario": {
-      "Justicia": "La ley inexorable de dar a cada uno lo que ha ganado."
+      "Ley_de_Obras": "El principio de justicia que establece que el valor de un ser se determina exclusivamente por sus acciones y producciones."
     }
   },
   "40: Consejo: Busca el consuelo en la verdad.": {
@@ -203,24 +207,26 @@
     }
   },
   "44: AXIOMA: En él estaba la vida, y la vida es la luz de los hombres.": {
-    "PilotoDeCoherencia": "El establecimiento jurídico y moral de la doctrina en su asiento inamovible de razón y justicia.",
-    "CitaInelutable": "El espiritismo está en su asiento y nadie podrá moverlo.",
-    "EjemploPedagogico": "Como la brújula que marca el norte, este manual guía al adepto por el camino recto.",
+    "PilotoDeCoherencia": "Identificación de la inteligencia humana como una emanación de la vida divina, estableciendo que razonar es el acto más sagrado del hombre.",
+    "CitaInelutable": "En Él estaba la vida, y la vida es la luz de los hombres.",
+    "EjemploPedagogico": "Una bombilla que brilla gracias a la electricidad de la central. Nosotros somos la bombilla y la 'Vida' es la central eléctrica que nos permite dar luz (razón).",
     "IdeasPrincipales": [
-      "Razón y Justicia",
-      "Ley de Amor"
+      "Vida como Luz",
+      "Inteligencia Divina",
+      "Emanación del Creador"
     ],
     "PuntosImportantes": [
-      "Eloí es el único Padre",
-      "La Comuna es el fin"
+      "La vida no es un accidente biológico, sino una luz espiritual",
+      "La luz de los hombres es su capacidad de comprender y crear",
+      "No hay separación entre el Creador (Vida) y el hombre (Luz)"
     ],
     "NodosSinapticos": [
-      "Rigor",
-      "Justicia",
-      "Orden"
+      "Vida_como_Luz",
+      "Inteligencia_Divina",
+      "Emanacion_del_Creador"
     ],
     "ContextoDiccionario": {
-      "Justicia": "La ley inexorable de dar a cada uno lo que ha ganado."
+      "Vida_como_Luz": "Concepto que define a la inteligencia y la conciencia como la manifestación luminosa de la energía vital del Creador."
     }
   },
   "46: PROGRAMA PERPETUO DE ESTUDIOS: LA VIDA ETERNA Y CONTINUADA": {
@@ -247,108 +253,118 @@
     }
   },
   "50: DISTRIBUCIÓN: CONFERENCIAS VERBALES Y MEDIANÍMICAS": {
-    "PilotoDeCoherencia": "El establecimiento jurídico y moral de la doctrina en su asiento inamovible de razón y justicia.",
-    "CitaInelutable": "El espiritismo está en su asiento y nadie podrá moverlo.",
-    "EjemploPedagogico": "Como la brújula que marca el norte, este manual guía al adepto por el camino recto.",
+    "PilotoDeCoherencia": "Explicación del método pedagógico de la Escuela, que integra la razón humana (verbal) con la sabiduría del mundo espiritual (medianímica) en un sistema coherente.",
+    "CitaInelutable": "DISTRIBUCIÓN: CONFERENCIAS VERBALES Y MEDIANÍMICAS.",
+    "EjemploPedagogico": "Un laboratorio donde el científico (verbal) consulta bases de datos globales (medianímica) para validar sus experimentos. La verdad surge de la coincidencia de ambos.",
     "IdeasPrincipales": [
-      "Razón y Justicia",
-      "Ley de Amor"
+      "Conferencias Verbales",
+      "Comunicaciones Medianímicas",
+      "Método Pedagógico"
     ],
     "PuntosImportantes": [
-      "Eloí es el único Padre",
-      "La Comuna es el fin"
+      "La mediumnidad debe estar siempre bajo el control de la razón",
+      "Las conferencias verbales preparan el ambiente para la comunicación de luz",
+      "No se admite nada por fe; todo debe ser analizado y comprobado"
     ],
     "NodosSinapticos": [
-      "Rigor",
-      "Justicia",
-      "Orden"
+      "Conferencias_Verbales",
+      "Comunicaciones_Medianimicas",
+      "Metodo_Pedagogico"
     ],
     "ContextoDiccionario": {
-      "Justicia": "La ley inexorable de dar a cada uno lo que ha ganado."
+      "Método_Pedagógico": "El sistema de enseñanza de la EMECU basado en el estudio racional de textos y la experimentación mediúnica controlada."
     }
   },
   "74: Prólogo de la 2ª. Edición": {
-    "PilotoDeCoherencia": "El establecimiento jurídico y moral de la doctrina en su asiento inamovible de razón y justicia.",
-    "CitaInelutable": "El espiritismo está en su asiento y nadie podrá moverlo.",
-    "EjemploPedagogico": "Como la brújula que marca el norte, este manual guía al adepto por el camino recto.",
+    "PilotoDeCoherencia": "Fundamentación de la obra como una herramienta de limpieza mental y social, destinada a derribar los muros de la ignorancia y el prejuicio religioso.",
+    "CitaInelutable": "Como Draga y como Aplanadora, mandamos por delante el acerado folleto Strossmayer y el aplastante de errores: El Primer Rayo de Luz.",
+    "EjemploPedagogico": "Un equipo de saneamiento que entra en un pantano para canalizar las aguas. La 'Draga' quita el lodo (dogma) y la 'Aplanadora' prepara el suelo para el nuevo edificio social.",
     "IdeasPrincipales": [
-      "Razón y Justicia",
-      "Ley de Amor"
+      "Draga Doctrinal",
+      "Aplanadora de Errores",
+      "Luz en el Camino"
     ],
     "PuntosImportantes": [
-      "Eloí es el único Padre",
-      "La Comuna es el fin"
+      "La obra de Trincado es una demolición necesaria de los viejos errores",
+      "El Primer Rayo de Luz y Strossmayer son los cimientos de este estudio",
+      "Busca abrir canales limpios para que la razón de los hombres no se estanque"
     ],
     "NodosSinapticos": [
-      "Rigor",
-      "Justicia",
-      "Orden"
+      "Draga_Doctrinal",
+      "Aplanadora_de_Errores",
+      "Luz_en_el_Camino"
     ],
     "ContextoDiccionario": {
-      "Justicia": "La ley inexorable de dar a cada uno lo que ha ganado."
+      "Draga_Doctrinal": "Metáfora que describe la acción de la doctrina de remover los errores profundos y sedimentados de la mente humana."
     }
   },
   "95: llevar a sus lectores a las mansiones de “ATHANASIA” (inmortalidad) seguro de conseguir su": {
-    "PilotoDeCoherencia": "El establecimiento jurídico y moral de la doctrina en su asiento inamovible de razón y justicia.",
-    "CitaInelutable": "El espiritismo está en su asiento y nadie podrá moverlo.",
-    "EjemploPedagogico": "Como la brújula que marca el norte, este manual guía al adepto por el camino recto.",
+    "PilotoDeCoherencia": "Promesa de elevación espiritual hacia la inmortalidad consciente, donde el individuo reconoce su naturaleza eterna y se libera del temor a lo desconocido.",
+    "CitaInelutable": "llevar a sus lectores a las mansiones de «ATHANASIA» (inmortalidad) seguro de conseguir su fin.",
+    "EjemploPedagogico": "Recibir la llave de una casa eterna. Ya no eres un inquilino temporal en la tierra; ahora sabes que eres el dueño de tu propia eternidad consciente.",
     "IdeasPrincipales": [
-      "Razón y Justicia",
-      "Ley de Amor"
+      "Athanasia",
+      "Inmortalidad Consciente",
+      "Mansiones Espirituales"
     ],
     "PuntosImportantes": [
-      "Eloí es el único Padre",
-      "La Comuna es el fin"
+      "La inmortalidad no se gana, se reconoce a través del estudio",
+      "Athanasia es el estado del espíritu que ya no puede ser engañado por la materia",
+      "La lectura razonada es el mapa para llegar a este estado de luz"
     ],
     "NodosSinapticos": [
-      "Rigor",
-      "Justicia",
-      "Orden"
+      "Athanasia",
+      "Inmortalidad_Consciente",
+      "Mansiones_Espirituales"
     ],
     "ContextoDiccionario": {
-      "Justicia": "La ley inexorable de dar a cada uno lo que ha ganado."
+      "Athanasia": "Término griego que significa inmortalidad, utilizado por Trincado para designar el estado de conciencia plena de la vida eterna."
     }
   },
   "99: ilustrado a los hombres en los axiomas de la verdad suprema, en más de CIEN CÁTEDRAS,": {
-    "PilotoDeCoherencia": "El establecimiento jurídico y moral de la doctrina en su asiento inamovible de razón y justicia.",
-    "CitaInelutable": "El espiritismo está en su asiento y nadie podrá moverlo.",
-    "EjemploPedagogico": "Como la brújula que marca el norte, este manual guía al adepto por el camino recto.",
+    "PilotoDeCoherencia": "Evidencia del progreso de la Escuela a través de la formación de centros de sabiduría (cátedras) que elevan el nivel intelectual y moral de la humanidad.",
+    "CitaInelutable": "ilustrado a los hombres en los axiomas de la verdad suprema, en más de CIEN CÁTEDRAS.",
+    "EjemploPedagogico": "Una red de faros que iluminan una costa peligrosa. Cada cátedra es un faro que evita que los buscadores de la verdad naufraguen en el misticismo.",
     "IdeasPrincipales": [
-      "Razón y Justicia",
-      "Ley de Amor"
+      "Cátedras de Sabiduría",
+      "Verdad Suprema",
+      "Elevación del Espíritu"
     ],
     "PuntosImportantes": [
-      "Eloí es el único Padre",
-      "La Comuna es el fin"
+      "La verdad suprema no es una creencia, sino una ilustración axiomática",
+      "Las cátedras son el núcleo de la Comuna Universal en formación",
+      "La meta es que cada hombre sea una cátedra viviente de sabiduría"
     ],
     "NodosSinapticos": [
-      "Rigor",
-      "Justicia",
-      "Orden"
+      "Catedras_de_Sabiduria",
+      "Verdad_Suprema",
+      "Elevacion_del_Espiritu"
     ],
     "ContextoDiccionario": {
-      "Justicia": "La ley inexorable de dar a cada uno lo que ha ganado."
+      "Cátedras_de_Sabiduría": "Centros de estudio y fraternidad de la EMECU donde se imparte la doctrina del Espiritismo Luz y Verdad."
     }
   },
   "137: “Siempre más allá”": {
-    "PilotoDeCoherencia": "El establecimiento jurídico y moral de la doctrina en su asiento inamovible de razón y justicia.",
-    "CitaInelutable": "El espiritismo está en su asiento y nadie podrá moverlo.",
-    "EjemploPedagogico": "Como la brújula que marca el norte, este manual guía al adepto por el camino recto.",
+    "PilotoDeCoherencia": "La divisa del progreso infinito: el espíritu no tiene límites en su evolución, impulsado por una voluntad que busca la perfección eterna en cada grado de existencia.",
+    "CitaInelutable": "¡Siempre más allá!",
+    "EjemploPedagogico": "Un telescopio que siempre encuentra una galaxia nueva detrás de la última descubierta. El espíritu es ese lente que nunca deja de enfocar nuevos horizontes de saber.",
     "IdeasPrincipales": [
-      "Razón y Justicia",
-      "Ley de Amor"
+      "Progreso Infinito",
+      "Superación Espiritual",
+      "Evolución Eterna"
     ],
     "PuntosImportantes": [
-      "Eloí es el único Padre",
-      "La Comuna es el fin"
+      "El estancamiento es la única muerte real para el espíritu",
+      "Cada meta alcanzada es solo el punto de partida para una superior",
+      "La ley de progreso obliga a la actividad incesante"
     ],
     "NodosSinapticos": [
-      "Rigor",
-      "Justicia",
-      "Orden"
+      "Progreso_Infinito",
+      "Superacion_Espiritual",
+      "Evolucion_Eterna"
     ],
     "ContextoDiccionario": {
-      "Justicia": "La ley inexorable de dar a cada uno lo que ha ganado."
+      "Siempre_Más_Allá": "El lema de la EMECU que resume la ley del progreso infinito y la superación constante del espíritu."
     }
   },
   "148: Premisa": {
@@ -398,129 +414,141 @@
     }
   },
   "584: LIBRO PRIMERO – PARTE PRIMERA": {
-    "PilotoDeCoherencia": "El establecimiento jurídico y moral de la doctrina en su asiento inamovible de razón y justicia.",
-    "CitaInelutable": "El espiritismo está en su asiento y nadie podrá moverlo.",
-    "EjemploPedagogico": "Como la brújula que marca el norte, este manual guía al adepto por el camino recto.",
+    "PilotoDeCoherencia": "Inicio de la estructura técnica de la doctrina: el estudio de la metafísica racional y la fenomenología como ciencias del espíritu.",
+    "CitaInelutable": "LIBRO PRIMERO – PARTE PRIMERA.",
+    "EjemploPedagogico": "El plano fundamental de una catedral. Antes de poner los vitrales, se estudian las columnas y la piedra que sostendrá todo el peso de la sabiduría.",
     "IdeasPrincipales": [
-      "Razón y Justicia",
-      "Ley de Amor"
+      "Estructura Doctrinal",
+      "Metafísica Racional",
+      "Fundamentos"
     ],
     "PuntosImportantes": [
-      "Eloí es el único Padre",
-      "La Comuna es el fin"
+      "Organiza el conocimiento en niveles de profundidad lógica",
+      "Establece la primacía del espíritu sobre la forma",
+      "Es el inicio del 'Asiento' inamovible de la razón"
     ],
     "NodosSinapticos": [
-      "Rigor",
-      "Justicia",
-      "Orden"
+      "Estructura_Doctrinal",
+      "Metafisica_Racional",
+      "Fundamentos"
     ],
     "ContextoDiccionario": {
-      "Justicia": "La ley inexorable de dar a cada uno lo que ha ganado."
+      "Metafísica_Racional": "El estudio científico y lógico de las realidades que trascienden la materia densa, basado en la evidencia del espíritu."
     }
   },
   "588: CAPÍTULO I: ¿Qué es el espiritismo?": {
-    "PilotoDeCoherencia": "El establecimiento jurídico y moral de la doctrina en su asiento inamovible de razón y justicia.",
-    "CitaInelutable": "El espiritismo está en su asiento y nadie podrá moverlo.",
-    "EjemploPedagogico": "Como la brújula que marca el norte, este manual guía al adepto por el camino recto.",
+    "PilotoDeCoherencia": "Definición axiomática y definitiva: el espiritismo es la vida misma, la sabiduría y omnipotencia de todos los espíritus solidarizados bajo la única ley del amor.",
+    "CitaInelutable": "El espiritismo es la vida eterna y continuada... no es religión... es el universo solidarizado.",
+    "EjemploPedagogico": "La red de internet. No es una página web ni un cable, sino la suma de toda la información y conexión del mundo. El espiritismo es esa 'red' pero de conciencias eternas.",
     "IdeasPrincipales": [
-      "Razón y Justicia",
-      "Ley de Amor"
+      "Definición del Espiritismo",
+      "Vida Real",
+      "Omnipotencia Solidarizada"
     ],
     "PuntosImportantes": [
-      "Eloí es el único Padre",
-      "La Comuna es el fin"
+      "No es religión porque no admite dogmas ni ritos",
+      "Es la ciencia de las ciencias porque estudia la causa de todo",
+      "Es el arma del Padre para destruir todas las religiones y errores"
     ],
     "NodosSinapticos": [
-      "Rigor",
-      "Justicia",
-      "Orden"
+      "Definicion_del_Espiritismo",
+      "Vida_Real",
+      "Omnipotencia_Solidarizada"
     ],
     "ContextoDiccionario": {
-      "Justicia": "La ley inexorable de dar a cada uno lo que ha ganado."
+      "Definición_del_Espiritismo": "Axioma que establece al Espiritismo como la vida eterna y continuada, y la sabiduría omnipotente de la creación solidarizada."
     }
   },
   "699: CAPÍTULO II: Lo que abarca el espiritismo": {
-    "PilotoDeCoherencia": "El establecimiento jurídico y moral de la doctrina en su asiento inamovible de razón y justicia.",
-    "CitaInelutable": "El espiritismo está en su asiento y nadie podrá moverlo.",
-    "EjemploPedagogico": "Como la brújula que marca el norte, este manual guía al adepto por el camino recto.",
+    "PilotoDeCoherencia": "El espiritismo no es una parcela del saber, sino la síntesis total que abarca todas las ciencias, artes y leyes del universo bajo el prisma del espíritu.",
+    "CitaInelutable": "Lo que abarca el espiritismo... nada hay que no sea un fenómeno del espiritismo.",
+    "EjemploPedagogico": "La luz blanca que contiene todos los colores del arcoíris. El espiritismo es esa luz blanca que unifica todas las ramas del conocimiento humano.",
     "IdeasPrincipales": [
-      "Razón y Justicia",
-      "Ley de Amor"
+      "Amplitud Doctrinal",
+      "Ciencia Universal",
+      "Fenomenología Total"
     ],
     "PuntosImportantes": [
-      "Eloí es el único Padre",
-      "La Comuna es el fin"
+      "Abarca lo visible y lo invisible, la materia y el espíritu",
+      "Es la base de la justicia, la sociología y la física universal",
+      "Nada queda fuera de su jurisdicción porque todo emana de la misma Ley"
     ],
     "NodosSinapticos": [
-      "Rigor",
-      "Justicia",
-      "Orden"
+      "Amplitud_Doctrinal",
+      "Ciencia_Universal",
+      "Fenomenologia_Total"
     ],
     "ContextoDiccionario": {
-      "Justicia": "La ley inexorable de dar a cada uno lo que ha ganado."
+      "Amplitud_Doctrinal": "La característica del Espiritismo Racional de no tener límites en su estudio, abarcando todas las dimensiones de la existencia."
     }
   },
   "845: CAPÍTULO III: Cómo se estudia el espiritismo": {
-    "PilotoDeCoherencia": "El establecimiento jurídico y moral de la doctrina en su asiento inamovible de razón y justicia.",
-    "CitaInelutable": "El espiritismo está en su asiento y nadie podrá moverlo.",
-    "EjemploPedagogico": "Como la brújula que marca el norte, este manual guía al adepto por el camino recto.",
+    "PilotoDeCoherencia": "El estudio del espiritismo exige una higiene mental absoluta: desechar prejuicios dogmáticos y aplicar una razón fría y matemática sobre los hechos demostrables.",
+    "CitaInelutable": "Cómo se estudia el espiritismo... con la razón sana y sin prejuicios.",
+    "EjemploPedagogico": "Limpiar un cristal empañado antes de mirar a través de él. Los prejuicios son el vapor; la razón es el paño que limpia para ver la verdad clara.",
     "IdeasPrincipales": [
-      "Razón y Justicia",
-      "Ley de Amor"
+      "Estudio Racional",
+      "Higiene Mental",
+      "Análisis de Hechos"
     ],
     "PuntosImportantes": [
-      "Eloí es el único Padre",
-      "La Comuna es el fin"
+      "Se estudia observando la vida diaria, no solo en libros",
+      "Exige valentía para abandonar creencias cómodas pero falsas",
+      "La duda metódica es preferible a la fe ciega"
     ],
     "NodosSinapticos": [
-      "Rigor",
-      "Justicia",
-      "Orden"
+      "Estudio_Racional",
+      "Higiene_Mental",
+      "Analisis_de_Hechos"
     ],
     "ContextoDiccionario": {
-      "Justicia": "La ley inexorable de dar a cada uno lo que ha ganado."
+      "Higiene_Mental": "El proceso de limpieza de la conciencia de prejuicios, miedos y dogmas para permitir el libre ejercicio de la razón."
     }
   },
   "1078: CAPÍTULO IV: Cómo es necio negar el Espiritismo": {
-    "PilotoDeCoherencia": "El establecimiento jurídico y moral de la doctrina en su asiento inamovible de razón y justicia.",
-    "CitaInelutable": "El espiritismo está en su asiento y nadie podrá moverlo.",
-    "EjemploPedagogico": "Como la brújula que marca el norte, este manual guía al adepto por el camino recto.",
+    "PilotoDeCoherencia": "Denuncia de la necedad materialista: negar el espíritu es un acto irracional de quien disfruta de la vida (efecto) mientras cierra los ojos a su causa (espíritu).",
+    "CitaInelutable": "Cómo es necio negar el Espiritismo... porque es la vida.",
+    "EjemploPedagogico": "Un orador que usa su voz para decir que el aire no existe. El negador usa su espíritu para decir que el espíritu no existe; es una contradicción viviente.",
     "IdeasPrincipales": [
-      "Razón y Justicia",
-      "Ley de Amor"
+      "Necedad del Negador",
+      "Evidencia de la Vida",
+      "Soberbia Materialista"
     ],
     "PuntosImportantes": [
-      "Eloí es el único Padre",
-      "La Comuna es el fin"
+      "La negación nace a menudo del miedo a la responsabilidad ante la Ley",
+      "Es imposible explicar la inteligencia sin el factor espiritual",
+      "El negador se priva a sí mismo de la luz del camino"
     ],
     "NodosSinapticos": [
-      "Rigor",
-      "Justicia",
-      "Orden"
+      "Necedad_del_Negador",
+      "Evidencia_de_la_Vida",
+      "Soberbia_Materialista"
     ],
     "ContextoDiccionario": {
-      "Justicia": "La ley inexorable de dar a cada uno lo que ha ganado."
+      "Necedad_Materialista": "La postura irracional de quienes niegan la existencia del espíritu a pesar de ser la causa evidente de su propia inteligencia."
     }
   },
   "1187: CAPÍTULO V: Todo el universo es el espiritismo y su maestro, Eloí": {
-    "PilotoDeCoherencia": "El establecimiento jurídico y moral de la doctrina en su asiento inamovible de razón y justicia.",
-    "CitaInelutable": "El espiritismo está en su asiento y nadie podrá moverlo.",
-    "EjemploPedagogico": "Como la brújula que marca el norte, este manual guía al adepto por el camino recto.",
+    "PilotoDeCoherencia": "Visión cosmogónica de la Escuela: el universo es una gran institución educativa donde cada mundo es un aula y Eloí es el único Maestro y Padre común.",
+    "CitaInelutable": "Todo el universo es el espiritismo y su maestro, Eloí... El universo es sólo un colegio.",
+    "EjemploPedagogico": "Un sistema universitario intergaláctico. Los planetas son campus y los espíritus son estudiantes que van pasando de grado según su esfuerzo y saber.",
     "IdeasPrincipales": [
-      "Razón y Justicia",
-      "Ley de Amor"
+      "Universo Escuela",
+      "Maestro Eloí",
+      "Solidaridad Cósmica"
     ],
     "PuntosImportantes": [
-      "Eloí es el único Padre",
-      "La Comuna es el fin"
+      "Todos los seres estamos bajo un contrato de solidaridad universal",
+      "Eloí no es un dios religioso, sino el Rector Supremo de la Vida",
+      "La meta del estudio es la graduación del espíritu en la sabiduría plena"
     ],
     "NodosSinapticos": [
-      "Rigor",
-      "Justicia",
-      "Orden"
+      "Universo_Escuela",
+      "Maestro_Eloi",
+      "Solidaridad_Cosmica"
     ],
     "ContextoDiccionario": {
-      "Justicia": "La ley inexorable de dar a cada uno lo que ha ganado."
+      "Universo_Escuela": "Metáfora trincadista que define al cosmos como un sistema educativo infinito para el progreso de los espíritus."
     }
   },
   "1438: SEGUNDA PARTE": {
@@ -547,45 +575,49 @@
     }
   },
   "1442: CAPÍTULO I: Enemigos del espiritismo": {
-    "PilotoDeCoherencia": "El establecimiento jurídico y moral de la doctrina en su asiento inamovible de razón y justicia.",
-    "CitaInelutable": "El espiritismo está en su asiento y nadie podrá moverlo.",
-    "EjemploPedagogico": "Como la brújula que marca el norte, este manual guía al adepto por el camino recto.",
+    "PilotoDeCoherencia": "Identificación de los detractores: el enemigo más peligroso no es la oposición externa, sino la infección interna del misticismo y la ignorancia que debilita la doctrina.",
+    "CitaInelutable": "El microbio que causó su tisis... los enemigos del espiritismo son la ignorancia y el misticismo.",
+    "EjemploPedagogico": "Un barco que se hunde no por las olas de afuera, sino por una vía de agua interna que nadie quiere tapar. El misticismo es esa vía de agua en el barco del espiritismo.",
     "IdeasPrincipales": [
-      "Razón y Justicia",
-      "Ley de Amor"
+      "Enemigos Internos",
+      "Misticismo Destructivo",
+      "Religiones Externas"
     ],
     "PuntosImportantes": [
-      "Eloí es el único Padre",
-      "La Comuna es el fin"
+      "Las religiones atacan por miedo a perder su dominio sobre las conciencias",
+      "El misticismo dentro de los centros es una traición a la razón",
+      "La única defensa es el estudio austero y la práctica de la justicia"
     ],
     "NodosSinapticos": [
-      "Rigor",
-      "Justicia",
-      "Orden"
+      "Enemigos_Internos",
+      "Misticismo_Destructivo",
+      "Religiones_Externas"
     ],
     "ContextoDiccionario": {
-      "Justicia": "La ley inexorable de dar a cada uno lo que ha ganado."
+      "Enemigos_Internos": "Término que designa a los adeptos que, por ignorancia o misticismo, desvirtúan la doctrina y causan su desprestigio."
     }
   },
   "1616: CAPITULO II: Los médiums; lo que son y sus cualidades": {
-    "PilotoDeCoherencia": "El establecimiento jurídico y moral de la doctrina en su asiento inamovible de razón y justicia.",
-    "CitaInelutable": "El espiritismo está en su asiento y nadie podrá moverlo.",
-    "EjemploPedagogico": "Como la brújula que marca el norte, este manual guía al adepto por el camino recto.",
+    "PilotoDeCoherencia": "Definición técnica del médium como un instrumento de comunicación vibratoria, cuyo valor reside en su higiene moral y su capacidad de despojo personal.",
+    "CitaInelutable": "Los médiums; lo que son y sus cualidades... un puente vibratorio.",
+    "EjemploPedagogico": "Un traductor en una conferencia internacional. Si el traductor pone sus propias ideas en vez de las del orador, la comunicación falla. El médium debe ser un traductor fiel.",
     "IdeasPrincipales": [
-      "Razón y Justicia",
-      "Ley de Amor"
+      "Mediumnidad Racional",
+      "Puente Vibratorio",
+      "Cualidades Mediúnicas"
     ],
     "PuntosImportantes": [
-      "Eloí es el único Padre",
-      "La Comuna es el fin"
+      "La facultad es un deber, no un don privilegiado",
+      "La moralidad del médium determina la calidad de los espíritus que se comunican",
+      "El médium debe ser el primero en analizar racionalmente lo que recibe"
     ],
     "NodosSinapticos": [
-      "Rigor",
-      "Justicia",
-      "Orden"
+      "Mediumnidad_Racional",
+      "Puente_Vibratorio",
+      "Cualidades_Mediunicas"
     ],
     "ContextoDiccionario": {
-      "Justicia": "La ley inexorable de dar a cada uno lo que ha ganado."
+      "Mediumnidad_Racional": "La práctica de la comunicación espiritual basada en leyes naturales y controlada rigurosamente por la razón humana."
     }
   },
   "1720: discusiones, les estorba la facultad.": {
@@ -612,87 +644,95 @@
     }
   },
   "1796: CAPÍTULO III: Las comunicaciones y manifestaciones": {
-    "PilotoDeCoherencia": "El establecimiento jurídico y moral de la doctrina en su asiento inamovible de razón y justicia.",
-    "CitaInelutable": "El espiritismo está en su asiento y nadie podrá moverlo.",
-    "EjemploPedagogico": "Como la brújula que marca el norte, este manual guía al adepto por el camino recto.",
+    "PilotoDeCoherencia": "Criterio de validación de mensajes: la autoridad de una comunicación no reside en el nombre que se firma, sino en la profundidad y utilidad del fondo doctrinario.",
+    "CitaInelutable": "Las comunicaciones y manifestaciones... no es el nombre, es el fondo.",
+    "EjemploPedagogico": "Un billete de banco. No importa quién te lo entregue, lo que importa es que sea auténtico y tenga valor legal. La verdad es el valor legal del mensaje.",
     "IdeasPrincipales": [
-      "Razón y Justicia",
-      "Ley de Amor"
+      "Análisis de Comunicaciones",
+      "Fondo sobre Forma",
+      "Manifestaciones Espirituales"
     ],
     "PuntosImportantes": [
-      "Eloí es el único Padre",
-      "La Comuna es el fin"
+      "Los nombres ilustres son a menudo usados por espíritus burlones",
+      "Una comunicación de luz siempre enseña algo nuevo o aclara un error",
+      "Las manifestaciones físicas deben servir siempre a un fin pedagógico"
     ],
     "NodosSinapticos": [
-      "Rigor",
-      "Justicia",
-      "Orden"
+      "Analisis_de_Comunicaciones",
+      "Fondo_sobre_Forma",
+      "Manifestaciones_Espirituales"
     ],
     "ContextoDiccionario": {
-      "Justicia": "La ley inexorable de dar a cada uno lo que ha ganado."
+      "Fondo_sobre_Forma": "Principio crítico que prioriza el contenido moral e intelectual de una comunicación sobre la identidad pretendida del espíritu."
     }
   },
   "1996: CAPÍTULO IV: Consecuencias del mal uso del espiritismo": {
-    "PilotoDeCoherencia": "El establecimiento jurídico y moral de la doctrina en su asiento inamovible de razón y justicia.",
-    "CitaInelutable": "El espiritismo está en su asiento y nadie podrá moverlo.",
-    "EjemploPedagogico": "Como la brújula que marca el norte, este manual guía al adepto por el camino recto.",
+    "PilotoDeCoherencia": "Advertencia sobre la muerte moral: el uso del espiritismo para el lucro, la curiosidad o el misticismo convierte al adepto en un autómata de voluntades bajas.",
+    "CitaInelutable": "Consecuencias del mal uso del espiritismo... tisis del espiritismo... beatería y fanatismo.",
+    "EjemploPedagogico": "Convertir un telescopio en un juguete para ver la vida de los vecinos. Dejas de ver las estrellas y te hundes en el chisme. El mal uso te ciega para la luz universal.",
     "IdeasPrincipales": [
-      "Razón y Justicia",
-      "Ley de Amor"
+      "Mal Uso del Espiritismo",
+      "Obsesión Espiritual",
+      "Muerte Moral"
     ],
     "PuntosImportantes": [
-      "Eloí es el único Padre",
-      "La Comuna es el fin"
+      "El espiritualismo beato es el 'microbio' que enferma la doctrina",
+      "La falta de energía y razón conduce a la esclavitud mediúnica",
+      "El fanatismo es tan dañino como la ignorancia en las filas de la Escuela"
     ],
     "NodosSinapticos": [
-      "Rigor",
-      "Justicia",
-      "Orden"
+      "Mal_Uso_del_Espiritismo",
+      "Obsesion_Espiritual",
+      "Muerte_Moral"
     ],
     "ContextoDiccionario": {
-      "Justicia": "La ley inexorable de dar a cada uno lo que ha ganado."
+      "Muerte_Moral": "Estado de degradación de la conciencia que ocurre cuando el individuo utiliza conocimientos superiores para fines egoístas o místicos."
     }
   },
   "2156: religiones y lo recomiendan así.": {
-    "PilotoDeCoherencia": "El establecimiento jurídico y moral de la doctrina en su asiento inamovible de razón y justicia.",
-    "CitaInelutable": "El espiritismo está en su asiento y nadie podrá moverlo.",
-    "EjemploPedagogico": "Como la brújula que marca el norte, este manual guía al adepto por el camino recto.",
+    "PilotoDeCoherencia": "Contraste entre el mandato religioso de sumisión y la obligación espírita de libertad y responsabilidad; el espiritismo no recomienda, sino que obliga al cumplimiento de la ley por convicción racional.",
+    "CitaInelutable": "religiones y lo recomiendan así... pero el espiritismo obliga a la verdad.",
+    "EjemploPedagogico": "Un niño al que le dicen 'cree porque yo lo digo' (religión), frente a un estudiante al que le muestran la ecuación y le dicen 'compruébalo tú mismo' (espiritismo).",
     "IdeasPrincipales": [
-      "Razón y Justicia",
-      "Ley de Amor"
+      "Responsabilidad Personal",
+      "Libertad de Conciencia",
+      "Contraste Doctrinal"
     ],
     "PuntosImportantes": [
-      "Eloí es el único Padre",
-      "La Comuna es el fin"
+      "La religión busca la fe ciega; el espiritismo busca la fe racional",
+      "El error recomendado por las iglesias es el veneno de la voluntad",
+      "La verdad obliga a la acción coherente con la justicia universal"
     ],
     "NodosSinapticos": [
-      "Rigor",
-      "Justicia",
-      "Orden"
+      "Responsabilidad_Personal",
+      "Libertad_de_Conciencia",
+      "Contraste_Doctrinal"
     ],
     "ContextoDiccionario": {
-      "Justicia": "La ley inexorable de dar a cada uno lo que ha ganado."
+      "Responsabilidad_Personal": "El principio de que cada espíritu es el único autor y responsable de sus actos ante la ley de justicia."
     }
   },
   "2269: CAPÍTULO V: El bien que trae y a lo que obliga el Espiritismo": {
-    "PilotoDeCoherencia": "El establecimiento jurídico y moral de la doctrina en su asiento inamovible de razón y justicia.",
-    "CitaInelutable": "El espiritismo está en su asiento y nadie podrá moverlo.",
-    "EjemploPedagogico": "Como la brújula que marca el norte, este manual guía al adepto por el camino recto.",
+    "PilotoDeCoherencia": "El equilibrio entre beneficios y deberes: el espiritismo libera al espíritu del error pero le impone la carga ineludible del amor fraternal y el trabajo desinteresado.",
+    "CitaInelutable": "El bien que trae y a lo que obliga el Espiritismo... obliga a amar al hermano.",
+    "EjemploPedagogico": "Salir de una cárcel (el bien) para entrar inmediatamente a trabajar en la reconstrucción de la ciudad (la obligación). La libertad es para servir.",
     "IdeasPrincipales": [
-      "Razón y Justicia",
-      "Ley de Amor"
+      "Derechos y Deberes",
+      "Amor al Hermano",
+      "Ley del Trabajo"
     ],
     "PuntosImportantes": [
-      "Eloí es el único Padre",
-      "La Comuna es el fin"
+      "El mayor bien es el conocimiento de la propia inmortalidad",
+      "La mayor obligación es reconocer a cada hombre como un hermano igual",
+      "No existe derecho sin un deber previo cumplido en ley"
     ],
     "NodosSinapticos": [
-      "Rigor",
-      "Justicia",
-      "Orden"
+      "Derechos_y_Deberes",
+      "Amor_al_Hermano",
+      "Ley_del_Trabajo"
     ],
     "ContextoDiccionario": {
-      "Justicia": "La ley inexorable de dar a cada uno lo que ha ganado."
+      "Derechos_y_Deberes": "La balanza de justicia donde el espíritu solo adquiere derechos tras haber cumplido con sus deberes correspondientes."
     }
   },
   "2490: PARTE TERCERA": {
@@ -719,129 +759,141 @@
     }
   },
   "2493: CAPÍTULO I: El reinado del Espiritismo": {
-    "PilotoDeCoherencia": "El establecimiento jurídico y moral de la doctrina en su asiento inamovible de razón y justicia.",
-    "CitaInelutable": "El espiritismo está en su asiento y nadie podrá moverlo.",
-    "EjemploPedagogico": "Como la brújula que marca el norte, este manual guía al adepto por el camino recto.",
+    "PilotoDeCoherencia": "El establecimiento del reinado de la razón sobre la Tierra, donde el espiritismo deja de ser perseguido para convertirse en la ley natural de convivencia humana.",
+    "CitaInelutable": "El reinado del Espiritismo... fin del crepúsculo.",
+    "EjemploPedagogico": "El paso de una monarquía absoluta a una república democrática donde la ley es igual para todos. El espíritu es el 'soberano' racional.",
     "IdeasPrincipales": [
-      "Razón y Justicia",
-      "Ley de Amor"
+      "Reinado del Espíritu",
+      "Hegemonía de la Razón",
+      "Fin del Crepúsculo"
     ],
     "PuntosImportantes": [
-      "Eloí es el único Padre",
-      "La Comuna es el fin"
+      "No es un reinado político, sino una hegemonía moral",
+      "Elimina las fronteras ideológicas creadas por las religiones",
+      "Es la realización de la Comuna Universal de Amor y Ley"
     ],
     "NodosSinapticos": [
-      "Rigor",
-      "Justicia",
-      "Orden"
+      "Reinado_del_Espiritu",
+      "Hegemonia_de_la_Razon",
+      "Fin_del_Crepusculo"
     ],
     "ContextoDiccionario": {
-      "Justicia": "La ley inexorable de dar a cada uno lo que ha ganado."
+      "Reinado_del_Espíritu": "El estado de la humanidad donde el espíritu domina sus instintos y rige sus actos por la ley de amor."
     }
   },
   "2654: CAPÍTULO II: El juicio final y universal": {
-    "PilotoDeCoherencia": "El establecimiento jurídico y moral de la doctrina en su asiento inamovible de razón y justicia.",
-    "CitaInelutable": "El espiritismo está en su asiento y nadie podrá moverlo.",
-    "EjemploPedagogico": "Como la brújula que marca el norte, este manual guía al adepto por el camino recto.",
+    "PilotoDeCoherencia": "Relato histórico y técnico del Juicio de Mayoría: la separación de los espíritus aptos para la regeneración de los que deben ser expatriados a mundos primitivos.",
+    "CitaInelutable": "El juicio final y universal... 5 de abril de 1912... Justicia!... Consumatum est.",
+    "EjemploPedagogico": "Una auditoría general de una empresa. Se revisan los libros de todos los empleados; los que trabajaron bien se quedan, los que defraudaron son despedidos a empresas de menor categoría.",
     "IdeasPrincipales": [
-      "Razón y Justicia",
-      "Ley de Amor"
+      "Juicio de Mayoría",
+      "Tribunales Espirituales",
+      "Justicia Inexorable"
     ],
     "PuntosImportantes": [
-      "Eloí es el único Padre",
-      "La Comuna es el fin"
+      "Celebrado en la Tierra y en Siún simultáneamente",
+      "El 'ancla' de salvación es el acatamiento a la ley de amor",
+      "Marca el fin de la impunidad de los tiranos y sacerdotes"
     ],
     "NodosSinapticos": [
-      "Rigor",
-      "Justicia",
-      "Orden"
+      "Juicio_de_Mayoria",
+      "Tribunales_Espirituales",
+      "Justicia_Inexorable"
     ],
     "ContextoDiccionario": {
-      "Justicia": "La ley inexorable de dar a cada uno lo que ha ganado."
+      "Juicio_de_Mayoría": "El examen colectivo de la humanidad donde se evalúa el progreso de los espíritus para determinar su destino planetario."
     }
   },
   "2820: CAPÍTULO III: El descubrimiento de la eterna verdad": {
-    "PilotoDeCoherencia": "El establecimiento jurídico y moral de la doctrina en su asiento inamovible de razón y justicia.",
-    "CitaInelutable": "El espiritismo está en su asiento y nadie podrá moverlo.",
-    "EjemploPedagogico": "Como la brújula que marca el norte, este manual guía al adepto por el camino recto.",
+    "PilotoDeCoherencia": "La verdad eterna no es una revelación mística, sino el hallazgo racional del espíritu en su propio archivo eterno tras vencer la resistencia de la materia.",
+    "CitaInelutable": "El descubrimiento de la eterna verdad... rasgar el crepúsculo.",
+    "EjemploPedagogico": "Restaurar una pintura antigua. Quitas las capas de polvo y barniz oscuro (errores) para descubrir la imagen original y luminosa que siempre estuvo allí.",
     "IdeasPrincipales": [
-      "Razón y Justicia",
-      "Ley de Amor"
+      "Eterna Verdad",
+      "Descubrimiento Espiritual",
+      "Archivo del Espíritu"
     ],
     "PuntosImportantes": [
-      "Eloí es el único Padre",
-      "La Comuna es el fin"
+      "La verdad es inmutable; lo que cambia es la capacidad del hombre de verla",
+      "Descubrir la verdad es descubrir la propia filiación divina",
+      "El archivo del espíritu guarda el saber de todas las existencias pasadas"
     ],
     "NodosSinapticos": [
-      "Rigor",
-      "Justicia",
-      "Orden"
+      "Eterna_Verdad",
+      "Descubrimiento_Espiritual",
+      "Archivo_del_Espiritu"
     ],
     "ContextoDiccionario": {
-      "Justicia": "La ley inexorable de dar a cada uno lo que ha ganado."
+      "Eterna_Verdad": "El conjunto de leyes y realidades del universo que permanecen inalterables ante el tiempo y el espacio."
     }
   },
   "2917: CAPÍTULO IV: La comuna es el régimen único del espiritismo": {
-    "PilotoDeCoherencia": "El establecimiento jurídico y moral de la doctrina en su asiento inamovible de razón y justicia.",
-    "CitaInelutable": "El espiritismo está en su asiento y nadie podrá moverlo.",
-    "EjemploPedagogico": "Como la brújula que marca el norte, este manual guía al adepto por el camino recto.",
+    "PilotoDeCoherencia": "La Comuna es el estado social natural de los espíritus de luz; un régimen de justicia absoluta donde la propiedad privada se disuelve en el bienestar colectivo.",
+    "CitaInelutable": "La comuna llega, porque es decreto absoluto del creador... régimen único del espiritismo.",
+    "EjemploPedagogico": "Una orquesta sinfónica. Nadie es dueño de la música; todos aportan su talento y todos disfrutan del resultado final en perfecta armonía.",
     "IdeasPrincipales": [
-      "Razón y Justicia",
-      "Ley de Amor"
+      "Comuna de Amor y Ley",
+      "Decreto Divino",
+      "Justicia Social Espiritual"
     ],
     "PuntosImportantes": [
-      "Eloí es el único Padre",
-      "La Comuna es el fin"
+      "La Comuna es el reflejo terrestre de la organización de los mundos de luz",
+      "No es un sistema político humano, sino una ley biológica del espíritu",
+      "Su implantación es inevitable tras el juicio de mayoría"
     ],
     "NodosSinapticos": [
-      "Rigor",
-      "Justicia",
-      "Orden"
+      "Comuna_de_Amor_y_Ley",
+      "Decreto_Divino",
+      "Justicia_Social_Espiritual"
     ],
     "ContextoDiccionario": {
-      "Justicia": "La ley inexorable de dar a cada uno lo que ha ganado."
+      "Comuna_de_Amor_y_Ley": "El régimen social definitivo de la Tierra regenerada donde impera la fraternidad absoluta y la propiedad común."
     }
   },
   "2988: resistiría a su mandato?": {
-    "PilotoDeCoherencia": "El establecimiento jurídico y moral de la doctrina en su asiento inamovible de razón y justicia.",
-    "CitaInelutable": "El espiritismo está en su asiento y nadie podrá moverlo.",
-    "EjemploPedagogico": "Como la brújula que marca el norte, este manual guía al adepto por el camino recto.",
+    "PilotoDeCoherencia": "Reflexión sobre la soberanía de la Ley de Progreso: cualquier oposición a la evolución es vana y solo genera dolor innecesario al detractor.",
+    "CitaInelutable": "¿Quién resistiría a su mandato? Meditad.",
+    "EjemploPedagogico": "Intentar nadar contra una catarata. La fuerza del agua (progreso) te llevará de todos modos; resistir solo te agota y te lastima.",
     "IdeasPrincipales": [
-      "Razón y Justicia",
-      "Ley de Amor"
+      "Mandato Inexorable",
+      "Futilidad de la Resistencia",
+      "Ley de Progreso"
     ],
     "PuntosImportantes": [
-      "Eloí es el único Padre",
-      "La Comuna es el fin"
+      "El mandato de Eloí es que todos sus hijos lleguen a la luz",
+      "Los detractores son 'microbios' que serán barridos por el soplo de la verdad",
+      "La resistencia al progreso es la causa de todo el sufrimiento humano"
     ],
     "NodosSinapticos": [
-      "Rigor",
-      "Justicia",
-      "Orden"
+      "Mandato_Inexorable",
+      "Futilidad_de_la_Resistencia",
+      "Ley_de_Progreso"
     ],
     "ContextoDiccionario": {
-      "Justicia": "La ley inexorable de dar a cada uno lo que ha ganado."
+      "Mandato_Inexorable": "La voluntad suprema del Creador que garantiza el progreso de todos los seres hacia la perfección."
     }
   },
   "3119: CAPITULO V: La creación es eterna por el espiritismo": {
-    "PilotoDeCoherencia": "El establecimiento jurídico y moral de la doctrina en su asiento inamovible de razón y justicia.",
-    "CitaInelutable": "El espiritismo está en su asiento y nadie podrá moverlo.",
-    "EjemploPedagogico": "Como la brújula que marca el norte, este manual guía al adepto por el camino recto.",
+    "PilotoDeCoherencia": "Ontología de la creación continua: el universo es el pensamiento de Eloí (Éter) cobrando forma tangible mediante la voluntad del espíritu actor.",
+    "CitaInelutable": "La creación es eterna por el espiritismo... el hombre es todo el universo infinito.",
+    "EjemploPedagogico": "Un escultor (espíritu) con una masa infinita de arcilla (Éter). Nunca deja de modelar; cada estatua es un mundo o un cuerpo en eterna renovación.",
     "IdeasPrincipales": [
-      "Razón y Justicia",
-      "Ley de Amor"
+      "Creación Eterna",
+      "Éter Universal",
+      "Trinidad Humana"
     ],
     "PuntosImportantes": [
-      "Eloí es el único Padre",
-      "La Comuna es el fin"
+      "El hombre es la corona de la creación porque resume en sí todo el infinito",
+      "El Éter es la sustancia-pensamiento; el Espíritu es la voluntad-forma",
+      "No hubo un 'comienzo' de la nada; todo es transformación eterna"
     ],
     "NodosSinapticos": [
-      "Rigor",
-      "Justicia",
-      "Orden"
+      "Creacion_Eterna",
+      "Eter_Universal",
+      "Trinidad_Humana"
     ],
     "ContextoDiccionario": {
-      "Justicia": "La ley inexorable de dar a cada uno lo que ha ganado."
+      "Creación_Eterna": "Axioma que define al universo como un proceso infinito de manifestación de la vida sin principio ni fin."
     }
   },
   "3198: tus misioneros, conforme a tu mandato.": {
@@ -1052,45 +1104,49 @@
     }
   },
   "4298: CAPITULO III: No se puede ir más allá del espiritismo": {
-    "PilotoDeCoherencia": "El establecimiento jurídico y moral de la doctrina en su asiento inamovible de razón y justicia.",
-    "CitaInelutable": "El espiritismo está en su asiento y nadie podrá moverlo.",
-    "EjemploPedagogico": "Como la brújula que marca el norte, este manual guía al adepto por el camino recto.",
+    "PilotoDeCoherencia": "Axioma de la plenitud doctrinaria: el espiritismo abarca la totalidad de la vida y el infinito, por lo que cualquier 'nuevo' saber es solo una rama del mismo árbol.",
+    "CitaInelutable": "No se puede ir más allá del espiritismo... porque es la vida.",
+    "EjemploPedagogico": "Tratar de salir del espacio. Por mucho que viajes, siempre estarás en el espacio. El espiritismo es ese 'espacio total' del conocimiento.",
     "IdeasPrincipales": [
-      "Razón y Justicia",
-      "Ley de Amor"
+      "Límite del Saber",
+      "Religión Universal",
+      "Inmutabilidad Doctrinal"
     ],
     "PuntosImportantes": [
-      "Eloí es el único Padre",
-      "La Comuna es el fin"
+      "El espiritismo no se transforma; se transforma el hombre que lo descubre",
+      "Es la ley única que rige a todos los mundos y todos los seres",
+      "Elimina la necesidad de credos particulares al ser la Verdad Absoluta"
     ],
     "NodosSinapticos": [
-      "Rigor",
-      "Justicia",
-      "Orden"
+      "Limite_del_Saber",
+      "Religión_Universal",
+      "Inmutabilidad_Doctrinal"
     ],
     "ContextoDiccionario": {
-      "Justicia": "La ley inexorable de dar a cada uno lo que ha ganado."
+      "Límite_del_Saber": "El concepto de que el Espiritismo representa la síntesis final y total de todo conocimiento posible para el espíritu."
     }
   },
   "4304: PÁRRAFO I (CAPITULO III: No se puede ir más allá del espiritismo)": {
-    "PilotoDeCoherencia": "El establecimiento jurídico y moral de la doctrina en su asiento inamovible de razón y justicia.",
-    "CitaInelutable": "El espiritismo está en su asiento y nadie podrá moverlo.",
-    "EjemploPedagogico": "Como la brújula que marca el norte, este manual guía al adepto por el camino recto.",
+    "PilotoDeCoherencia": "La analogía del diamante: el espiritismo es la gema eterna que el hombre debe pulir para que refleje la luz de su propia sabiduría divina.",
+    "CitaInelutable": "El espiritismo... es como el diamante... diamante era y diamante es.",
+    "EjemploPedagogico": "Un telescopio sucio. El cielo (espiritismo) no cambia; es el lente el que debe limpiarse (estudiar) para que la imagen se vea nítida.",
     "IdeasPrincipales": [
-      "Razón y Justicia",
-      "Ley de Amor"
+      "Símil del Diamante",
+      "Pulimento del Espíritu",
+      "Valor Intrínseco"
     ],
     "PuntosImportantes": [
-      "Eloí es el único Padre",
-      "La Comuna es el fin"
+      "La ignorancia es el barro que oculta el brillo de la doctrina",
+      "Cada esfuerzo de estudio es una 'escama' que se quita para dar brillo al alma",
+      "El diamante pulido (espíritu sabio) es el fin último de la evolución"
     ],
     "NodosSinapticos": [
-      "Rigor",
-      "Justicia",
-      "Orden"
+      "Simil_del_Diamante",
+      "Pulimento_del_Espiritu",
+      "Valor_Intrinseco"
     ],
     "ContextoDiccionario": {
-      "Justicia": "La ley inexorable de dar a cada uno lo que ha ganado."
+      "Símil_del_Diamante": "Metáfora trincadista que compara al espíritu y su doctrina con una piedra preciosa cuyo valor es eterno pero cuya luz requiere trabajo para manifestarse."
     }
   },
   "6547: Acotaciones:": {
@@ -1208,651 +1264,7 @@
       "Mundo_Samur": "Destino de destierro intermedio para espíritus que, sin ser criminales de alta escala, se opusieron al progreso racional."
     }
   },
-  "8: ESCUELA MAGN%TICO - ESPIRITUAL DE LA COMUNA UNIVERSAL: ESPIRITISMO EN SU ASIENTO": {
-    "PilotoDeCoherencia": "Presentación institucional de la obra definitiva que establece el espiritismo en su base inamovible de razón y justicia, bajo la autoría de Joaquín Trincado y la EMECU.",
-    "CitaInelutable": "ESPIRITISMO EN SU ASIENTO. JOAQUÍN TRINCADO.",
-    "EjemploPedagogico": "El acta de fundación de una nación que define sus leyes supremas e irrevocables. Este libro es el acta constitutiva del espiritismo racional.",
-    "IdeasPrincipales": [
-      "Fundamentación Doctrinal",
-      "Autoría de Trincado",
-      "Asiento de Justicia"
-    ],
-    "PuntosImportantes": [
-      "Establece el Espiritismo Luz y Verdad como el régimen definitivo de la Tierra",
-      "Define la Escuela Magnético-Espiritual como el vehículo de la Comuna Universal",
-      "Marca el fin de la era del crepúsculo y el inicio del reinado del espíritu"
-    ],
-    "NodosSinapticos": [
-      "EMECU",
-      "Joaquin_Trincado",
-      "Asiento_Doctrinal"
-    ],
-    "ContextoDiccionario": {
-      "Asiento_Doctrinal": "La base firme e inamovible de principios racionales sobre la cual se edifica la doctrina espírita, impidiendo desviaciones místicas."
-    }
-  },
-  "38: MXIMA: Por el Fruto conocers el rbol.": {
-    "PilotoDeCoherencia": "El principio de validación por obras: la única forma de juzgar la elevación de un espíritu o la veracidad de una idea es a través de sus resultados prácticos.",
-    "CitaInelutable": "MÁXIMA: Por el Fruto conocerás el árbol.",
-    "EjemploPedagogico": "Probar una manzana para saber si el árbol está sano. No importa cuánto brille la cáscara; si el sabor es amargo, el árbol tiene un problema. Las obras son el sabor del espíritu.",
-    "IdeasPrincipales": [
-      "Ley de Obras",
-      "Validación por Frutos",
-      "Justicia de Hechos"
-    ],
-    "PuntosImportantes": [
-      "Las palabras no valen nada sin hechos que las respalden",
-      "Es la defensa contra los falsos maestros y mixtificadores",
-      "La justicia universal premia frutos, no intenciones ni rezos"
-    ],
-    "NodosSinapticos": [
-      "Ley_de_Obras",
-      "Validacion_por_Frutos",
-      "Justicia_de_Hechos"
-    ],
-    "ContextoDiccionario": {
-      "Ley_de_Obras": "El principio de justicia que establece que el valor de un ser se determina exclusivamente por sus acciones y producciones."
-    }
-  },
-  "44: AXIOMA: En l estaba la vida, y la vida es la luz de los hombres.": {
-    "PilotoDeCoherencia": "Identificación de la inteligencia humana como una emanación de la vida divina, estableciendo que razonar es el acto más sagrado del hombre.",
-    "CitaInelutable": "En Él estaba la vida, y la vida es la luz de los hombres.",
-    "EjemploPedagogico": "Una bombilla que brilla gracias a la electricidad de la central. Nosotros somos la bombilla y la 'Vida' es la central eléctrica que nos permite dar luz (razón).",
-    "IdeasPrincipales": [
-      "Vida como Luz",
-      "Inteligencia Divina",
-      "Emanación del Creador"
-    ],
-    "PuntosImportantes": [
-      "La vida no es un accidente biológico, sino una luz espiritual",
-      "La luz de los hombres es su capacidad de comprender y crear",
-      "No hay separación entre el Creador (Vida) y el hombre (Luz)"
-    ],
-    "NodosSinapticos": [
-      "Vida_como_Luz",
-      "Inteligencia_Divina",
-      "Emanacion_del_Creador"
-    ],
-    "ContextoDiccionario": {
-      "Vida_como_Luz": "Concepto que define a la inteligencia y la conciencia como la manifestación luminosa de la energía vital del Creador."
-    }
-  },
-  "50: DISTRIBUCIN: CONFERENCIAS VERBALES Y MEDIANMICAS": {
-    "PilotoDeCoherencia": "Explicación del método pedagógico de la Escuela, que integra la razón humana (verbal) con la sabiduría del mundo espiritual (medianímica) en un sistema coherente.",
-    "CitaInelutable": "DISTRIBUCIÓN: CONFERENCIAS VERBALES Y MEDIANÍMICAS.",
-    "EjemploPedagogico": "Un laboratorio donde el científico (verbal) consulta bases de datos globales (medianímica) para validar sus experimentos. La verdad surge de la coincidencia de ambos.",
-    "IdeasPrincipales": [
-      "Conferencias Verbales",
-      "Comunicaciones Medianímicas",
-      "Método Pedagógico"
-    ],
-    "PuntosImportantes": [
-      "La mediumnidad debe estar siempre bajo el control de la razón",
-      "Las conferencias verbales preparan el ambiente para la comunicación de luz",
-      "No se admite nada por fe; todo debe ser analizado y comprobado"
-    ],
-    "NodosSinapticos": [
-      "Conferencias_Verbales",
-      "Comunicaciones_Medianimicas",
-      "Metodo_Pedagogico"
-    ],
-    "ContextoDiccionario": {
-      "Método_Pedagógico": "El sistema de enseñanza de la EMECU basado en el estudio racional de textos y la experimentación mediúnica controlada."
-    }
-  },
-  "74: Prlogo de la 2. Edicin": {
-    "PilotoDeCoherencia": "Fundamentación de la obra como una herramienta de limpieza mental y social, destinada a derribar los muros de la ignorancia y el prejuicio religioso.",
-    "CitaInelutable": "Como Draga y como Aplanadora, mandamos por delante el acerado folleto Strossmayer y el aplastante de errores: El Primer Rayo de Luz.",
-    "EjemploPedagogico": "Un equipo de saneamiento que entra en un pantano para canalizar las aguas. La 'Draga' quita el lodo (dogma) y la 'Aplanadora' prepara el suelo para el nuevo edificio social.",
-    "IdeasPrincipales": [
-      "Draga Doctrinal",
-      "Aplanadora de Errores",
-      "Luz en el Camino"
-    ],
-    "PuntosImportantes": [
-      "La obra de Trincado es una demolición necesaria de los viejos errores",
-      "El Primer Rayo de Luz y Strossmayer son los cimientos de este estudio",
-      "Busca abrir canales limpios para que la razón de los hombres no se estanque"
-    ],
-    "NodosSinapticos": [
-      "Draga_Doctrinal",
-      "Aplanadora_de_Errores",
-      "Luz_en_el_Camino"
-    ],
-    "ContextoDiccionario": {
-      "Draga_Doctrinal": "Metáfora que describe la acción de la doctrina de remover los errores profundos y sedimentados de la mente humana."
-    }
-  },
-  "95: llevar a sus lectores a las mansiones de ATHANASIA (inmortalidad) seguro de conseguir su": {
-    "PilotoDeCoherencia": "Promesa de elevación espiritual hacia la inmortalidad consciente, donde el individuo reconoce su naturaleza eterna y se libera del temor a lo desconocido.",
-    "CitaInelutable": "llevar a sus lectores a las mansiones de «ATHANASIA» (inmortalidad) seguro de conseguir su fin.",
-    "EjemploPedagogico": "Recibir la llave de una casa eterna. Ya no eres un inquilino temporal en la tierra; ahora sabes que eres el dueño de tu propia eternidad consciente.",
-    "IdeasPrincipales": [
-      "Athanasia",
-      "Inmortalidad Consciente",
-      "Mansiones Espirituales"
-    ],
-    "PuntosImportantes": [
-      "La inmortalidad no se gana, se reconoce a través del estudio",
-      "Athanasia es el estado del espíritu que ya no puede ser engañado por la materia",
-      "La lectura razonada es el mapa para llegar a este estado de luz"
-    ],
-    "NodosSinapticos": [
-      "Athanasia",
-      "Inmortalidad_Consciente",
-      "Mansiones_Espirituales"
-    ],
-    "ContextoDiccionario": {
-      "Athanasia": "Término griego que significa inmortalidad, utilizado por Trincado para designar el estado de conciencia plena de la vida eterna."
-    }
-  },
-  "99: ilustrado a los hombres en los axiomas de la verdad suprema, en ms de CIEN CTEDRAS,": {
-    "PilotoDeCoherencia": "Evidencia del progreso de la Escuela a través de la formación de centros de sabiduría (cátedras) que elevan el nivel intelectual y moral de la humanidad.",
-    "CitaInelutable": "ilustrado a los hombres en los axiomas de la verdad suprema, en más de CIEN CÁTEDRAS.",
-    "EjemploPedagogico": "Una red de faros que iluminan una costa peligrosa. Cada cátedra es un faro que evita que los buscadores de la verdad naufraguen en el misticismo.",
-    "IdeasPrincipales": [
-      "Cátedras de Sabiduría",
-      "Verdad Suprema",
-      "Elevación del Espíritu"
-    ],
-    "PuntosImportantes": [
-      "La verdad suprema no es una creencia, sino una ilustración axiomática",
-      "Las cátedras son el núcleo de la Comuna Universal en formación",
-      "La meta es que cada hombre sea una cátedra viviente de sabiduría"
-    ],
-    "NodosSinapticos": [
-      "Catedras_de_Sabiduria",
-      "Verdad_Suprema",
-      "Elevacion_del_Espiritu"
-    ],
-    "ContextoDiccionario": {
-      "Cátedras_de_Sabiduría": "Centros de estudio y fraternidad de la EMECU donde se imparte la doctrina del Espiritismo Luz y Verdad."
-    }
-  },
-  "137: Siempre ms all": {
-    "PilotoDeCoherencia": "La divisa del progreso infinito: el espíritu no tiene límites en su evolución, impulsado por una voluntad que busca la perfección eterna en cada grado de existencia.",
-    "CitaInelutable": "¡Siempre más allá!",
-    "EjemploPedagogico": "Un telescopio que siempre encuentra una galaxia nueva detrás de la última descubierta. El espíritu es ese lente que nunca deja de enfocar nuevos horizontes de saber.",
-    "IdeasPrincipales": [
-      "Progreso Infinito",
-      "Superación Espiritual",
-      "Evolución Eterna"
-    ],
-    "PuntosImportantes": [
-      "El estancamiento es la única muerte real para el espíritu",
-      "Cada meta alcanzada es solo el punto de partida para una superior",
-      "La ley de progreso obliga a la actividad incesante"
-    ],
-    "NodosSinapticos": [
-      "Progreso_Infinito",
-      "Superacion_Espiritual",
-      "Evolucion_Eterna"
-    ],
-    "ContextoDiccionario": {
-      "Siempre_Más_Allá": "El lema de la EMECU que resume la ley del progreso infinito y la superación constante del espíritu."
-    }
-  },
-  "584: LIBRO PRIMERO  PARTE PRIMERA": {
-    "PilotoDeCoherencia": "Inicio de la estructura técnica de la doctrina: el estudio de la metafísica racional y la fenomenología como ciencias del espíritu.",
-    "CitaInelutable": "LIBRO PRIMERO – PARTE PRIMERA.",
-    "EjemploPedagogico": "El plano fundamental de una catedral. Antes de poner los vitrales, se estudian las columnas y la piedra que sostendrá todo el peso de la sabiduría.",
-    "IdeasPrincipales": [
-      "Estructura Doctrinal",
-      "Metafísica Racional",
-      "Fundamentos"
-    ],
-    "PuntosImportantes": [
-      "Organiza el conocimiento en niveles de profundidad lógica",
-      "Establece la primacía del espíritu sobre la forma",
-      "Es el inicio del 'Asiento' inamovible de la razón"
-    ],
-    "NodosSinapticos": [
-      "Estructura_Doctrinal",
-      "Metafisica_Racional",
-      "Fundamentos"
-    ],
-    "ContextoDiccionario": {
-      "Metafísica_Racional": "El estudio científico y lógico de las realidades que trascienden la materia densa, basado en la evidencia del espíritu."
-    }
-  },
-  "588: CAPTULO I: Qu es el espiritismo?": {
-    "PilotoDeCoherencia": "Definición axiomática y definitiva: el espiritismo es la vida misma, la sabiduría y omnipotencia de todos los espíritus solidarizados bajo la única ley del amor.",
-    "CitaInelutable": "El espiritismo es la vida eterna y continuada... no es religión... es el universo solidarizado.",
-    "EjemploPedagogico": "La red de internet. No es una página web ni un cable, sino la suma de toda la información y conexión del mundo. El espiritismo es esa 'red' pero de conciencias eternas.",
-    "IdeasPrincipales": [
-      "Definición del Espiritismo",
-      "Vida Real",
-      "Omnipotencia Solidarizada"
-    ],
-    "PuntosImportantes": [
-      "No es religión porque no admite dogmas ni ritos",
-      "Es la ciencia de las ciencias porque estudia la causa de todo",
-      "Es el arma del Padre para destruir todas las religiones y errores"
-    ],
-    "NodosSinapticos": [
-      "Definicion_del_Espiritismo",
-      "Vida_Real",
-      "Omnipotencia_Solidarizada"
-    ],
-    "ContextoDiccionario": {
-      "Definición_del_Espiritismo": "Axioma que establece al Espiritismo como la vida eterna y continuada, y la sabiduría omnipotente de la creación solidarizada."
-    }
-  },
-  "699: CAPTULO II: Lo que abarca el espiritismo": {
-    "PilotoDeCoherencia": "El espiritismo no es una parcela del saber, sino la síntesis total que abarca todas las ciencias, artes y leyes del universo bajo el prisma del espíritu.",
-    "CitaInelutable": "Lo que abarca el espiritismo... nada hay que no sea un fenómeno del espiritismo.",
-    "EjemploPedagogico": "La luz blanca que contiene todos los colores del arcoíris. El espiritismo es esa luz blanca que unifica todas las ramas del conocimiento humano.",
-    "IdeasPrincipales": [
-      "Amplitud Doctrinal",
-      "Ciencia Universal",
-      "Fenomenología Total"
-    ],
-    "PuntosImportantes": [
-      "Abarca lo visible y lo invisible, la materia y el espíritu",
-      "Es la base de la justicia, la sociología y la física universal",
-      "Nada queda fuera de su jurisdicción porque todo emana de la misma Ley"
-    ],
-    "NodosSinapticos": [
-      "Amplitud_Doctrinal",
-      "Ciencia_Universal",
-      "Fenomenologia_Total"
-    ],
-    "ContextoDiccionario": {
-      "Amplitud_Doctrinal": "La característica del Espiritismo Racional de no tener límites en su estudio, abarcando todas las dimensiones de la existencia."
-    }
-  },
-  "845: CAPTULO III: Cmo se estudia el espiritismo": {
-    "PilotoDeCoherencia": "El estudio del espiritismo exige una higiene mental absoluta: desechar prejuicios dogmáticos y aplicar una razón fría y matemática sobre los hechos demostrables.",
-    "CitaInelutable": "Cómo se estudia el espiritismo... con la razón sana y sin prejuicios.",
-    "EjemploPedagogico": "Limpiar un cristal empañado antes de mirar a través de él. Los prejuicios son el vapor; la razón es el paño que limpia para ver la verdad clara.",
-    "IdeasPrincipales": [
-      "Estudio Racional",
-      "Higiene Mental",
-      "Análisis de Hechos"
-    ],
-    "PuntosImportantes": [
-      "Se estudia observando la vida diaria, no solo en libros",
-      "Exige valentía para abandonar creencias cómodas pero falsas",
-      "La duda metódica es preferible a la fe ciega"
-    ],
-    "NodosSinapticos": [
-      "Estudio_Racional",
-      "Higiene_Mental",
-      "Analisis_de_Hechos"
-    ],
-    "ContextoDiccionario": {
-      "Higiene_Mental": "El proceso de limpieza de la conciencia de prejuicios, miedos y dogmas para permitir el libre ejercicio de la razón."
-    }
-  },
-  "1078: CAPTULO IV: Cmo es necio negar el Espiritismo": {
-    "PilotoDeCoherencia": "Denuncia de la necedad materialista: negar el espíritu es un acto irracional de quien disfruta de la vida (efecto) mientras cierra los ojos a su causa (espíritu).",
-    "CitaInelutable": "Cómo es necio negar el Espiritismo... porque es la vida.",
-    "EjemploPedagogico": "Un orador que usa su voz para decir que el aire no existe. El negador usa su espíritu para decir que el espíritu no existe; es una contradicción viviente.",
-    "IdeasPrincipales": [
-      "Necedad del Negador",
-      "Evidencia de la Vida",
-      "Soberbia Materialista"
-    ],
-    "PuntosImportantes": [
-      "La negación nace a menudo del miedo a la responsabilidad ante la Ley",
-      "Es imposible explicar la inteligencia sin el factor espiritual",
-      "El negador se priva a sí mismo de la luz del camino"
-    ],
-    "NodosSinapticos": [
-      "Necedad_del_Negador",
-      "Evidencia_de_la_Vida",
-      "Soberbia_Materialista"
-    ],
-    "ContextoDiccionario": {
-      "Necedad_Materialista": "La postura irracional de quienes niegan la existencia del espíritu a pesar de ser la causa evidente de su propia inteligencia."
-    }
-  },
-  "1187: CAPTULO V: Todo el universo es el espiritismo y su maestro, Elo": {
-    "PilotoDeCoherencia": "Visión cosmogónica de la Escuela: el universo es una gran institución educativa donde cada mundo es un aula y Eloí es el único Maestro y Padre común.",
-    "CitaInelutable": "Todo el universo es el espiritismo y su maestro, Eloí... El universo es sólo un colegio.",
-    "EjemploPedagogico": "Un sistema universitario intergaláctico. Los planetas son campus y los espíritus son estudiantes que van pasando de grado según su esfuerzo y saber.",
-    "IdeasPrincipales": [
-      "Universo Escuela",
-      "Maestro Eloí",
-      "Solidaridad Cósmica"
-    ],
-    "PuntosImportantes": [
-      "Todos los seres estamos bajo un contrato de solidaridad universal",
-      "Eloí no es un dios religioso, sino el Rector Supremo de la Vida",
-      "La meta del estudio es la graduación del espíritu en la sabiduría plena"
-    ],
-    "NodosSinapticos": [
-      "Universo_Escuela",
-      "Maestro_Eloi",
-      "Solidaridad_Cosmica"
-    ],
-    "ContextoDiccionario": {
-      "Universo_Escuela": "Metáfora trincadista que define al cosmos como un sistema educativo infinito para el progreso de los espíritus."
-    }
-  },
-  "1442: CAPTULO I: Enemigos del espiritismo": {
-    "PilotoDeCoherencia": "Identificación de los detractores: el enemigo más peligroso no es la oposición externa, sino la infección interna del misticismo y la ignorancia que debilita la doctrina.",
-    "CitaInelutable": "El microbio que causó su tisis... los enemigos del espiritismo son la ignorancia y el misticismo.",
-    "EjemploPedagogico": "Un barco que se hunde no por las olas de afuera, sino por una vía de agua interna que nadie quiere tapar. El misticismo es esa vía de agua en el barco del espiritismo.",
-    "IdeasPrincipales": [
-      "Enemigos Internos",
-      "Misticismo Destructivo",
-      "Religiones Externas"
-    ],
-    "PuntosImportantes": [
-      "Las religiones atacan por miedo a perder su dominio sobre las conciencias",
-      "El misticismo dentro de los centros es una traición a la razón",
-      "La única defensa es el estudio austero y la práctica de la justicia"
-    ],
-    "NodosSinapticos": [
-      "Enemigos_Internos",
-      "Misticismo_Destructivo",
-      "Religiones_Externas"
-    ],
-    "ContextoDiccionario": {
-      "Enemigos_Internos": "Término que designa a los adeptos que, por ignorancia o misticismo, desvirtúan la doctrina y causan su desprestigio."
-    }
-  },
-  "1616: CAPITULO II: Los mdiums; lo que son y sus cualidades": {
-    "PilotoDeCoherencia": "Definición técnica del médium como un instrumento de comunicación vibratoria, cuyo valor reside en su higiene moral y su capacidad de despojo personal.",
-    "CitaInelutable": "Los médiums; lo que son y sus cualidades... un puente vibratorio.",
-    "EjemploPedagogico": "Un traductor en una conferencia internacional. Si el traductor pone sus propias ideas en vez de las del orador, la comunicación falla. El médium debe ser un traductor fiel.",
-    "IdeasPrincipales": [
-      "Mediumnidad Racional",
-      "Puente Vibratorio",
-      "Cualidades Mediúnicas"
-    ],
-    "PuntosImportantes": [
-      "La facultad es un deber, no un don privilegiado",
-      "La moralidad del médium determina la calidad de los espíritus que se comunican",
-      "El médium debe ser el primero en analizar racionalmente lo que recibe"
-    ],
-    "NodosSinapticos": [
-      "Mediumnidad_Racional",
-      "Puente_Vibratorio",
-      "Cualidades_Mediunicas"
-    ],
-    "ContextoDiccionario": {
-      "Mediumnidad_Racional": "La práctica de la comunicación espiritual basada en leyes naturales y controlada rigurosamente por la razón humana."
-    }
-  },
-  "1796: CAPTULO III: Las comunicaciones y manifestaciones": {
-    "PilotoDeCoherencia": "Criterio de validación de mensajes: la autoridad de una comunicación no reside en el nombre que se firma, sino en la profundidad y utilidad del fondo doctrinario.",
-    "CitaInelutable": "Las comunicaciones y manifestaciones... no es el nombre, es el fondo.",
-    "EjemploPedagogico": "Un billete de banco. No importa quién te lo entregue, lo que importa es que sea auténtico y tenga valor legal. La verdad es el valor legal del mensaje.",
-    "IdeasPrincipales": [
-      "Análisis de Comunicaciones",
-      "Fondo sobre Forma",
-      "Manifestaciones Espirituales"
-    ],
-    "PuntosImportantes": [
-      "Los nombres ilustres son a menudo usados por espíritus burlones",
-      "Una comunicación de luz siempre enseña algo nuevo o aclara un error",
-      "Las manifestaciones físicas deben servir siempre a un fin pedagógico"
-    ],
-    "NodosSinapticos": [
-      "Analisis_de_Comunicaciones",
-      "Fondo_sobre_Forma",
-      "Manifestaciones_Espirituales"
-    ],
-    "ContextoDiccionario": {
-      "Fondo_sobre_Forma": "Principio crítico que prioriza el contenido moral e intelectual de una comunicación sobre la identidad pretendida del espíritu."
-    }
-  },
-  "1996: CAPTULO IV: Consecuencias del mal uso del espiritismo": {
-    "PilotoDeCoherencia": "Advertencia sobre la muerte moral: el uso del espiritismo para el lucro, la curiosidad o el misticismo convierte al adepto en un autómata de voluntades bajas.",
-    "CitaInelutable": "Consecuencias del mal uso del espiritismo... tisis del espiritismo... beatería y fanatismo.",
-    "EjemploPedagogico": "Convertir un telescopio en un juguete para ver la vida de los vecinos. Dejas de ver las estrellas y te hundes en el chisme. El mal uso te ciega para la luz universal.",
-    "IdeasPrincipales": [
-      "Mal Uso del Espiritismo",
-      "Obsesión Espiritual",
-      "Muerte Moral"
-    ],
-    "PuntosImportantes": [
-      "El espiritualismo beato es el 'microbio' que enferma la doctrina",
-      "La falta de energía y razón conduce a la esclavitud mediúnica",
-      "El fanatismo es tan dañino como la ignorancia en las filas de la Escuela"
-    ],
-    "NodosSinapticos": [
-      "Mal_Uso_del_Espiritismo",
-      "Obsesion_Espiritual",
-      "Muerte_Moral"
-    ],
-    "ContextoDiccionario": {
-      "Muerte_Moral": "Estado de degradación de la conciencia que ocurre cuando el individuo utiliza conocimientos superiores para fines egoístas o místicos."
-    }
-  },
-  "2156: religiones y lo recomiendan as.": {
-    "PilotoDeCoherencia": "Contraste entre el mandato religioso de sumisión y la obligación espírita de libertad y responsabilidad; el espiritismo no recomienda, sino que obliga al cumplimiento de la ley por convicción racional.",
-    "CitaInelutable": "religiones y lo recomiendan así... pero el espiritismo obliga a la verdad.",
-    "EjemploPedagogico": "Un niño al que le dicen 'cree porque yo lo digo' (religión), frente a un estudiante al que le muestran la ecuación y le dicen 'compruébalo tú mismo' (espiritismo).",
-    "IdeasPrincipales": [
-      "Responsabilidad Personal",
-      "Libertad de Conciencia",
-      "Contraste Doctrinal"
-    ],
-    "PuntosImportantes": [
-      "La religión busca la fe ciega; el espiritismo busca la fe racional",
-      "El error recomendado por las iglesias es el veneno de la voluntad",
-      "La verdad obliga a la acción coherente con la justicia universal"
-    ],
-    "NodosSinapticos": [
-      "Responsabilidad_Personal",
-      "Libertad_de_Conciencia",
-      "Contraste_Doctrinal"
-    ],
-    "ContextoDiccionario": {
-      "Responsabilidad_Personal": "El principio de que cada espíritu es el único autor y responsable de sus actos ante la ley de justicia."
-    }
-  },
-  "2269: CAPTULO V: El bien que trae y a lo que obliga el Espiritismo": {
-    "PilotoDeCoherencia": "El equilibrio entre beneficios y deberes: el espiritismo libera al espíritu del error pero le impone la carga ineludible del amor fraternal y el trabajo desinteresado.",
-    "CitaInelutable": "El bien que trae y a lo que obliga el Espiritismo... obliga a amar al hermano.",
-    "EjemploPedagogico": "Salir de una cárcel (el bien) para entrar inmediatamente a trabajar en la reconstrucción de la ciudad (la obligación). La libertad es para servir.",
-    "IdeasPrincipales": [
-      "Derechos y Deberes",
-      "Amor al Hermano",
-      "Ley del Trabajo"
-    ],
-    "PuntosImportantes": [
-      "El mayor bien es el conocimiento de la propia inmortalidad",
-      "La mayor obligación es reconocer a cada hombre como un hermano igual",
-      "No existe derecho sin un deber previo cumplido en ley"
-    ],
-    "NodosSinapticos": [
-      "Derechos_y_Deberes",
-      "Amor_al_Hermano",
-      "Ley_del_Trabajo"
-    ],
-    "ContextoDiccionario": {
-      "Derechos_y_Deberes": "La balanza de justicia donde el espíritu solo adquiere derechos tras haber cumplido con sus deberes correspondientes."
-    }
-  },
-  "2493: CAPTULO I: El reinado del Espiritismo": {
-    "PilotoDeCoherencia": "El establecimiento del reinado de la razón sobre la Tierra, donde el espiritismo deja de ser perseguido para convertirse en la ley natural de convivencia humana.",
-    "CitaInelutable": "El reinado del Espiritismo... fin del crepúsculo.",
-    "EjemploPedagogico": "El paso de una monarquía absoluta a una república democrática donde la ley es igual para todos. El espíritu es el 'soberano' racional.",
-    "IdeasPrincipales": [
-      "Reinado del Espíritu",
-      "Hegemonía de la Razón",
-      "Fin del Crepúsculo"
-    ],
-    "PuntosImportantes": [
-      "No es un reinado político, sino una hegemonía moral",
-      "Elimina las fronteras ideológicas creadas por las religiones",
-      "Es la realización de la Comuna Universal de Amor y Ley"
-    ],
-    "NodosSinapticos": [
-      "Reinado_del_Espiritu",
-      "Hegemonia_de_la_Razon",
-      "Fin_del_Crepusculo"
-    ],
-    "ContextoDiccionario": {
-      "Reinado_del_Espíritu": "El estado de la humanidad donde el espíritu domina sus instintos y rige sus actos por la ley de amor."
-    }
-  },
-  "2654: CAPTULO II: El juicio final y universal": {
-    "PilotoDeCoherencia": "Relato histórico y técnico del Juicio de Mayoría: la separación de los espíritus aptos para la regeneración de los que deben ser expatriados a mundos primitivos.",
-    "CitaInelutable": "El juicio final y universal... 5 de abril de 1912... Justicia!... Consumatum est.",
-    "EjemploPedagogico": "Una auditoría general de una empresa. Se revisan los libros de todos los empleados; los que trabajaron bien se quedan, los que defraudaron son despedidos a empresas de menor categoría.",
-    "IdeasPrincipales": [
-      "Juicio de Mayoría",
-      "Tribunales Espirituales",
-      "Justicia Inexorable"
-    ],
-    "PuntosImportantes": [
-      "Celebrado en la Tierra y en Siún simultáneamente",
-      "El 'ancla' de salvación es el acatamiento a la ley de amor",
-      "Marca el fin de la impunidad de los tiranos y sacerdotes"
-    ],
-    "NodosSinapticos": [
-      "Juicio_de_Mayoria",
-      "Tribunales_Espirituales",
-      "Justicia_Inexorable"
-    ],
-    "ContextoDiccionario": {
-      "Juicio_de_Mayoría": "El examen colectivo de la humanidad donde se evalúa el progreso de los espíritus para determinar su destino planetario."
-    }
-  },
-  "2820: CAPTULO III: El descubrimiento de la eterna verdad": {
-    "PilotoDeCoherencia": "La verdad eterna no es una revelación mística, sino el hallazgo racional del espíritu en su propio archivo eterno tras vencer la resistencia de la materia.",
-    "CitaInelutable": "El descubrimiento de la eterna verdad... rasgar el crepúsculo.",
-    "EjemploPedagogico": "Restaurar una pintura antigua. Quitas las capas de polvo y barniz oscuro (errores) para descubrir la imagen original y luminosa que siempre estuvo allí.",
-    "IdeasPrincipales": [
-      "Eterna Verdad",
-      "Descubrimiento Espiritual",
-      "Archivo del Espíritu"
-    ],
-    "PuntosImportantes": [
-      "La verdad es inmutable; lo que cambia es la capacidad del hombre de verla",
-      "Descubrir la verdad es descubrir la propia filiación divina",
-      "El archivo del espíritu guarda el saber de todas las existencias pasadas"
-    ],
-    "NodosSinapticos": [
-      "Eterna_Verdad",
-      "Descubrimiento_Espiritual",
-      "Archivo_del_Espiritu"
-    ],
-    "ContextoDiccionario": {
-      "Eterna_Verdad": "El conjunto de leyes y realidades del universo que permanecen inalterables ante el tiempo y el espacio."
-    }
-  },
-  "2917: CAPTULO IV: La comuna es el rmen nico del espiritismo": {
-    "PilotoDeCoherencia": "La Comuna es el estado social natural de los espíritus de luz; un régimen de justicia absoluta donde la propiedad privada se disuelve en el bienestar colectivo.",
-    "CitaInelutable": "La comuna llega, porque es decreto absoluto del creador... régimen único del espiritismo.",
-    "EjemploPedagogico": "Una orquesta sinfónica. Nadie es dueño de la música; todos aportan su talento y todos disfrutan del resultado final en perfecta armonía.",
-    "IdeasPrincipales": [
-      "Comuna de Amor y Ley",
-      "Decreto Divino",
-      "Justicia Social Espiritual"
-    ],
-    "PuntosImportantes": [
-      "La Comuna es el reflejo terrestre de la organización de los mundos de luz",
-      "No es un sistema político humano, sino una ley biológica del espíritu",
-      "Su implantación es inevitable tras el juicio de mayoría"
-    ],
-    "NodosSinapticos": [
-      "Comuna_de_Amor_y_Ley",
-      "Decreto_Divino",
-      "Justicia_Social_Espiritual"
-    ],
-    "ContextoDiccionario": {
-      "Comuna_de_Amor_y_Ley": "El régimen social definitivo de la Tierra regenerada donde impera la fraternidad absoluta y la propiedad común."
-    }
-  },
-  "2988: resistira a su mandato?": {
-    "PilotoDeCoherencia": "Reflexión sobre la soberanía de la Ley de Progreso: cualquier oposición a la evolución es vana y solo genera dolor innecesario al detractor.",
-    "CitaInelutable": "¿Quién resistiría a su mandato? Meditad.",
-    "EjemploPedagogico": "Intentar nadar contra una catarata. La fuerza del agua (progreso) te llevará de todos modos; resistir solo te agota y te lastima.",
-    "IdeasPrincipales": [
-      "Mandato Inexorable",
-      "Futilidad de la Resistencia",
-      "Ley de Progreso"
-    ],
-    "PuntosImportantes": [
-      "El mandato de Eloí es que todos sus hijos lleguen a la luz",
-      "Los detractores son 'microbios' que serán barridos por el soplo de la verdad",
-      "La resistencia al progreso es la causa de todo el sufrimiento humano"
-    ],
-    "NodosSinapticos": [
-      "Mandato_Inexorable",
-      "Futilidad_de_la_Resistencia",
-      "Ley_de_Progreso"
-    ],
-    "ContextoDiccionario": {
-      "Mandato_Inexorable": "La voluntad suprema del Creador que garantiza el progreso de todos los seres hacia la perfección."
-    }
-  },
-  "3119: CAPITULO V: La creacin es eterna por el espiritismo": {
-    "PilotoDeCoherencia": "Ontología de la creación continua: el universo es el pensamiento de Eloí (Éter) cobrando forma tangible mediante la voluntad del espíritu actor.",
-    "CitaInelutable": "La creación es eterna por el espiritismo... el hombre es todo el universo infinito.",
-    "EjemploPedagogico": "Un escultor (espíritu) con una masa infinita de arcilla (Éter). Nunca deja de modelar; cada estatua es un mundo o un cuerpo en eterna renovación.",
-    "IdeasPrincipales": [
-      "Creación Eterna",
-      "Éter Universal",
-      "Trinidad Humana"
-    ],
-    "PuntosImportantes": [
-      "El hombre es la corona de la creación porque resume en sí todo el infinito",
-      "El Éter es la sustancia-pensamiento; el Espíritu es la voluntad-forma",
-      "No hubo un 'comienzo' de la nada; todo es transformación eterna"
-    ],
-    "NodosSinapticos": [
-      "Creacion_Eterna",
-      "Eter_Universal",
-      "Trinidad_Humana"
-    ],
-    "ContextoDiccionario": {
-      "Creación_Eterna": "Axioma que define al universo como un proceso infinito de manifestación de la vida sin principio ni fin."
-    }
-  },
-  "4298: CAPITULO III: No se puede ir ms all del espiritismo": {
-    "PilotoDeCoherencia": "Axioma de la plenitud doctrinaria: el espiritismo abarca la totalidad de la vida y el infinito, por lo que cualquier 'nuevo' saber es solo una rama del mismo árbol.",
-    "CitaInelutable": "No se puede ir más allá del espiritismo... porque es la vida.",
-    "EjemploPedagogico": "Tratar de salir del espacio. Por mucho que viajes, siempre estarás en el espacio. El espiritismo es ese 'espacio total' del conocimiento.",
-    "IdeasPrincipales": [
-      "Límite del Saber",
-      "Religión Universal",
-      "Inmutabilidad Doctrinal"
-    ],
-    "PuntosImportantes": [
-      "El espiritismo no se transforma; se transforma el hombre que lo descubre",
-      "Es la ley única que rige a todos los mundos y todos los seres",
-      "Elimina la necesidad de credos particulares al ser la Verdad Absoluta"
-    ],
-    "NodosSinapticos": [
-      "Limite_del_Saber",
-      "Religión_Universal",
-      "Inmutabilidad_Doctrinal"
-    ],
-    "ContextoDiccionario": {
-      "Límite_del_Saber": "El concepto de que el Espiritismo representa la síntesis final y total de todo conocimiento posible para el espíritu."
-    }
-  },
-  "4304: PRRAFO I (CAPITULO III: No se puede ir ms all del espiritismo)": {
-    "PilotoDeCoherencia": "La analogía del diamante: el espiritismo es la gema eterna que el hombre debe pulir para que refleje la luz de su propia sabiduría divina.",
-    "CitaInelutable": "El espiritismo... es como el diamante... diamante era y diamante es.",
-    "EjemploPedagogico": "Un telescopio sucio. El cielo (espiritismo) no cambia; es el lente el que debe limpiarse (estudiar) para que la imagen se vea nítida.",
-    "IdeasPrincipales": [
-      "Símil del Diamante",
-      "Pulimento del Espíritu",
-      "Valor Intrínseco"
-    ],
-    "PuntosImportantes": [
-      "La ignorancia es el barro que oculta el brillo de la doctrina",
-      "Cada esfuerzo de estudio es una 'escama' que se quita para dar brillo al alma",
-      "El diamante pulido (espíritu sabio) es el fin último de la evolución"
-    ],
-    "NodosSinapticos": [
-      "Simil_del_Diamante",
-      "Pulimento_del_Espiritu",
-      "Valor_Intrinseco"
-    ],
-    "ContextoDiccionario": {
-      "Símil_del_Diamante": "Metáfora trincadista que compara al espíritu y su doctrina con una piedra preciosa cuyo valor es eterno pero cuya luz requiere trabajo para manifestarse."
-    }
-  },
-  "4394: PRRAFO II: Definicin del hombre Voy a dar una breve definicin del hombre, pero firme y asentada para tener fundamento": {
+  "4394: PÁRRAFO II: Definición del hombre Voy a dar una breve definición del hombre, pero firme y asentada para tener fundamento": {
     "PilotoDeCoherencia": "Definición trinitaria del hombre: no es solo un animal evolucionado, sino un espíritu eterno que utiliza el alma y el cuerpo para manifestar la inteligencia en la materia.",
     "CitaInelutable": "Definición del hombre... breve pero firme... resumen de todo el universo.",
     "EjemploPedagogico": "Un barco (cuerpo) movido por el viento (alma) y dirigido por el timonel (espíritu). Sin el timonel, el barco va a la deriva; sin el barco, el timonel no cruza el mar.",
@@ -1898,7 +1310,7 @@
       "Justicia_del_Pensamiento": "El principio de que la ley de responsabilidad abarca no solo las obras físicas, sino también las intenciones y deseos del espíritu."
     }
   },
-  "4564: PRRAFO III: De dnde viene? Ya queda contestada esta pregunta arriba. De la substancia nica. Pero hay que razonar": {
+  "4564: PÁRRAFO III: ¿De dónde viene? Ya queda contestada esta pregunta arriba. De la substancia única. Pero hay que razonar": {
     "PilotoDeCoherencia": "Origen divino del espíritu: emanación directa de la Sustancia Única (Eloí) a través del Éter universal, proyectado a la forma para adquirir conciencia individual.",
     "CitaInelutable": "¿De dónde viene? De la substancia única. De Eloí.",
     "EjemploPedagogico": "Un rayo de luz que sale del sol. El rayo es diferente al sol porque tiene una dirección y un punto de impacto, pero su esencia es la luz solar pura.",
@@ -1921,7 +1333,7 @@
       "Sustancia_Única": "Axioma que identifica a Eloí como la fuente primordial de la cual emana toda la energía, materia y vida del universo."
     }
   },
-  "4694: PRRAFO IV: Para qu estamos aqu? Ni la tierra ni los mundos que compone el sistema solar; ni todos los de las constelaciones": {
+  "4694: PÁRRAFO IV: ¿ Para qué estamos aquí? Ni la tierra ni los mundos que compone el sistema solar; ni todos los de las constelaciones": {
     "PilotoDeCoherencia": "Misión de la existencia: estamos en la Tierra para progresar a través del trabajo, dominando los instintos y adquiriendo el saber necesario para ser ciudadanos del universo.",
     "CitaInelutable": "¿Para qué estamos aquí? Para el trabajo... para ganar sabiduría.",
     "EjemploPedagogico": "Un aprendiz en un taller de orfebrería. Está allí para aprender a manejar las herramientas y el fuego hasta que sea capaz de crear una obra maestra.",
@@ -1944,7 +1356,7 @@
       "Finalidad_de_la_Encarnación": "El propósito del espíritu al tomar un cuerpo físico: progresar, pagar deudas y adquirir sabiduría a través del trabajo."
     }
   },
-  "4790: PRRAFO V: A dnde va? De lo expuesto est ya contestada esta pregunta. El espritu va a su centro, con su archivo": {
+  "4790: PÁRRAFO V: ¿A dónde va? De lo expuesto está ya contestada esta pregunta. El espíritu va a su centro, con su archivo": {
     "PilotoDeCoherencia": "Destino trascendente: el espíritu camina hacia la unión con el Todo (Eloí), pasando por mundos de luz creciente a medida que su archivo se enriquece de amor y sabiduría.",
     "CitaInelutable": "¿A dónde va? El espíritu va a su centro... la muerte no existe; sólo es una ficción.",
     "EjemploPedagogico": "Un río que corre hacia el mar. Puede pasar por túneles oscuros o campos soleados, pero su destino final es fundirse en la inmensidad del océano.",
@@ -2013,7 +1425,7 @@
       "Redención_de_la_Mujer": "El proceso de liberación y reconocimiento de la igualdad absoluta de la mujer tras milenios de opresión religiosa y social."
     }
   },
-  "5286: in dita de esas tradiciones...": {
+  "5286: inédita de esas tradiciones...": {
     "PilotoDeCoherencia": "Transición de la ley humana a la espiritual: se nos entrega la 'letra que vivifica' para transformar las leyes oscuras de la materia en normas luminosas del espíritu.",
     "CitaInelutable": "Vuestras leyes, son tinta de la tierra... pero se os da la letra que vivifica.",
     "EjemploPedagogico": "Escribir un libro nuevo sobre las páginas borrosas de uno viejo. El contenido nuevo (espíritu) anula y supera al texto antiguo y confuso (materia).",
@@ -2059,7 +1471,7 @@
       "Misión_de_Kardec": "La tarea encomendada al espíritu Allan Kardec de abrir el camino a la fenomenología mediúnica como preludio a la doctrina racional."
     }
   },
-  "5629: PARTE TERCERA: El derecho de los esp ritus: Alta leccin": {
+  "5629: PARTE TERCERA: El derecho de los espíritus: Alta lección": {
     "PilotoDeCoherencia": "Soberanía del mundo invisible: el espíritu tiene el derecho natural e inalienable de participar en el gobierno de los mundos que él mismo ayuda a crear.",
     "CitaInelutable": "El derecho de los espíritus: Alta lección.",
     "EjemploPedagogico": "El arquitecto que tiene derecho a decidir cómo se usa el edificio que diseñó. El espíritu es el arquitecto de la vida y tiene voz en su legislación.",
@@ -2105,7 +1517,7 @@
       "Fracaso_del_Espiritualismo": "La incapacidad de las doctrinas espiritualistas para ofrecer una solución racional y social a los problemas de la humanidad."
     }
   },
-  "5693: II (PARTE TERCERA: El derecho de los esp ritos: Alta leccin)": {
+  "5693: II (PARTE TERCERA: El derecho de los espíritus: Alta lección)": {
     "PilotoDeCoherencia": "Redefinición del amor social: el amor no es un sentimiento egoísta de pareja o familia, sino la voluntad activa de bienestar común de 'todos para todos'.",
     "CitaInelutable": "En la tierra, no hay pueblo ni hay familia, porque no hay amor... el amor es acción de voluntad de todos para todos.",
     "EjemploPedagogico": "Una colmena de abejas. No hay abejas 'ricas' ni 'pobres'; el amor es el trabajo incesante de cada una para que la colmena entera sobreviva y prospere.",
@@ -2289,7 +1701,7 @@
       "Hermanos_de_Marten": "Los espíritus maestros procedentes de Marte que asisten en la dirección espiritual de la Tierra."
     }
   },
-  "8306: CAPTULO V: Explicacin del espiritismo": {
+  "8306: CAPÍTULO V: Explicación del espiritismo": {
     "PilotoDeCoherencia": "Definición final del Espiritismo: la ciencia integral que sintetiza todas las leyes universales, despojada de misticismo y religión.",
     "CitaInelutable": "CAPÍTULO V: Explicación del espiritismo.",
     "EjemploPedagogico": "Una enciclopedia universal que contiene todas las respuestas sobre la vida. El espiritismo es esa enciclopedia que el hombre puede consultar con su razón.",
@@ -2312,7 +1724,7 @@
       "Ciencia_Espiritismo": "La definición del espiritismo como el estudio metódico y racional de las leyes del espíritu y el universo."
     }
   },
-  "8317: I (CAPTULO V: Explicacin del espiritismo)": {
+  "8317: I (CAPÍTULO V: Explicación del espiritismo)": {
     "PilotoDeCoherencia": "Supremacía de la inteligencia: el espiritismo demuestra que el espíritu es el motor único y la materia el instrumento temporal para su progreso.",
     "CitaInelutable": "El espíritu es el único ser inteligente... la materia es su instrumento.",
     "EjemploPedagogico": "El conductor (espíritu) y el automóvil (cuerpo). El coche permite al conductor desplazarse y cumplir misiones, pero el coche no tiene voluntad propia ni inteligencia.",
@@ -2335,7 +1747,7 @@
       "Preexistencia_del_Espíritu": "La realidad ontológica de que el ser inteligente existe antes de tomar cualquier forma material."
     }
   },
-  "8466: II (CAPTULO V: Explicacin del espiritismo)": {
+  "8466: II (CAPÍTULO V: Explicación del espiritismo)": {
     "PilotoDeCoherencia": "Comunicación intermundos: la mediumnidad es una facultad orgánica y natural de la humanidad que permite el diálogo constante con el mundo espiritual.",
     "CitaInelutable": "La mediumnidad es la herramienta universal... derecho natural que no requiere ritos.",
     "EjemploPedagogico": "El lenguaje. Así como aprendemos a hablar para comunicarnos con otros hombres, desarrollamos la mediumnidad para hablar con nuestros hermanos invisibles.",
@@ -2381,7 +1793,7 @@
       "Educación_desde_el_Pecho": "La fase crítica de formación moral donde el lactante recibe no solo leche, sino la vibración afectiva de sus progenitores."
     }
   },
-  "8668: III (CAPTULO V: Explicacin del espiritismo)": {
+  "8668: III (CAPÍTULO V: Explicación del espiritismo)": {
     "PilotoDeCoherencia": "Justicia de retorno: la reencarnación es el mecanismo de reparación por el cual el espíritu vuelve a los escenarios de sus errores para transformarlos en triunfos.",
     "CitaInelutable": "La ley de justicia exige reparar en el mismo lugar... la reencarnación es necesaria.",
     "EjemploPedagogico": "Un trabajador que comete un error en una línea de montaje. La mejor forma de aprender es que él mismo repare la pieza que dañó antes de seguir con la siguiente.",
@@ -2404,7 +1816,7 @@
       "Ley_de_Reparación": "Principio universal que establece que todo daño causado debe ser compensado por el mismo ser mediante el trabajo útil."
     }
   },
-  "8867: IV (CAPTULO V: Explicacin del espiritismo)": {
+  "8867: IV (CAPÍTULO V: Explicación del espiritismo)": {
     "PilotoDeCoherencia": "El fin supremo: el espiritismo no busca crear adeptos, sino ciudadanos del universo que vivan en fraternidad y en el régimen de la Comuna.",
     "CitaInelutable": "El fin del espiritismo es la fraternidad universal... la verdad es un bien común.",
     "EjemploPedagogico": "Un río que desemboca en el mar. El espiritismo es el río y la Comuna es el mar inmenso donde todas las aguas se mezclan en unidad.",
@@ -2427,7 +1839,7 @@
       "Fraternidad_Universal": "El estado de convivencia humana basado en el reconocimiento del origen común y la solidaridad absoluta."
     }
   },
-  "9091: V (CAPTULO V: Explicacin del espiritismo)": {
+  "9091: V (CAPÍTULO V: Explicación del espiritismo)": {
     "PilotoDeCoherencia": "Cosmogonía dinámica: el espiritismo revela que el universo es un organismo solidario y eterno donde la vida nunca se interrumpe, solo cambia de frecuencia.",
     "CitaInelutable": "El universo es un organismo vivo... no hay muertos, sino seres en diferentes estados de vibración.",
     "EjemploPedagogico": "Una orquesta sinfónica. Cada músico (ser) toca un instrumento diferente y en tonos distintos, pero todos forman una sola melodía universal (la vida) bajo la dirección del Creador.",
@@ -2450,7 +1862,7 @@
       "Universo_Vivo": "El concepto de que toda la creación posee una esencia espiritual activa y en constante evolución."
     }
   },
-  "9201: ver is, ser el consejo que recibir is.": {
+  "9201: veréis, será el consejo que recibiréis.": {
     "PilotoDeCoherencia": "Mecánica mediúmnica: los médiums son herramientas biológicas preciosas que requieren estudio, ética y pureza para servir de canal a los maestros de luz.",
     "CitaInelutable": "Los médiums, son herramientas muy preciadas... aceitarlas vosotros con nuestros consejos.",
     "EjemploPedagogico": "Un telescopio de alta precisión. Si el lente (conciencia del médium) está sucio o empañado, las estrellas (verdades espirituales) se verán borrosas o deformadas.",
@@ -2473,7 +1885,7 @@
       "Cuidado_del_Médium": "El conjunto de disciplinas físicas y morales necesarias para mantener la salud y fidelidad de la facultad mediúmnica."
     }
   },
-  "9225: VI (CAPTULO V: Explicacin del espiritismo)": {
+  "9225: VI (CAPÍTULO V: Explicación del espiritismo)": {
     "PilotoDeCoherencia": "Consumación de la verdad: el espiritismo racional es la revelación definitiva del Espíritu de Verdad que establece el reinado de la razón sobre el dogma.",
     "CitaInelutable": "El espiritismo... es la revelación del Espíritu de Verdad... establece el reinado de la razón.",
     "EjemploPedagogico": "Llegar a la cima de una montaña. Desde arriba (la razón) se ven todos los caminos que se recorrieron (religiones) y se comprende por qué eran necesarios pero insuficientes.",
@@ -2519,7 +1931,7 @@
       "Reglamento_de_Cátedras": "El conjunto de normas que rigen el funcionamiento de los centros de estudio de la Escuela Magnético-Espiritual."
     }
   },
-  "9580: EP LOGO": {
+  "9580: EPÍLOGO": {
     "PilotoDeCoherencia": "Sentencia final y nueva era: clausura del volumen confirmando el fin del error y el inicio del reinado de la Comuna de Amor y Ley en el Séptimo Día de la Tierra.",
     "CitaInelutable": "¡Humanidad! Despierta... todo está consumado... el fin del error... el principio del reinado del espiritismo.",
     "EjemploPedagogico": "El sonar de la campana al final de un examen. El tiempo de prueba ha terminado; ahora empieza la vida real basada en lo que cada uno aprendió y demostró.",

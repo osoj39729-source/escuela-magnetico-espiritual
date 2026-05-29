@@ -22,6 +22,8 @@ import { LA_REVOLUCION_DE_MEXICO_MAP } from '../data/maps/la-revolucion-de-mexic
 import { TERCERA_ETAPA_MAP } from '../data/maps/tercera-etapa/structure';
 import { LEY_MEDIUMNIDADES_PEDAGOGICAL_MAP } from '../data/maps/ley-mediumnidades/structure';
 import { MASTER_SYNAPSE_MAP } from '../data/maps/master-synapse/synapse';
+import { LAUDO_DE_RIGOR_MAP } from '../data/maps/laudo-de-rigor/structure';
+import { REGLAMENTO_INTERNO_MAP } from '../data/maps/reglamento-interno/structure';
 
 // ─── Diccionario de mapas por palabra clave ───────────────────────────────────
 const STRUCTURAL_MAPS: Record<string, any> = {
@@ -90,10 +92,26 @@ const STRUCTURAL_MAPS: Record<string, any> = {
   "extremos se tocan": LOS_EXTREMOS_SE_TOCAN_MAP,
   "historia humanidad": LOS_EXTREMOS_SE_TOCAN_MAP,
   "constantino": LOS_EXTREMOS_SE_TOCAN_MAP,
+  "concilio nicea": LOS_EXTREMOS_SE_TOCAN_MAP,
   "primera guerra": LOS_EXTREMOS_SE_TOCAN_MAP,
+  "gran guerra": LOS_EXTREMOS_SE_TOCAN_MAP,
+  "primera guerra mundial": LOS_EXTREMOS_SE_TOCAN_MAP,
   "dia del amor": LOS_EXTREMOS_SE_TOCAN_MAP,
   "eloi propietario": LOS_EXTREMOS_SE_TOCAN_MAP,
+  "propiedad privada abolicion": LOS_EXTREMOS_SE_TOCAN_MAP,
   "adam adan": LOS_EXTREMOS_SE_TOCAN_MAP,
+  "adan misionero": LOS_EXTREMOS_SE_TOCAN_MAP,
+  "sanscrito shet": LOS_EXTREMOS_SE_TOCAN_MAP,
+  "ley de shet": LOS_EXTREMOS_SE_TOCAN_MAP,
+  "revolucion francesa espiritu": LOS_EXTREMOS_SE_TOCAN_MAP,
+  "napoleon instrumento": LOS_EXTREMOS_SE_TOCAN_MAP,
+  "balcanes detonante": LOS_EXTREMOS_SE_TOCAN_MAP,
+  "culpables guerra": LOS_EXTREMOS_SE_TOCAN_MAP,
+  "dogma trono propiedad": LOS_EXTREMOS_SE_TOCAN_MAP,
+  "civilizacion commune": LOS_EXTREMOS_SE_TOCAN_MAP,
+  "mandato ama hermano": LOS_EXTREMOS_SE_TOCAN_MAP,
+  "universo solidarizado": LOS_EXTREMOS_SE_TOCAN_MAP,
+  "premisa libro escalpelo": LOS_EXTREMOS_SE_TOCAN_MAP,
   // Grado 11
   "conocete a ti mismo": CONOCETE_A_TI_MISMO_PEDAGOGICAL_MAP,
   "trinidad humana": CONOCETE_A_TI_MISMO_PEDAGOGICAL_MAP,
@@ -113,9 +131,22 @@ const STRUCTURAL_MAPS: Record<string, any> = {
   "union seres": CODIGO_AMOR_UNIVERSAL_MAP,
   // Grado 13
   "estatutos": ESTATUTOS_Y_REGLAMENTOS_MAP,
-  "reglamento": ESTATUTOS_Y_REGLAMENTOS_MAP,
-  "laudo": ESTATUTOS_Y_REGLAMENTOS_MAP,
-  "laudo de rigor": ESTATUTOS_Y_REGLAMENTOS_MAP,
+  // Laudo de Rigor — mapa específico con antecedentes históricos y artículos
+  "laudo": LAUDO_DE_RIGOR_MAP,
+  "laudo de rigor": LAUDO_DE_RIGOR_MAP,
+  "suspension facultades": LAUDO_DE_RIGOR_MAP,
+  "por que laudo": LAUDO_DE_RIGOR_MAP,
+  "cuando termina laudo": LAUDO_DE_RIGOR_MAP,
+  "articulos laudo": LAUDO_DE_RIGOR_MAP,
+  // Reglamento Interno — mapa específico con artículos de admisión y organización
+  "reglamento": REGLAMENTO_INTERNO_MAP,
+  "reglamento interno": REGLAMENTO_INTERNO_MAP,
+  "admision escuela": REGLAMENTO_INTERNO_MAP,
+  "ingreso escuela": REGLAMENTO_INTERNO_MAP,
+  "articulos reglamento": REGLAMENTO_INTERNO_MAP,
+  "organizacion escuela": REGLAMENTO_INTERNO_MAP,
+  // Estatutos generales (principios de la institución)
+  "estatutos generales": ESTATUTOS_Y_REGLAMENTOS_MAP,
   "maestro nato": ESTATUTOS_Y_REGLAMENTOS_MAP,
   "asamblea comunal": ESTATUTOS_Y_REGLAMENTOS_MAP,
   // Estudio Libre
@@ -267,10 +298,40 @@ export const structuralService = {
       context += `FILTRO FILOSÓFICO GLOBAL: ${map.filtro_filosofico}\n`;
     }
 
-    if (map.segmentos) {
+    const seccionesRaw = map.secciones || map.segmentos;
+    if (seccionesRaw && Array.isArray(seccionesRaw)) {
+      // Normalizar estructura al vuelo para compatibilidad universal
+      const normalizedSegments = seccionesRaw.map((s: any) => {
+        let ideasFuerza: any[] = [];
+        if (s.ideas_fuerza) {
+          ideasFuerza = s.ideas_fuerza;
+        } else if (s.bloques) {
+          for (const b of s.bloques) {
+            if (b.ideas_atomicas) {
+              for (const idea of b.ideas_atomicas) {
+                ideasFuerza.push({
+                  id: idea.id,
+                  logica: idea.logica || idea.enunciado || "",
+                  filtro_antidogma: idea.filtro || idea.filtro_antidogma || "",
+                  psicologia_aplicada: idea.psicologia_aplicada || "",
+                  texto_clave: idea.texto_clave || b.titulo || "",
+                  interconexiones: idea.interconexion ? [{ libro: "Interconexión", motivo: idea.interconexion }] : (idea.interconexiones || [])
+                });
+              }
+            }
+          }
+        }
+        return {
+          id: s.id || s.seccion || "",
+          titulo_literal: s.seccion || s.titulo_literal || s.id || "",
+          eje_pedagogico: s.eje || s.eje_pedagogico || "",
+          ideas_fuerza: ideasFuerza
+        };
+      });
+
       // Buscar el segmento más relevante
-      const relevantSegment = map.segmentos.find((s: any) => {
-        const segText = (s.id + " " + (s.titulo_literal || "") + " " + (s.eje_pedagogico || "")).toLowerCase()
+      const relevantSegment = normalizedSegments.find((s: any) => {
+        const segText = (s.id + " " + s.titulo_literal + " " + s.eje_pedagogico).toLowerCase()
           .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
         if (normalizedQuery.split(" ").some((w: string) => w.length > 4 && segText.includes(w))) return true;
         return s.ideas_fuerza?.some((i: any) => {
@@ -281,7 +342,7 @@ export const structuralService = {
       });
 
       if (relevantSegment) {
-        context += `\nSEGMENTO RELEVANTE: ${relevantSegment.titulo_literal || relevantSegment.id}\n`;
+        context += `\nSEGMENTO RELEVANTE: ${relevantSegment.titulo_literal}\n`;
         context += `LÓGICA DEL SEGMENTO: ${relevantSegment.eje_pedagogico}\n`;
 
         // Buscar la idea atómica más precisa
@@ -306,7 +367,7 @@ export const structuralService = {
           if (relevantIdea.interconexiones?.length > 0) {
             context += `INTERCONEXIONES CON OTROS LIBROS:\n`;
             relevantIdea.interconexiones.slice(0, 3).forEach((ic: any) => {
-              context += `  → [${ic.libro}] ${ic.motivo}\n`;
+              context += `  → [${ic.libro || 'Libro'}] ${ic.motivo}\n`;
             });
           }
         } else {
@@ -315,12 +376,13 @@ export const structuralService = {
             context += `\n• ${i.logica}`;
             if (i.filtro_antidogma) context += ` | FILTRO: ${i.filtro_antidogma}`;
           });
+          context += "\n";
         }
       } else {
         // Sin segmento específico, dar el eje general y los primeros 2 segmentos
         context += `\nSEGMENTOS PRINCIPALES DEL LIBRO:\n`;
-        map.segmentos.slice(0, 2).forEach((s: any) => {
-          context += `  [${s.titulo_literal || s.id}]: ${s.eje_pedagogico}\n`;
+        normalizedSegments.slice(0, 2).forEach((s: any) => {
+          context += `  [${s.titulo_literal}]: ${s.eje_pedagogico}\n`;
         });
       }
     } else {

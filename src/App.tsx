@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, ChangeEvent, FormEvent } from 'react';
-import { Send, BookOpen, BrainCircuit, Mic, Volume2, Sparkles, Activity, Play, Pause, Square, Download, CheckCircle2, PlayCircle, ArrowRight, ArrowLeft, Loader2, User, LogOut, Shield, Settings, ChevronRight, BarChart3, Users, Clock, Globe, CreditCard, GraduationCap, MapPin, Phone, Mail, Briefcase, Fingerprint, FastForward, Lock, Award, ShieldCheck, Eye, EyeOff, Search, X } from 'lucide-react';
-import { chatWithProfessor, chatWithProfessorStream, generatePresentationVideo, getNextApiKey } from './services/geminiService';
+import { Send, BookOpen, BrainCircuit, Mic, Volume2, Sparkles, Activity, Play, Pause, Square, Download, CheckCircle2, PlayCircle, ArrowRight, ArrowLeft, Loader2, User, LogOut, Shield, ShieldAlert, Settings, ChevronRight, BarChart3, Users, Clock, Globe, CreditCard, GraduationCap, MapPin, Phone, Mail, Briefcase, Fingerprint, FastForward, Lock, Award, ShieldCheck, Eye, EyeOff, Search, X, RotateCw } from 'lucide-react';
+import { chatWithProfessorStream } from './services/geminiService';
 import { motion, AnimatePresence } from 'motion/react';
 import { jsPDF } from 'jspdf';
 import { auth, db, googleProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut, doc, setDoc, getDoc, updateDoc, collection, addDoc, query, orderBy, onSnapshot, handleFirestoreError, OperationType, serverTimestamp, createUserWithEmailAndPassword, signInWithEmailAndPassword, hashPassword, arrayUnion, setPersistence, browserLocalPersistence } from './firebase';
@@ -10,7 +10,15 @@ import { BLOCKED_NODES } from './data/blocked_nodes';
 import type { LocalUser as FirebaseUser } from './firebase';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { iniciarSesion, cerrarSesion, registrarInteraccion, actualizarTemaEnSesion } from './services/session_tracker';
-import { evaluarYActualizarPerfil, leerPerfilCognitivo, construirContextoProfesor } from './services/cognitive_engine';
+import { evaluarYActualizarPerfil, leerPerfilCognitivo, construirContextoProfesor, TRADUCCION_FACULTADES } from './services/cognitive_engine';
+import { 
+  debeAplicarValidacion, 
+  contarInteraccionesEnLeccion, 
+  incrementarInteraccionesEnLeccion, 
+  activarModoValidacionIntensiva,
+  estaModoValidacionIntensiva,
+  reiniciarContadorLeccion
+} from './services/essenceValidator';
 
 declare global {
   interface Window {
@@ -46,7 +54,7 @@ interface ErrorBoundaryState {
   error: any;
 }
 
-class ErrorBoundary extends React.Component<any, any> {
+class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
   state: ErrorBoundaryState = { hasError: false, error: null };
 
   static getDerivedStateFromError(error: any) { return { hasError: true, error }; }
@@ -63,7 +71,7 @@ class ErrorBoundary extends React.Component<any, any> {
         </div>
       );
     }
-    return this.props.children;
+    return (this as any).props.children;
   }
 }
 
@@ -93,10 +101,6 @@ const countryCodes = [
   { code: '+33', name: 'Francia' },
   { code: '+351', name: 'Portugal' },
 ];
-
-// --- Components ---
-
-// --- Components ---
 
 const RegistrationForm = ({ t, onSubmit, onLogin, onSkip, onBack, user, language, externalError, setExternalError, onGoogleSignIn }: { t: any, onSubmit: (data: any) => void, onLogin: (email: string, pass: string) => void, onSkip?: () => void, onBack?: () => void, user: FirebaseUser | null, language: string, externalError?: any, setExternalError?: (err: any) => void, onGoogleSignIn?: () => void }) => {
   const [mode, setMode] = useState<'login' | 'register'>('login');
@@ -168,7 +172,7 @@ const RegistrationForm = ({ t, onSubmit, onLogin, onSkip, onBack, user, language
       setLoading(false);
     }
   };  return (
-    <div className="w-full h-screen flex items-center justify-center overflow-y-auto p-6 relative">
+    <div className="w-full min-h-screen flex items-start sm:items-center justify-center p-4 sm:p-6 relative">
       {/* Background embellishments */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black z-0" />
       <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-amber-600/10 rounded-full blur-[150px] z-0" />
@@ -179,7 +183,7 @@ const RegistrationForm = ({ t, onSubmit, onLogin, onSkip, onBack, user, language
         initial={{ opacity: 0, y: 30, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ type: "spring", stiffness: 260, damping: 20 }}
-        className="w-full max-w-2xl p-8 md:p-12 bg-slate-900/80 backdrop-blur-3xl rounded-[2.5rem] border border-amber-500/20 shadow-[0_0_50px_rgba(0,0,0,0.5)] flex flex-col z-10 relative overflow-hidden"
+        className="w-full max-w-2xl my-6 sm:my-0 p-6 sm:p-8 md:p-12 bg-slate-900/80 backdrop-blur-3xl rounded-[2rem] sm:rounded-[2.5rem] border border-amber-500/20 shadow-[0_0_50px_rgba(0,0,0,0.5)] flex flex-col z-10 relative overflow-visible"
       >
         <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-amber-600 via-amber-400 to-amber-600" />
         
@@ -500,6 +504,7 @@ const AdminPanel = ({ t }: { t: any }) => {
 };
 
 import { CURRICULUM } from './data/grades';
+import { GRADE_1_GUIDELINES } from './data/grades/grade1_guidelines';
 
 const translations: { [key: string]: any } = {
   es: {
@@ -771,11 +776,6 @@ const translations: { [key: string]: any } = {
     downloadPdf: "Télécharger la leçon (PDF)",
     progress: "Progression du programme",
     lesson: "Leçon",
-    playVideo: "Lire la vidéo de présentation",
-    continueWithProfessor: "Continuer avec le professeur",
-    videoLoading: "Génération de la vidéo de présentation spirituelle...",
-    videoError: "Erreur lors du chargement de la vidéo.",
-    videoPrompt: "Une vidéo cinématographique épique montrant le bouclier de l'École Magnético Espiritual de la Commune Universelle (le Grand Quatorze) brillant d'une lumière dorée, suivie d'images de l'évolution humaine de l'instinct à la raison spirituelle, de la fraternité universelle, des mondos habités dans le cosmos et de la lumière des connaissances rationnelles de Joaquin Trincado.",
     registerTitle: "Inscription de l'étudiant",
     fullName: "Nom complet",
     address: "Adresse",
@@ -832,8 +832,77 @@ const translations: { [key: string]: any } = {
   }
 };
 
-// Foto local del Maestro Joaquín Trincado (desde la carpeta del proyecto)
-// TRINCADO_IMG y TRINCADO_IMG_FALLBACK declarados arriba (antes de RegistrationForm)
+export function obtenerLibroActivoPorLeccion(gradeId: number, lessonIndex: number, defaultBookId: string): { bookId: string; bookTitle: string } {
+  if (gradeId === 6) {
+    if (lessonIndex <= 78) {
+      return { bookId: "los-cinco-amores", bookTitle: "Los Cinco Amores" };
+    } else {
+      return { bookId: "filosofia-enciclopedica-universal-tomo-1", bookTitle: "Filosofía Enciclopédica Tomo 1" };
+    }
+  }
+  if (gradeId === 7) {
+    if (lessonIndex <= 100) {
+      return { bookId: "filosofia-austera-racional", bookTitle: "Filosofía Austera Racional" };
+    } else {
+      return { bookId: "el-magnetismo-en-su-origen", bookTitle: "El Magnetismo en su Origen" };
+    }
+  }
+  if (gradeId === 8) {
+    if (lessonIndex <= 54) {
+      return { bookId: "filosofia-austera-racional", bookTitle: "Filosofía Austera Racional" };
+    } else {
+      return { bookId: "el-espiritismo-estudiado", bookTitle: "El Espiritismo Estudiado" };
+    }
+  }
+  if (gradeId === 9) {
+    if (lessonIndex <= 63) {
+      return { bookId: "filosofia-austera-racional", bookTitle: "Filosofía Austera Racional" };
+    } else {
+      return { bookId: "profilaxis-de-la-vida", bookTitle: "Profilaxis de la Vida" };
+    }
+  }
+  if (gradeId === 10) {
+    if (lessonIndex <= 55) {
+      return { bookId: "los-extremos-se-tocan", bookTitle: "Los Extremos se Tocan" };
+    } else {
+      return { bookId: "filosofia-enciclopedica-universal-tomo-2", bookTitle: "Filosofía Enciclopédica Tomo 2" };
+    }
+  }
+  if (gradeId === 11) {
+    if (lessonIndex <= 149) {
+      return { bookId: "conocete-a-ti-mismo-1", bookTitle: "Conócete a Ti Mismo" };
+    } else {
+      return { bookId: "alfaqui-vademecum", bookTitle: "Alfaquí Vademécum" };
+    }
+  }
+  if (gradeId === 12) {
+    if (lessonIndex <= 100) {
+      return { bookId: "codigo-de-amor-universal-tomo-1", bookTitle: "Código de Amor Universal Tomo 1" };
+    } else {
+      return { bookId: "codigo-de-amor-universal-tomo-2", bookTitle: "Código de Amor Universal Tomo 2" };
+    }
+  }
+  if (gradeId === 13) {
+    // Parte 1: Estatutos y Reglamentos (temas 1-63)
+    if (lessonIndex <= 63) {
+      return { bookId: "estatutos-y-reglamentos", bookTitle: "Estatutos y Reglamentos" };
+    }
+    // Laudo de Rigor (temas 64-83, 20 temas)
+    else if (lessonIndex <= 83) {
+      return { bookId: "laudode-rigor", bookTitle: "Laudo de Rigor" };
+    }
+    // Ley de las Mediumidades en General (temas 84-123, 40 temas)
+    else if (lessonIndex <= 123) {
+      return { bookId: "ley-de-las-mediumidades-en-general", bookTitle: "Ley de las Mediumidades en General" };
+    }
+    // Parte 2: Reglamento Interno / Estatutos ampliados (temas 124-144, 21 temas)
+    else {
+      return { bookId: "estatutos-y-reglamentos", bookTitle: "Estatutos y Reglamentos (Parte 2)" };
+    }
+  }
+  
+  return { bookId: defaultBookId, bookTitle: "" };
+}
 
 function App() {
   const [introStep, setIntroStep] = useState<'intro' | 'choice' | 'video' | 'professor' | 'registration' | 'chat' | 'admin'>('intro');
@@ -841,6 +910,7 @@ function App() {
   const [showIntro, setShowIntro] = useState(true);
   const [user, setUser] = useState<FirebaseUser | null>(null);
   const [studentProfile, setStudentProfile] = useState<any>(null);
+  const [isSynced, setIsSynced] = useState<boolean>(false);
   const [isAdminUser, setIsAdminUser] = useState(false);
   const [error, setError] = useState<string | React.ReactNode>('');
   
@@ -854,7 +924,7 @@ function App() {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   
   useEffect(() => {
-    console.log("EMECU APP - Versión 1.2.0 (Robusta & Fluida)");
+    console.log("EMECU APP - Versión 1.2.7 (Robusta & Fluida)");
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
     window.addEventListener('online', handleOnline);
@@ -883,6 +953,7 @@ function App() {
   const [showChoiceButtons, setShowChoiceButtons] = useState(false);
   const [unlockedAllGrades, setUnlockedAllGrades] = useState(false);
   const [showGradesMenu, setShowGradesMenu] = useState(false);
+  const [showLessonsMenu, setShowLessonsMenu] = useState(false);
   const [showLibraryMenu, setShowLibraryMenu] = useState(false);
   const [showDownloadsMenu, setShowDownloadsMenu] = useState(false);
   const [studyMode, setStudyMode] = useState<'curriculum' | 'library'>('curriculum');
@@ -896,12 +967,50 @@ function App() {
   const [showDiploma, setShowDiploma] = useState<number | null>(null);
   const [maxReachedLesson, setMaxReachedLesson] = useState(1);
   const [maxReachedGrade, setMaxReachedGrade] = useState(1);
-  const [videoUrl, setVideoUrl] = useState<string | null>(null);
-  const [videoLoading, setVideoLoading] = useState(false);
   const [cognitiveContext, setCognitiveContext] = useState<string>('');
-  const [videoError, setVideoError] = useState<string | null>(null);
   const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
   const [selectedVoiceURI, setSelectedVoiceURI] = useState<string>('');
+  const [isPortrait, setIsPortrait] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [modoValidacionIntensiva, setModoValidacionIntensiva] = useState(false);
+  const [interaccionesEnLeccion, setInteraccionesEnLeccion] = useState(0);
+
+  useEffect(() => {
+    const checkOrientation = () => {
+      const isMobileDevice = window.innerWidth <= 768 || /Mobi|Android|iPhone/i.test(navigator.userAgent);
+      setIsMobile(isMobileDevice);
+      const isCurrentlyPortrait = window.innerHeight > window.innerWidth;
+      setIsPortrait(false);
+    };
+
+    checkOrientation();
+    window.addEventListener('resize', checkOrientation);
+    if (screen.orientation) {
+      screen.orientation.addEventListener('change', checkOrientation);
+    }
+
+    return () => {
+      window.removeEventListener('resize', checkOrientation);
+      if (screen.orientation) {
+        screen.orientation.removeEventListener('change', checkOrientation);
+      }
+    };
+  }, []);
+
+  const handleForceLandscape = () => {
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen().then(() => {
+        const screenAny = screen as any;
+        if (screenAny.orientation && screenAny.orientation.lock) {
+          screenAny.orientation.lock('landscape').catch((err: any) => {
+            console.warn("[Orientation] Lock failed:", err);
+          });
+        }
+      }).catch(err => {
+        console.warn("[Orientation] Fullscreen failed:", err);
+      });
+    }
+  };
 
   // Load saved student profile from localStorage
   useEffect(() => {
@@ -1066,7 +1175,62 @@ function App() {
       try {
         if (currentUser) {
           setUser(currentUser);
-          const profile = await getStudentProfile(currentUser.uid);
+          let profile = await getStudentProfile(currentUser.uid);
+          
+          // --- AUTO-FUSIÓN DE PROGRESO LOCAL Y CLOUD ---
+          const savedLocalRaw = localStorage.getItem('emecu_student');
+          if (savedLocalRaw) {
+            try {
+              const localProfile = JSON.parse(savedLocalRaw);
+              
+              if (profile) {
+                // Comparación de progreso: ver si el local es más avanzado
+                const localProgressValue = (localProfile.currentGrade || 1) * 1000 + (localProfile.currentLesson || 1);
+                const cloudProgressValue = (profile.currentGrade || 1) * 1000 + (profile.currentLesson || 1);
+                
+                if (localProgressValue > cloudProgressValue) {
+                  console.log("[Observador] FUSIÓN: El progreso local es más avanzado. Actualizando nube...");
+                  // Fusionar datos locales sobre los de la nube
+                  const mergedProfile = {
+                    ...profile,
+                    currentGrade: localProfile.currentGrade || 1,
+                    currentLesson: localProfile.currentLesson || 1,
+                    maxReachedGrade: Math.max(profile.maxReachedGrade || 1, localProfile.maxReachedGrade || 1, localProfile.currentGrade || 1),
+                    maxReachedLesson: Math.max(profile.maxReachedLesson || 1, localProfile.maxReachedLesson || 1, localProfile.currentLesson || 1),
+                    intelligenceScore: Math.max(profile.intelligenceScore || 0, localProfile.intelligenceScore || 0),
+                  };
+                  
+                  // Fusionar facultades si existen localmente y son numéricas
+                  if (localProfile.faculties) {
+                    mergedProfile.faculties = {
+                      ...(profile.faculties || {}),
+                      ...localProfile.faculties
+                    };
+                  }
+                  
+                  await saveStudentProfile(mergedProfile);
+                  profile = mergedProfile;
+                } else {
+                  console.log("[Observador] FUSIÓN: El progreso en la nube es más avanzado o igual. Sincronizando localmente...");
+                  // Sincronizar localmente si la nube es más avanzada
+                  localStorage.setItem('emecu_student', JSON.stringify(profile));
+                }
+              } else {
+                // Si no hay perfil en la nube pero sí local, creamos el de la nube con los datos locales
+                console.log("[Observador] FUSIÓN: Perfil no encontrado en la nube. Creando desde datos locales...");
+                const newCloudProfile = {
+                  ...localProfile,
+                  uid: currentUser.uid,
+                  email: currentUser.email || localProfile.email
+                };
+                await saveStudentProfile(newCloudProfile);
+                profile = newCloudProfile;
+              }
+            } catch (errSync) {
+              console.error("[Observador] Error durante la auto-fusión de perfiles:", errSync);
+            }
+          }
+          
           if (profile) {
             setStudentProfile(profile);
             setIsAdminUser(profile.role === 'admin' || currentUser.email === "nelsonosoriogarcia@gmail.com");
@@ -1074,6 +1238,7 @@ function App() {
             setLessonProgress(profile.currentLesson || 1);
             setMaxReachedGrade(profile.maxReachedGrade || profile.currentGrade || 1);
             setMaxReachedLesson(profile.maxReachedLesson || profile.currentLesson || 1);
+            setIsSynced(true);
             
             setShowIntro(false);
             setIntroStep('chat');
@@ -1081,6 +1246,7 @@ function App() {
             setIntroStep('registration');
           }
         } else {
+          setIsSynced(false);
           // Intentar capturar el resultado del redirect con más insistencia
           const result = await getRedirectResult(auth as any).catch(e => {
             console.warn("Redirect result failed (expected on normal load):", e);
@@ -1092,6 +1258,7 @@ function App() {
             const profile = await getStudentProfile(result.user.uid);
             if (profile) {
               setStudentProfile(profile);
+              setIsSynced(true);
               setShowIntro(false);
               setIntroStep('chat');
             } else {
@@ -1134,11 +1301,6 @@ function App() {
   useEffect(() => {
     scrollToBottom();
   }, [chat, loading]);
-
-  // Intro Timer removed - User must click a button
-  useEffect(() => {
-    // No automatic transition
-  }, []);
 
   // Initial greeting
   useEffect(() => {
@@ -1186,6 +1348,25 @@ function App() {
       const currentBookTitle = bookData ? bookData.title : undefined;
       const effectiveChapter = currentLibraryChapter;
       const activeCognitiveContext = cognitiveOverride || cognitiveContext;
+
+      // ═══════════════════════════════════════════════════════════
+      // RESOLUCIÓN DINÁMICA CURRICULAR (Hilo faltante reparado)
+      // Cuando activeMode === 'curriculum', resolver el libro y capítulo
+      // correspondientes a la lección actual SIN TOCAR currentLibraryBook
+      // ni currentLibraryChapter (preservar aislamiento absoluto entre modos).
+      // ═══════════════════════════════════════════════════════════
+      let resolvedCurriculumBookId = undefined;
+      let resolvedCurriculumBookTitle = undefined;
+      
+      if (activeMode === 'curriculum' && gradeData) {
+        const infoLibro = obtenerLibroActivoPorLeccion(activeGrade, activeLesson, gradeData.book || "");
+        resolvedCurriculumBookId = infoLibro.bookId || undefined;
+        resolvedCurriculumBookTitle = infoLibro.bookTitle ? `Grado ${activeGrade}: ${infoLibro.bookTitle}` : `Grado ${activeGrade}: ${gradeData.title || 'Obra doctrinal'}`;
+      }
+      
+      const resolvedCurriculumChapter = activeMode === 'curriculum' ? (themeName || undefined) : undefined;
+      const themeGuideline = themeName && activeGrade === 1 ? GRADE_1_GUIDELINES[themeName] : undefined;
+      console.log(`[Currículo RAG] Resolviendo → bookId: ${resolvedCurriculumBookId} | chapter: ${resolvedCurriculumChapter} | guideline: ${themeGuideline ? 'Sí' : 'No'}`);
 
       if (activeGrade === 1 && activeLesson === 1 && activeMode === 'curriculum') {
         startPrompt = language === 'es'
@@ -1237,35 +1418,37 @@ function App() {
             if (sentenceMatch) {
               const sentenceToSpeak = sentenceMatch[0];
               spokenLength += sentenceToSpeak.length;
-              if (sentenceToSpeak.trim().length > 1) {
-                enqueueSpeech(sentenceToSpeak);
+              const cleanSentence = sentenceToSpeak.replace(/<!-- COGNITIVE_UPDATE: \{[\s\S]*?\} -->/g, "").split('<!--')[0].trim();
+              if (cleanSentence.length > 1) {
+                enqueueSpeech(cleanSentence);
               }
             }
 
             const now = Date.now();
             if (now - lastUpdate > 80) {
-              const tempText = accumulated.replace(/<!-- COGNITIVE_UPDATE: \{.*?\} -->/g, "").trim();
+              const tempText = accumulated.replace(/<!-- COGNITIVE_UPDATE: \{[\s\S]*?\} -->/g, "").trim();
               setChat([{ role: 'professor', text: tempText || '...' }]);
               lastUpdate = now;
             }
           },
           activeMode,
-          currentBookTitle,
-          effectiveChapter || undefined,
-          currentLibraryBook || undefined,
+          activeMode === 'curriculum' ? resolvedCurriculumBookTitle : currentBookTitle,
+          activeMode === 'curriculum' ? resolvedCurriculumChapter : (effectiveChapter || undefined),
+          activeMode === 'curriculum' ? resolvedCurriculumBookId : (currentLibraryBook || undefined),
           user?.uid || undefined,
-          activeCognitiveContext
+          activeCognitiveContext,
+          themeGuideline
         );
 
         let finalText = result.text;
         let aiDeltas: Record<string, number> | null = null;
 
         // Interceptación Silenciosa final
-        const cognitiveMatch = finalText.match(/<!-- COGNITIVE_UPDATE: (\{.*?\}) -->/);
+        const cognitiveMatch = finalText.match(/<!-- COGNITIVE_UPDATE: (\{[\s\S]*?\}) -->/);
         if (cognitiveMatch) {
           try {
             aiDeltas = JSON.parse(cognitiveMatch[1]);
-            finalText = finalText.replace(/<!-- COGNITIVE_UPDATE: \{.*?\} -->/g, "").trim();
+            finalText = finalText.replace(/<!-- COGNITIVE_UPDATE: \{[\s\S]*?\} -->/g, "").trim();
           } catch (e) {
             console.warn("[Cognitive] Error parseando evaluación inicial:", e);
           }
@@ -1275,8 +1458,9 @@ function App() {
 
         // Hablar el resto
         const remainingText = finalText.slice(spokenLength);
-        if (remainingText.trim().length > 1) {
-          enqueueSpeech(remainingText);
+        const cleanRemaining = remainingText.replace(/<!-- COGNITIVE_UPDATE: \{[\s\S]*?\} -->/g, "").split('<!--')[0].trim();
+        if (cleanRemaining.length > 1) {
+          enqueueSpeech(cleanRemaining);
         }
 
         // Actualizar perfil si hay evaluación inicial
@@ -1567,9 +1751,21 @@ function App() {
         ...data, 
         uid: user.uid,
         password: hashedPassword,
+        role: 'student',
         currentGrade: 1, 
         currentLesson: 1, 
-        registrationDate: new Date().toISOString() 
+        intelligenceScore: 30,
+        isVerified: true,
+        registrationDate: new Date().toISOString(),
+        faculties: {
+          perceptiveIntelligence: 30,
+          memory: 30,
+          imagination: 30,
+          attention: 30,
+          judgment: 30,
+          reason: 30,
+          will: 30,
+        }
       };
       delete localStudent.confirmPassword;
       
@@ -1834,7 +2030,8 @@ function App() {
     return () => {
       cerrarSesion();
     };
-  }, [introStep, user?.uid, studyMode]);
+    // currentGrade y lessonProgress incluidos para que el contexto se reconstruya al avanzar de lección
+  }, [introStep, user?.uid, studyMode, currentGrade, lessonProgress]);
 
   // Actualizar la sesión si cambian los parámetros mientras estamos en chat
   useEffect(() => {
@@ -1854,7 +2051,6 @@ function App() {
   const handleSendVerification = async (email: string): Promise<string> => {
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     console.log("DEV TIP: Verification code for", email, "is", code);
-    alert("DEV TIP: Verification code is " + code + " (Check console for motivational message)");
     
     // Generate motivational message using Gemini
     let motivationalMessage = "Bienvenido a la Escuela Magnetico-Espiritual de la Comuna Universal. Tu camino de luz comienza hoy.";
@@ -1902,8 +2098,7 @@ function App() {
     }
 
     // Send via our API
-    const isCapacitor = (window as any).Capacitor !== undefined;
-    const baseUrl = ''; // Usar rutas relativas ahora que todo está en Vercel
+    const baseUrl = ''; // Usar rutas relativas
     await fetch(`${baseUrl}/api/send-verification`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -2025,17 +2220,14 @@ function App() {
       recognition.interimResults = false;
 
       recognition.onresult = (event: any) => {
-        const current = event.resultIndex;
-        const transcript = event.results[current][0].transcript.trim();
-
-        if (transcript.toLowerCase().includes('profesor') || transcript.toLowerCase().includes('professor') || transcript.toLowerCase().includes('professeur')) {
-          setIsListening(true);
-          speak(t.listening);
-        } else if (isListening) {
-          sendMessage(transcript);
-          setIsListening(false);
-        } else {
-          setMessage(transcript);
+        let finalTranscript = '';
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          if (event.results[i].isFinal) {
+            finalTranscript += event.results[i][0].transcript + ' ';
+          }
+        }
+        if (finalTranscript) {
+          setMessage(prev => prev + finalTranscript);
         }
       };
 
@@ -2130,6 +2322,22 @@ function App() {
       
       const book = studyMode === 'library' ? LIBRARY_BOOKS.find(b => b.id === currentLibraryBook) : null;
 
+      // Resolución dinámica curricular (misma lógica que fetchGreeting)
+      const sendGradeData = CURRICULUM.find(g => g.id === currentGrade);
+      const sendThemeName = sendGradeData?.themes ? sendGradeData.themes[lessonProgress - 1] : undefined;
+      let resolvedSendBookId = undefined;
+      let resolvedSendBookTitle = undefined;
+      
+      if (studyMode === 'curriculum' && sendGradeData) {
+        const infoLibro = obtenerLibroActivoPorLeccion(currentGrade, lessonProgress, sendGradeData.book || "");
+        resolvedSendBookId = infoLibro.bookId || undefined;
+        resolvedSendBookTitle = infoLibro.bookTitle ? `Grado ${currentGrade}: ${infoLibro.bookTitle}` : `Grado ${currentGrade}: ${sendGradeData.title || 'Obra doctrinal'}`;
+      }
+      
+      const resolvedSendChapter = studyMode === 'curriculum' ? (sendThemeName || undefined) : undefined;
+      const themeGuideline = sendThemeName && currentGrade === 1 ? GRADE_1_GUIDELINES[sendThemeName] : undefined;
+      console.log(`[Currículo RAG] sendMessage → bookId: ${resolvedSendBookId} | chapter: ${resolvedSendChapter} | guideline: ${themeGuideline ? 'Sí' : 'No'}`);
+
       const result = await chatWithProfessorStream(
         msg, 
         currentHistory, 
@@ -2149,8 +2357,9 @@ function App() {
           if (sentenceMatch) {
             const sentenceToSpeak = sentenceMatch[0];
             spokenLength += sentenceToSpeak.length;
-            if (sentenceToSpeak.trim().length > 1) {
-              enqueueSpeech(sentenceToSpeak);
+            const cleanSentence = sentenceToSpeak.replace(/<!-- COGNITIVE_UPDATE: \{[\s\S]*?\} -->/g, "").split('<!--')[0].trim();
+            if (cleanSentence.length > 1) {
+              enqueueSpeech(cleanSentence);
             }
           }
 
@@ -2165,11 +2374,13 @@ function App() {
           }
         },
         studyMode,
-        book?.title || undefined,
-        effectiveChapter || undefined,
-        currentLibraryBook || undefined,
+        studyMode === 'curriculum' ? resolvedSendBookTitle : (book?.title || undefined),
+        studyMode === 'curriculum' ? resolvedSendChapter : (effectiveChapter || undefined),
+        studyMode === 'curriculum' ? resolvedSendBookId : (currentLibraryBook || undefined),
         user?.uid,
-        cognitiveContext
+        cognitiveContext,
+        themeGuideline,
+        modoValidacionIntensiva
       );
 
       // Final update to ensure everything is shown
@@ -2177,12 +2388,12 @@ function App() {
       let aiDeltas: Record<string, number> | null = null;
 
       // Interceptación Silenciosa: Extraer COGNITIVE_UPDATE si existe
-      const cognitiveMatch = finalText.match(/<!-- COGNITIVE_UPDATE: (\{.*?\}) -->/);
+      const cognitiveMatch = finalText.match(/<!-- COGNITIVE_UPDATE: (\{[\s\S]*?\}) -->/);
       if (cognitiveMatch) {
         try {
           aiDeltas = JSON.parse(cognitiveMatch[1]);
           // Limpiar el texto para que el estudiante no vea el código
-          finalText = finalText.replace(/<!-- COGNITIVE_UPDATE: \{.*?\} -->/g, "").trim();
+          finalText = finalText.replace(/<!-- COGNITIVE_UPDATE: \{[\s\S]*?\} -->/g, "").trim();
         } catch (e) {
           console.warn("[Cognitive] Error parseando evaluación de IA:", e);
         }
@@ -2205,15 +2416,50 @@ function App() {
           gradoActual: currentGrade,
           deltasOverride: aiDeltas || undefined
         });
+        registrarInteraccion();
+
+        // Lógica de validación por esencias (solo en modo curriculum)
+        if (studyMode === 'curriculum') {
+          const debeValidar = debeAplicarValidacion(currentGrade, lessonProgress);
+          
+          if (debeValidar) {
+            // Incrementar contador de interacciones en lección
+            await incrementarInteraccionesEnLeccion(user.uid, currentGrade, lessonProgress);
+            
+            // Obtener contador actualizado
+            const interacciones = await contarInteraccionesEnLeccion(user.uid, currentGrade, lessonProgress);
+            setInteraccionesEnLeccion(interacciones);
+
+            // Activar modo de validación intensiva a partir de la interacción 15
+            if (interacciones >= 15 && !streamedStudentUpdate?.pass_lesson) {
+              await activarModoValidacionIntensiva(user.uid, currentGrade, lessonProgress);
+              setModoValidacionIntensiva(true);
+              console.log('[Validación] Modo intensivo activado para G', currentGrade, 'L', lessonProgress);
+            }
+          }
+        }
       }
       
       // Hablar el resto que quede en el buffer
       const remainingText = result.text.slice(spokenLength);
-      if (remainingText.trim().length > 1) {
-        enqueueSpeech(remainingText);
+      const cleanRemaining = remainingText.replace(/<!-- COGNITIVE_UPDATE: \{[\s\S]*?\} -->/g, "").split('<!--')[0].trim();
+      if (cleanRemaining.length > 1) {
+        enqueueSpeech(cleanRemaining);
       }
       
-      streamedStudentUpdate = result.studentUpdate || null;
+      streamedStudentUpdate = result.studentUpdate || (aiDeltas && 'pass_lesson' in aiDeltas ? { pass_lesson: aiDeltas.pass_lesson } : null);
+
+      // Tarea 2a: Techo de seguridad — 5 turnos máximos en el diagnóstico inicial.
+      // Si el modelo no emitió pass_lesson tras 5 respuestas del estudiante en
+      // Grado 1 Lección 1, se fuerza el avance para que el diagnóstico no sea infinito.
+      if (currentGrade === 1 && lessonProgress === 1) {
+        const userTurnsInDiagnostic = currentHistory.filter(m => m.role === 'user').length + 1;
+        if (userTurnsInDiagnostic >= 5 && !streamedStudentUpdate?.pass_lesson) {
+          if (!streamedStudentUpdate) streamedStudentUpdate = {};
+          streamedStudentUpdate.pass_lesson = true;
+          console.log('[Diagnóstico] Techo de 5 turnos alcanzado → pass_lesson forzado por el sistema');
+        }
+      }
 
       // Evaluar paso de lección por conciencia
       if (streamedStudentUpdate?.pass_lesson) {
@@ -2249,23 +2495,38 @@ function App() {
             maxReachedGrade: Math.max(maxReachedGrade, currentGrade),
             maxReachedLesson: Math.max(maxReachedLesson, lessonProgress)
           };
-          if (streamedStudentUpdate) {
-             // Filtrar solo las facultades numéricas y evitar undefined/booleans en el objeto faculties
-             const newFaculties = { ...studentProfile.faculties };
-             const facultyKeys = ['Rationality', 'Morality', 'Spirituality', 'Philosophy', 'Magnetism', 'Evolution', 'Memory'];
+          const deltasParaAplicar = aiDeltas || (streamedStudentUpdate ? { ...streamedStudentUpdate } : null);
+          if (deltasParaAplicar) {
+             const newFaculties = studentProfile.faculties 
+               ? { ...studentProfile.faculties } 
+               : { perceptiveIntelligence: 30, memory: 30, imagination: 30, attention: 30, judgment: 30, reason: 30, will: 30 };
              
-             facultyKeys.forEach(key => {
-               if (typeof streamedStudentUpdate[key] === 'number') {
-                 newFaculties[key] = streamedStudentUpdate[key];
+             Object.entries(deltasParaAplicar).forEach(([key, val]) => {
+               if (typeof val === 'number') {
+                 const claveEstandar = TRADUCCION_FACULTADES[key];
+                 if (claveEstandar) {
+                   const valorActual = typeof newFaculties[claveEstandar] === 'number' ? newFaculties[claveEstandar] : 30;
+                   newFaculties[claveEstandar] = Math.max(0, Math.min(100, Math.round(valorActual + val)));
+                 }
                }
              });
              
              updated.faculties = newFaculties;
-             if (typeof streamedStudentUpdate.IntelligenceGrade === 'string') {
+             if (streamedStudentUpdate && typeof streamedStudentUpdate.IntelligenceGrade === 'string') {
                updated.intelligenceGrade = streamedStudentUpdate.IntelligenceGrade;
              }
           }
           localStorage.setItem('emecu_student', JSON.stringify(updated));
+
+          // Tarea 3b: Sincronizar también el mapa emecu_students.
+          // getStudentProfile() cae al fallback de este mapa cuando Firebase falla (ECONNRESET).
+          // Sin esta sincronización, el fallback devuelve null → grado se resetea a 1.
+          try {
+            const studentsMap = JSON.parse(localStorage.getItem('emecu_students') || '{}');
+            const mapKey = user?.uid || updated.uid || updated.email;
+            if (mapKey) studentsMap[mapKey] = updated;
+            localStorage.setItem('emecu_students', JSON.stringify(studentsMap));
+          } catch(_syncErr) { /* no bloquear el flujo por error de sincronización */ }
           
           // Actualizar en Firestore si está logueado
           if (user) {
@@ -2275,7 +2536,15 @@ function App() {
               currentLesson: updated.currentLesson,
               maxReachedGrade: updated.maxReachedGrade,
               maxReachedLesson: updated.maxReachedLesson,
-              faculties: updated.faculties
+              faculties: updated.faculties || {
+                perceptiveIntelligence: 30,
+                memory: 30,
+                imagination: 30,
+                attention: 30,
+                judgment: 30,
+                reason: 30,
+                will: 30,
+              }
             });
           }
         } catch(e) { console.error('Error saving progress:', e); }
@@ -2297,6 +2566,62 @@ function App() {
 
   return (
     <>
+      <AnimatePresence>
+        {isPortrait && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[9999] bg-slate-950/95 backdrop-blur-2xl flex flex-col items-center justify-center p-6 text-center select-none"
+          >
+            <div className="absolute inset-0 flex flex-col opacity-[0.03]">
+              <div className="flex-1 bg-red-600"></div>
+              <div className="flex-1 bg-orange-500"></div>
+              <div className="flex-1 bg-yellow-400"></div>
+              <div className="flex-1 bg-green-600"></div>
+              <div className="flex-1 bg-blue-500"></div>
+              <div className="flex-1 bg-indigo-600"></div>
+              <div className="flex-1 bg-violet-600"></div>
+            </div>
+            
+            <div className="relative z-10 flex flex-col items-center gap-6 max-w-md">
+              <div className="relative w-32 h-32 mb-2">
+                <div className="absolute inset-0 bg-amber-500/20 blur-[30px] rounded-full animate-pulse" />
+                <img 
+                  src="https://emecu.org.gt/wp-content/uploads/2021/03/Escudo_Emecu-PNG.webp" 
+                  alt="EMECU" 
+                  className="w-full h-full object-contain relative z-10" 
+                  style={{ filter: "invert(85%)" }} 
+                />
+              </div>
+
+              {/* Teléfono girando animado */}
+              <motion.div
+                animate={{ rotate: [0, -90, -90, 0] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                className="w-12 h-20 border-4 border-amber-500/60 rounded-xl relative flex items-center justify-center mb-2"
+              >
+                <div className="w-1.5 h-1.5 bg-amber-500/60 rounded-full absolute bottom-1.5" />
+              </motion.div>
+
+              <h2 className="text-amber-400 font-serif text-2xl tracking-wide uppercase">Orientación Horizontal Requerida</h2>
+              
+              <p className="text-slate-300 text-sm font-light leading-relaxed px-4">
+                Hermano, para una mejor experiencia de estudio doctrinal y una visualización óptima del aula, por favor coloca tu dispositivo en posición horizontal.
+              </p>
+
+              <button 
+                onClick={handleForceLandscape}
+                className="mt-4 px-6 py-3 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 rounded-xl font-bold hover:shadow-[0_0_25px_rgba(245,158,11,0.4)] active:scale-[0.98] transition-all flex items-center gap-2"
+              >
+                <RotateCw className="w-4 h-4 animate-spin-slow" />
+                Activar y Girar Pantalla
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {!isOnline && (
         <div className="fixed top-0 left-0 right-0 z-[1000] bg-red-600 text-white text-center py-1 text-sm font-bold shadow-md animate-pulse">
           {language === 'es' ? '⚠️ Sin conexión a Internet - El Maestro esperará tu regreso' : '⚠️ No internet connection - The Master will wait for your return'}
@@ -2612,7 +2937,11 @@ function App() {
                     {t.downloadCertificate}
                   </button>
                   <button 
-                    onClick={() => setShowDiploma(null)}
+                    onClick={() => {
+                      setShowDiploma(null);
+                      setChat([]);
+                      fetchGreeting(currentGrade, 1);
+                    }}
                     className="px-8 py-3 bg-slate-800 text-white font-bold rounded-xl hover:bg-slate-700 transition-all"
                   >
                     {language === 'es' ? 'Continuar al Siguiente Grado' : 
@@ -2743,7 +3072,7 @@ function App() {
       {!showIntro && (
         <div className="min-h-screen bg-slate-950 text-slate-100 font-sans relative overflow-x-hidden flex flex-col">
       {/* School Name - Top Banner */}
-      <div className="w-full z-[100] text-center py-4 bg-gradient-to-r from-amber-950 via-amber-900 to-amber-950 border-b border-amber-500/50 shadow-[0_4px_20px_rgba(245,158,11,0.15)] relative">
+      <div className="w-full z-[100] text-center py-4 landscape:py-2 bg-gradient-to-r from-amber-950 via-amber-900 to-amber-950 border-b border-amber-500/50 shadow-[0_4px_20px_rgba(245,158,11,0.15)] relative">
         <p className="text-amber-100 text-xs sm:text-sm md:text-base font-bold tracking-[0.3em] uppercase drop-shadow-md px-2">
           {t.introTitle}
         </p>
@@ -2768,7 +3097,7 @@ function App() {
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
       />
 
-      <header className="relative z-[50] flex flex-col md:flex-row items-center justify-between pb-4 border-b border-gradient-to-r border-amber-500/20 mb-8 gap-5 pt-2">
+      <header className="relative z-[50] flex flex-col landscape:flex-row md:flex-row items-center justify-between pb-4 border-b border-gradient-to-r border-amber-500/20 mb-8 landscape:mb-4 gap-5 landscape:gap-2 pt-2">
         <motion.div 
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -2776,7 +3105,7 @@ function App() {
         >
           {/* Professor Portrait */}
           <div 
-            className="w-20 h-20 md:w-28 md:h-28 rounded-2xl overflow-hidden border-2 border-amber-500/30 shadow-[0_8px_32px_rgba(245,158,11,0.15)] cursor-pointer hover:shadow-[0_8px_32px_rgba(245,158,11,0.35)] hover:border-amber-500/60 transition-all flex-shrink-0 relative group"
+            className="w-20 h-20 landscape:w-12 landscape:h-12 md:w-28 md:h-28 rounded-2xl overflow-hidden border-2 border-amber-500/30 shadow-[0_8px_32px_rgba(245,158,11,0.15)] cursor-pointer hover:shadow-[0_8px_32px_rgba(245,158,11,0.35)] hover:border-amber-500/60 transition-all flex-shrink-0 relative group"
             onClick={() => setIsPhotoEnlarged(true)}
           >
             <img 
@@ -2810,10 +3139,70 @@ function App() {
 
         {/* Language Switcher in Header */}
         <div className="flex items-center gap-3">
+          {/* Lessons Dropdown */}
+          {studyMode === 'curriculum' && (
+            <div className="relative group">
+              <button
+                onClick={() => { setShowLessonsMenu(!showLessonsMenu); setShowGradesMenu(false); setShowLibraryMenu(false); setShowDownloadsMenu(false); }}
+                className="flex items-center gap-2 px-4 py-2 bg-slate-900/50 border border-slate-800/50 rounded-xl text-amber-400 hover:bg-slate-800 hover:border-amber-500/30 transition-all shadow-lg text-xs font-bold"
+              >
+                <BookOpen className="w-5 h-5" />
+                <span className="hidden sm:inline font-bold uppercase tracking-widest text-xs">
+                  {language === 'es' ? `Lección ${lessonProgress}` : `Lesson ${lessonProgress}`}
+                </span>
+                <ChevronRight className={`w-4 h-4 transition-transform ${showLessonsMenu ? 'rotate-90' : ''}`} />
+              </button>
+              <AnimatePresence>
+                {showLessonsMenu && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    className="absolute top-full right-0 mt-2 w-72 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden z-[100]"
+                  >
+                    <div className="p-4 bg-slate-800/50 border-b border-slate-700/50 font-bold text-sm text-amber-400">
+                      {language === 'es' ? 'Temas del Grado' : 'Grade Lessons'}
+                    </div>
+                    <div className="max-h-80 overflow-y-auto p-2 space-y-1">
+                      {(CURRICULUM.find(g => g.id === currentGrade)?.themes || []).map((themeName, idx) => {
+                        const lessonNum = idx + 1;
+                        const isUnlocked = unlockedAllGrades || currentGrade < maxReachedGrade || (currentGrade === maxReachedGrade && lessonNum <= maxReachedLesson);
+                        return (
+                          <button
+                            key={lessonNum}
+                            disabled={!isUnlocked}
+                            onClick={() => {
+                              setLessonProgress(lessonNum);
+                              fetchGreeting(currentGrade, lessonNum);
+                              setShowLessonsMenu(false);
+                            }}
+                            className={`w-full text-left px-3 py-2 rounded-xl text-xs flex items-center justify-between transition-all ${
+                              lessonProgress === lessonNum 
+                                ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' 
+                                : isUnlocked 
+                                  ? 'hover:bg-slate-800 text-slate-300' 
+                                  : 'text-slate-700 cursor-not-allowed opacity-50'
+                            }`}
+                          >
+                            <span className="truncate max-w-[200px]">
+                              {lessonNum}. {themeName}
+                            </span>
+                            {!isUnlocked && <Lock className="w-3 h-3" />}
+                            {isUnlocked && lessonProgress > lessonNum && <CheckCircle2 className="w-3 h-3 text-green-500" />}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          )}
+
           {/* Grades Dropdown */}
           <div className="relative group">
             <button
-              onClick={() => { setShowGradesMenu(!showGradesMenu); setShowLibraryMenu(false); setShowDownloadsMenu(false); }}
+              onClick={() => { setShowGradesMenu(!showGradesMenu); setShowLessonsMenu(false); setShowLibraryMenu(false); setShowDownloadsMenu(false); }}
               className="flex items-center gap-2 px-4 py-2 bg-slate-900/50 border border-slate-800/50 rounded-xl text-amber-400 hover:bg-slate-800 hover:border-amber-500/30 transition-all shadow-lg"
             >
               <GraduationCap className="w-5 h-5" />
@@ -3078,9 +3467,6 @@ function App() {
             </button>
           )}
         </div>
-        <div className="flex gap-3">
-          {/* Botón Iniciar Grado 1 eliminado */}
-        </div>
       </header>
 
       {/* Floating Library Controls (Below Header) */}
@@ -3175,12 +3561,12 @@ function App() {
         </div>
       </div>
 
-      <main className="relative z-10 grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-10 mt-4 px-2 sm:px-4 overflow-y-visible lg:overflow-visible">
+      <main className="relative z-10 grid grid-cols-1 landscape:grid-cols-3 lg:grid-cols-4 gap-4 landscape:gap-6 lg:gap-10 mt-4 px-2 sm:px-4 overflow-y-visible lg:overflow-visible">
         <motion.aside 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="lg:col-span-1 space-y-8 pt-2"
+          className="landscape:col-span-1 lg:col-span-1 space-y-4 landscape:space-y-2 lg:space-y-8 pt-2 landscape:max-h-[calc(100vh-120px)] landscape:overflow-y-auto landscape:pr-2 scrollbar-thin"
         >
           <div className="p-6 bg-slate-900/60 backdrop-blur-xl rounded-3xl border border-slate-800/50 shadow-2xl relative overflow-hidden group">
             <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -3206,7 +3592,11 @@ function App() {
                   </span>
                   <p className="text-amber-100/90 text-sm font-bold leading-tight">
                     {(() => {
-                      const bookTitle = CURRICULUM.find(g => g.id === currentGrade)?.book || '';
+                      const gradeData = CURRICULUM.find(g => g.id === currentGrade);
+                      const activeBookInfo = gradeData 
+                        ? obtenerLibroActivoPorLeccion(currentGrade, lessonProgress, gradeData.book || "")
+                        : { bookId: "", bookTitle: "" };
+                      const bookTitle = activeBookInfo.bookTitle || activeBookInfo.bookId;
                       if (language === 'es') return bookTitle;
                       const dict: Record<string, Record<string, string>> = {
                         'en': { 'El Discurso del Obispo Stromayer': "Bishop Strossmayer's Speech", 'Conócete a ti mismo': 'Know Thyself', 'Profilaxis de la Vida': 'Prophylaxis of Life', 'Buscando a Dios': 'Seeking God', 'Filosofía Austera Racional': 'Austere Rational Philosophy', 'Los Extremos se Tocan': 'Extremes Meet', 'Espiritismo en su Asiento': 'Spiritism in its Seat', 'Los Cinco Amores': 'The Five Loves', 'El Primer Rayo de Luz': 'The First Ray of Light', 'Historia Magnética': 'Magnetic History', 'Alpha y Omega': 'Alpha and Omega', 'Código de Amor': 'Code of Love', 'Profecías': 'Prophecies' },
@@ -3276,17 +3666,24 @@ function App() {
           </div>
         </motion.aside>
 
-        <section className="lg:col-span-3 flex flex-col flex-1 min-h-[400px] lg:h-[75vh]">
+        <section className="landscape:col-span-2 lg:col-span-3 flex flex-col flex-1 min-h-[400px] landscape:min-h-0 landscape:h-[calc(100vh-120px)] lg:h-[75vh]">
           {/* Student Header Bar - Harmonized above chat */}
           <div className="flex items-center justify-between px-6 py-3 bg-slate-900/40 backdrop-blur-md rounded-2xl border border-slate-800/50 mb-4 shadow-xl">
             <div className="flex items-center gap-6">
               <div className="flex items-center gap-2">
                 <button 
                   disabled={lessonProgress <= 1}
-                  onClick={() => {
+                  onClick={async () => {
                     if (lessonProgress > 1) {
-                      setLessonProgress(prev => prev - 1);
-                      fetchGreeting(currentGrade, lessonProgress - 1);
+                      const nuevaLeccion = lessonProgress - 1;
+                      setLessonProgress(nuevaLeccion);
+                      fetchGreeting(currentGrade, nuevaLeccion);
+                      // Reiniciar contador de validación al cambiar de lección
+                      if (user?.uid && studyMode === 'curriculum') {
+                        await reiniciarContadorLeccion(user.uid, currentGrade, nuevaLeccion);
+                        setInteraccionesEnLeccion(0);
+                        setModoValidacionIntensiva(false);
+                      }
                     }
                   }}
                   className={`p-2 rounded-xl border transition-all ${lessonProgress <= 1 ? 'border-slate-800 text-slate-700 opacity-30 cursor-not-allowed' : 'border-amber-500/30 text-amber-400 hover:bg-amber-500/10'}`}
@@ -3299,15 +3696,36 @@ function App() {
                     {language === 'es' ? 'Lección' : language === 'en' ? 'Lesson' : language === 'pt' ? 'Lição' : 'Leçon'}
                   </span>
                   <span className="text-amber-100 text-sm font-mono font-bold">{lessonProgress} / {CURRICULUM.find(g => g.id === currentGrade)?.lessonsCount || 1}</span>
+                  {/* Indicador de progreso hacia validación */}
+                  {debeAplicarValidacion(currentGrade, lessonProgress) && interaccionesEnLeccion > 5 && (
+                    <div className="mt-1">
+                      {modoValidacionIntensiva ? (
+                        <span className="text-[8px] text-amber-400 font-bold">
+                          {language === 'es' ? 'Validando...' : language === 'en' ? 'Validating...' : language === 'pt' ? 'Validando...' : 'Validation...'}
+                        </span>
+                      ) : (
+                        <span className="text-[8px] text-slate-500">
+                          {language === 'es' ? `Validación en ${15 - interaccionesEnLeccion}` : language === 'en' ? `Validation in ${15 - interaccionesEnLeccion}` : language === 'pt' ? `Validação em ${15 - interaccionesEnLeccion}` : `Validation en ${15 - interaccionesEnLeccion}`}
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 <button 
                   disabled={!unlockedAllGrades && (lessonProgress >= maxReachedLesson && currentGrade >= maxReachedGrade)}
-                  onClick={() => {
+                  onClick={async () => {
                     const gradeData = CURRICULUM.find(g => g.id === currentGrade);
                     if (lessonProgress < (gradeData?.lessonsCount || 0)) {
-                      setLessonProgress(prev => prev + 1);
-                      fetchGreeting(currentGrade, lessonProgress + 1);
+                      const nuevaLeccion = lessonProgress + 1;
+                      setLessonProgress(nuevaLeccion);
+                      fetchGreeting(currentGrade, nuevaLeccion);
+                      // Reiniciar contador de validación al cambiar de lección
+                      if (user?.uid && studyMode === 'curriculum') {
+                        await reiniciarContadorLeccion(user.uid, currentGrade, nuevaLeccion);
+                        setInteraccionesEnLeccion(0);
+                        setModoValidacionIntensiva(false);
+                      }
                     }
                   }}
                   className={`p-2 rounded-xl border transition-all ${(!unlockedAllGrades && (lessonProgress >= maxReachedLesson && currentGrade >= maxReachedGrade)) ? 'border-slate-800 text-slate-700 opacity-30 cursor-not-allowed' : 'border-amber-500/30 text-amber-400 hover:bg-amber-500/10'}`}
@@ -3324,6 +3742,41 @@ function App() {
                   <span className="text-[9px] text-slate-500 uppercase font-bold tracking-widest leading-none mb-0.5">Estudiante</span>
                   <span className="text-amber-100 text-xs font-serif truncate max-w-[100px]">{studentProfile?.fullName || 'Invitado'}</span>
                 </div>
+              </div>
+
+              {/* Cloud Sync Indicator */}
+              <div className="flex items-center gap-2">
+                {isSynced ? (
+                  <motion.div 
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    className="flex items-center gap-1.5 px-2.5 py-1 bg-green-500/10 border border-green-500/30 rounded-xl text-green-400 text-[10px] font-bold shadow-[0_0_10px_rgba(34,197,94,0.1)] cursor-help group relative"
+                    title="Progreso sincronizado en la nube de Firebase"
+                  >
+                    <Globe className="w-3.5 h-3.5 animate-pulse" />
+                    <span className="hidden md:inline">Sincronizado</span>
+                    
+                    {/* Tooltip */}
+                    <div className="absolute top-8 right-0 w-48 p-2 bg-slate-950 border border-green-500/30 text-slate-300 rounded-lg text-[9px] leading-relaxed shadow-xl opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50 font-normal">
+                      Tu progreso y calificaciones están guardados y sincronizados de forma segura en Firebase.
+                    </div>
+                  </motion.div>
+                ) : (
+                  <motion.div 
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    className="flex items-center gap-1.5 px-2.5 py-1 bg-yellow-500/10 border border-yellow-500/30 rounded-xl text-yellow-400 text-[10px] font-bold shadow-[0_0_10px_rgba(234,179,8,0.1)] cursor-help group relative"
+                    title="Operando en modo local (sin guardar en la nube)"
+                  >
+                    <ShieldAlert className="w-3.5 h-3.5" />
+                    <span className="hidden md:inline">Modo Local</span>
+
+                    {/* Tooltip */}
+                    <div className="absolute top-8 right-0 w-48 p-2 bg-slate-950 border border-yellow-500/30 text-slate-300 rounded-lg text-[9px] leading-relaxed shadow-xl opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50 font-normal">
+                      Estás estudiando en modo local. Inicia sesión para sincronizar tus avances y notas con tu celular.
+                    </div>
+                  </motion.div>
+                )}
               </div>
             </div>
             
@@ -3474,9 +3927,45 @@ function App() {
                               setCognitiveContext(cleanCtx);
                               
                               // 3. Disparo con Contexto Directo (Sin esperas)
-                              fetchGreeting(currentGrade, lessonProgress, 'curriculum', cleanCtx);
+                              // Tarea 3c: Verificar grado real desde localStorage como fuente de
+                              // verdad antes de fetchGreeting. Si Firebase falló durante la carga
+                              // de sesión, currentGrade puede estar en 1 aunque el alumno tenga
+                              // progreso avanzado. emecu_student es el registro más reciente.
+                              let realGradeReturn = currentGrade;
+                              let realLessonReturn = lessonProgress;
+                              try {
+                                const savedRaw = localStorage.getItem('emecu_student');
+                                if (savedRaw) {
+                                  const savedLocal = JSON.parse(savedRaw);
+                                  const localGrade = savedLocal?.currentGrade;
+                                  const localLesson = savedLocal?.currentLesson;
+                                  if (localGrade && localGrade > realGradeReturn) {
+                                    realGradeReturn = localGrade;
+                                    realLessonReturn = localLesson || 1;
+                                    setCurrentGrade(realGradeReturn);
+                                    setLessonProgress(realLessonReturn);
+                                    console.log(`[Retorno biblioteca] Grado corregido desde localStorage: G${realGradeReturn} L${realLessonReturn}`);
+                                  }
+                                }
+                              } catch(_localErr) { /* mantener valores del estado React */ }
+                              fetchGreeting(realGradeReturn, realLessonReturn, 'curriculum', cleanCtx);
                             } else {
-                              fetchGreeting(currentGrade, lessonProgress, 'curriculum');
+                              // Sin usuario autenticado: también verificar localStorage
+                              let realGradeLocal = currentGrade;
+                              let realLessonLocal = lessonProgress;
+                              try {
+                                const savedRaw = localStorage.getItem('emecu_student');
+                                if (savedRaw) {
+                                  const savedLocal = JSON.parse(savedRaw);
+                                  if (savedLocal?.currentGrade && savedLocal.currentGrade > realGradeLocal) {
+                                    realGradeLocal = savedLocal.currentGrade;
+                                    realLessonLocal = savedLocal.currentLesson || 1;
+                                    setCurrentGrade(realGradeLocal);
+                                    setLessonProgress(realLessonLocal);
+                                  }
+                                }
+                              } catch(_e) { /* mantener valores del estado React */ }
+                              fetchGreeting(realGradeLocal, realLessonLocal, 'curriculum');
                             }
                           }}
                             className="mt-4 w-full py-2.5 text-xs text-slate-500 hover:text-amber-400 border border-slate-700/30 hover:border-amber-500/30 rounded-xl transition-all">
@@ -3533,7 +4022,7 @@ function App() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="mt-4 flex gap-3 items-center bg-slate-900/80 backdrop-blur-xl p-2 rounded-3xl border border-amber-500/20 focus-within:border-amber-500/60 focus-within:shadow-[0_0_20px_rgba(245,158,11,0.2)] transition-all shadow-2xl"
+            className={`mt-4 flex gap-3 items-center bg-slate-900/80 backdrop-blur-xl p-2 rounded-3xl border border-amber-500/20 focus-within:border-amber-500/60 focus-within:shadow-[0_0_20px_rgba(245,158,11,0.2)] transition-all shadow-2xl ${isMobile ? 'mb-20' : ''}`}
           >
             <button 
               onClick={toggleMicrophone} 

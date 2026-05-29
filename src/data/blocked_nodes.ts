@@ -21,7 +21,7 @@ export const BLOCKED_NODES: Record<string, string[]> = {
     "8026: Capítulo Catorce: DOCTRINA DEL ESPIRITISMO",
     "9677: CAPITULO DECIMOSEPTIMO"
   ],
-  "codigo-de-amor-universal-tomo2-1975": [
+  "codigo-de-amor-universal-tomo-2": [
     "28: Código de Amor Universal: PARA EL RÉGIMEN DE LA COMUNA DE AMORYLEY",
     "63: este \"CÓDIGO DE AMOR UNIVERSAL\", es imprescindible que haga algunas aclaraciones sobre",
     "292: CAP. 33 – Esta \"Carta Fundamental de la Comuna en General\" regirá al mundo tierra para llevar al",
@@ -44,7 +44,7 @@ export const BLOCKED_NODES: Record<string, string[]> = {
     "4756: CAPÍTULO DIECISÉIS: PAUTA HISTÓRICA PARA HIMNOSYCANTOS",
     "4765: ARTÍCULO 1º- Que los cantos, himnos y plegarias que a continuación se dan, son la síntesis de la (CAPÍTULO DIECISÉIS: PAUTA HISTÓRICA PARA HIMNOSYCANTOS)"
   ],
-  "codigodeamoruniversaltomoi-1": [
+  "codigo-de-amor-universal-tomo-1": [
     "422: PRESENTACIÓN",
     "799: \"Siempre más allá\": El Maestro-Juez por el Maestro Superior",
     "818: PÁrrAFo i (PROCLAMA: El Universo, Solidarizado. El Mundo todo, Comunizado.)",
@@ -70,7 +70,7 @@ export const BLOCKED_NODES: Record<string, string[]> = {
     "9546: \"Código de Amor Universal\" Tomos I. Para el Régimen de la Comu-: en los momentos precisos que la Ley a marcado, del paso de las tres",
     "9557: \"Código de Amor Universal\" Tomos II. Para el régimen de la Co-: muna de Amor y Ley, llegan a la humanidad las leyes que le han de"
   ],
-  "conocete-a-ti-mismo-1": [
+  "conocete-a-ti-mismo": [
     "989: CaPÍTULo PRiMeRo: La ViDa",
     "1865: CaPÍTULo seGUnDo: eL esPÍRiTU",
     "4021: PaRTe seGUnDa",
@@ -107,7 +107,7 @@ export const BLOCKED_NODES: Record<string, string[]> = {
     "3007: EL UNIVERSO SOLIDARIZADO",
     "3008: EL MUNDO TODO COMUNIZADO"
   ],
-  "espiritismo-en-su-asiento": [
+  "el-espiritismo-en-su-asiento": [
     "24: PROCLAMA",
     "26: El Universo Solidarizado.",
     "28: El mundo todo Comunizado.",
@@ -147,7 +147,7 @@ export const BLOCKED_NODES: Record<string, string[]> = {
     "2504: FELICITACIONES - FELICITACIONES",
     "2574: La hermana Juana, nos trajo saludos de todos los agradecidos - que lo fajen si barrigón ha nacido\"."
   ],
-  "filosof-a-austera-racional": [
+  "filosofia-austera-racional": [
     "354: PRIMERA PARTE",
     "357: CAPÍTULO I: Prehistoria y Tiempos Primitivos",
     "662: CAPÍTULO II: Escuelas Antiguas y Modernas",
@@ -203,10 +203,10 @@ export const BLOCKED_NODES: Record<string, string[]> = {
     "10: La Ley es una. La Substancia una",
     "1177: LA RELIGIÓN CRISTIANAYLA IGLESIA CATÓLICA"
   ],
-  "la-revoluci-n-de-m-xico": [
+  "la-revolucion-de-mexico": [
     "CAPÍTULO PRIMERO: MÉXICO EN LA ANTIGÜEDAD."
   ],
-  "laudode-rigor": [
+  "laudo-de-rigor": [
   ],
   "ley-de-las-mediumidades-en-general": [
   ],

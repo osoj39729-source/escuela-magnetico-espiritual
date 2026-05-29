@@ -8,12 +8,34 @@
  * Nivel inicial de todo estudiante nuevo: 30 / 100
  */
 
-import { db } from '../firebase';
+import { db, auth } from '../firebase';
 import {
   doc, getDoc, setDoc, updateDoc, serverTimestamp, collection, addDoc
 } from 'firebase/firestore';
 
+// ── Mapa de Traducción Maestro para Consistencia de Datos ────────────────────
+export const TRADUCCION_FACULTADES: Record<string, string> = {
+  // Español (Usado en el motor local y en el backend de IA en español)
+  inteligenciaPerceptiva: 'perceptiveIntelligence',
+  memoria: 'memory',
+  imaginacion: 'imagination',
+  atencion: 'attention',
+  razon: 'reason',
+  juicio: 'judgment',
+  voluntad: 'will',
+
+  // Legado de variables antiguas (Evita fallos con registros o lógicas obsoletas)
+  Rationality: 'reason',
+  Morality: 'judgment',
+  Spirituality: 'will',
+  Philosophy: 'perceptiveIntelligence',
+  Magnetism: 'imagination',
+  Evolution: 'attention',
+  Memory: 'memory'
+};
+
 // ── Tipos ─────────────────────────────────────────────────────────────────────
+
 
 export interface FacultadMedicion {
   nivel: number;          // 0-100
@@ -58,7 +80,7 @@ const PESOS_FACULTADES: Record<string, number> = {
 };
 
 // ── Perfil inicial para estudiante nuevo ──────────────────────────────────────
-function crearPerfilInicial(): PerfilCognitivo {
+export function crearPerfilInicial(): PerfilCognitivo {
   const ahora = new Date().toISOString();
   return {
     gradoInteligencia: 'Iniciado',
@@ -80,6 +102,41 @@ function crearPerfilInicial(): PerfilCognitivo {
     historialNiveles: [],
   };
 }
+
+// ── Completar perfil incompleto con valores por defecto (blindaje anti-undefined) ──
+export function completarPerfilFaltante(perfilParcial: Partial<PerfilCognitivo>): PerfilCognitivo {
+  const base = crearPerfilInicial();
+  const ahora = new Date().toISOString();
+
+  const facultadesBase = base.facultades;
+  const facultadesParciales = perfilParcial.facultades || {};
+  const NOMBRES_FACULTADES = ['inteligenciaPerceptiva','memoria','imaginacion','atencion','razon','juicio','voluntad'] as const;
+  
+  const facultadesCompletas = { ...facultadesBase };
+  for (const nombre of NOMBRES_FACULTADES) {
+    const fac = (facultadesParciales as any)[nombre];
+    if (fac && typeof fac.nivel === 'number') {
+      facultadesCompletas[nombre] = {
+        nivel: fac.nivel,
+        tendencia: fac.tendencia || 'estable',
+        ultimaActualizacion: fac.ultimaActualizacion || ahora,
+      };
+    }
+  }
+
+  return {
+    gradoInteligencia: perfilParcial.gradoInteligencia || 'Iniciado',
+    puntajeGlobal: typeof perfilParcial.puntajeGlobal === 'number' ? perfilParcial.puntajeGlobal : 30,
+    sesionesTotal: typeof perfilParcial.sesionesTotal === 'number' ? perfilParcial.sesionesTotal : 0,
+    interaccionesTotal: typeof perfilParcial.interaccionesTotal === 'number' ? perfilParcial.interaccionesTotal : 0,
+    ultimaSesion: perfilParcial.ultimaSesion || ahora,
+    facultades: facultadesCompletas,
+    conceptosDominados: Array.isArray(perfilParcial.conceptosDominados) ? perfilParcial.conceptosDominados : [],
+    zonasEstancamiento: Array.isArray(perfilParcial.zonasEstancamiento) ? perfilParcial.zonasEstancamiento : [],
+    historialNiveles: Array.isArray(perfilParcial.historialNiveles) ? perfilParcial.historialNiveles : [],
+  };
+}
+
 
 // ── Análisis Semántico de Respuesta del Estudiante ────────────────────────────
 function analizarRespuesta(
@@ -198,9 +255,11 @@ export async function evaluarYActualizarPerfil(params: {
     const profileRef = doc(db, 'students', uid, 'cognitive', 'profile');
     const snap = await getDoc(profileRef);
 
-    let perfil: PerfilCognitivo = snap.exists()
-      ? (snap.data() as PerfilCognitivo)
-      : crearPerfilInicial();
+    // Siempre completar el perfil: si no existe, crear desde cero.
+    // Si existe pero le faltan campos (perfiles antiguos), completar lo que falta.
+    let perfil: PerfilCognitivo = completarPerfilFaltante(
+      snap.exists() ? (snap.data() as Partial<PerfilCognitivo>) : {}
+    );
 
     // Analizar la respuesta del estudiante (Priorizar IA sobre Heurística)
     const deltas = deltasOverride || analizarRespuesta(mensajeEstudiante, preguntaProfesor, historialMensajes);
@@ -231,11 +290,12 @@ export async function evaluarYActualizarPerfil(params: {
       .map(([k]) => k);
 
     // Detectar zonas de estancamiento (nivel < 40 después de 5+ interacciones)
-    const zonasEstancamiento = (perfil.interaccionesTotal + 1) >= 5
+    const interaccionesActuales = perfil.interaccionesTotal || 0;
+    const zonasEstancamiento = (interaccionesActuales + 1) >= 5
       ? Object.entries(facultadesActualizadas)
           .filter(([, f]) => f.nivel < 40)
           .map(([k]) => k)
-      : perfil.zonasEstancamiento;
+      : (perfil.zonasEstancamiento || []);
 
     // Agregar al historial (máximo 50 registros)
     const historialNiveles = [
@@ -251,29 +311,54 @@ export async function evaluarYActualizarPerfil(params: {
 
     const perfilActualizado: PerfilCognitivo = {
       ...perfil,
-      gradoInteligencia,
-      puntajeGlobal,
-      interaccionesTotal: (perfil.interaccionesTotal || 0) + 1,
+      gradoInteligencia: gradoInteligencia || 'Iniciado',
+      puntajeGlobal: puntajeGlobal || 0,
+      interaccionesTotal: interaccionesActuales + 1,
       ultimaSesion: ahora,
       facultades: facultadesActualizadas,
-      conceptosDominados,
-      zonasEstancamiento,
-      historialNiveles,
+      conceptosDominados: conceptosDominados || [],
+      zonasEstancamiento: zonasEstancamiento || [],
+      historialNiveles: historialNiveles || [],
     };
 
-    // Guardar en Firestore (subcolección cognitive/profile)
-    await setDoc(profileRef, perfilActualizado, { merge: true });
-
-    // Guardar la interacción individual (para historial completo)
-    await addDoc(collection(db, 'students', uid, 'interactions'), {
-      timestamp: serverTimestamp(),
-      mensaje: mensajeEstudiante.substring(0, 500),
-      pregunta: preguntaProfesor.substring(0, 300),
-      deltas,
-      puntajeGlobal,
+    // Objeto para la nueva interacción
+    const nuevaInteraccion = {
+      timestamp: ahora,
+      mensaje: mensajeEstudiante ? mensajeEstudiante.substring(0, 500) : '',
+      pregunta: preguntaProfesor ? preguntaProfesor.substring(0, 300) : '',
+      deltas: deltas || {},
+      puntajeGlobal: puntajeGlobal || 0,
       tema: temaActual || '',
       grado: gradoActual || null,
+    };
+
+    // Obtener Token de Autenticación
+    const user = auth.currentUser;
+    const token = user ? await user.getIdToken() : null;
+
+    if (!token) {
+      console.warn('[CognitiveEngine] No hay token de sesión válido, abortando guardado proxy.');
+      return;
+    }
+
+    // Usar el Túnel HTTP Blindado (Vercel Backend)
+    const response = await fetch('/api/sync-student', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        token,
+        uid,
+        profilePayload: perfilActualizado,
+        interactionPayload: nuevaInteraccion
+      })
     });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      console.error('[CognitiveEngine] El servidor rechazó el guardado proxy:', errText);
+    }
 
   } catch (err) {
     // Error silencioso — no interrumpe el flujo del estudiante
@@ -299,7 +384,15 @@ export function construirContextoProfesor(
   leccion: number,
   tema?: string
 ): string {
-  if (!perfil) return '';
+  if (!perfil) {
+    // Contexto mínimo de emergencia: al menos le decimos al maestro en qué grado/lección está
+    return `[MEMORIA PEDAGÓGICA INTERNA — EXCLUSIVA DEL MAESTRO — NO MENCIONAR AL ESTUDIANTE BAJO NINGUNA CIRCUNSTANCIA]
+Estudiante: ${nombreEstudiante} | Sesiones: sin datos | Interacciones totales: sin datos
+Puntaje Global: sin datos | Grado Evolutivo: En Desarrollo
+Última sesión: hoy — Grado ${grado}, Lección ${leccion}${tema ? `, Tema: ${tema}` : ''}
+INSTRUCCIÓN PEDAGÓGICA: El perfil detallado no está disponible aún. Entra directamente al contenido del Grado ${grado} Lección ${leccion}. NO realices diagnóstico inicial a menos que sea la primera interacción absoluta en Grado 1 Lección 1.
+[FIN MEMORIA INTERNA]`.trim();
+  }
 
   const facs = perfil.facultades;
   const debiles = Object.entries(facs)
@@ -330,4 +423,38 @@ Zonas de estancamiento: ${perfil.zonasEstancamiento.join(', ') || 'ninguna detec
 INSTRUCCIÓN PEDAGÓGICA: Adapta tu profundidad a su nivel ${perfil.gradoInteligencia}. ${debiles.length > 0 ? `Diseña preguntas que estimulen especialmente: ${debiles.map(d => d.split(' ')[0]).join(' y ')}.` : 'Mantén el nivel alcanzado y eleva la complejidad gradualmente.'} No repitas lo ya dominado. Continúa desde donde quedó.
 [FIN MEMORIA INTERNA]
 `.trim();
+}
+
+// Migracion automatica: completar todos los perfiles incompletos de Firebase
+export async function migrarTodosLosPerfiles(): Promise<{ total: number; migrados: number; yaCompletos: number; errores: number }> {
+  const { getDocs, collection: col } = await import('firebase/firestore');
+  let total = 0, migrados = 0, yaCompletos = 0, errores = 0;
+  try {
+    const studentsSnap = await getDocs(col(db, 'students'));
+    total = studentsSnap.docs.length;
+    for (const studentDoc of studentsSnap.docs) {
+      const uid = studentDoc.id;
+      const studentData = studentDoc.data();
+      if (studentData.role === 'admin') { total--; continue; }
+      try {
+        const profileRef = doc(db, 'students', uid, 'cognitive', 'profile');
+        const snap = await getDoc(profileRef);
+        if (!snap.exists()) {
+          await setDoc(profileRef, completarPerfilFaltante({}));
+          migrados++;
+        } else {
+          const data = snap.data() as Partial<PerfilCognitivo>;
+          const camposFaltantes = ['gradoInteligencia','puntajeGlobal','interaccionesTotal','sesionesTotal','ultimaSesion','facultades','conceptosDominados','zonasEstancamiento','historialNiveles'].filter(c => data[c as keyof PerfilCognitivo] === undefined);
+          if (camposFaltantes.length > 0) {
+            await setDoc(profileRef, completarPerfilFaltante(data), { merge: true });
+            migrados++;
+          } else {
+            yaCompletos++;
+          }
+        }
+      } catch (e) { errores++; }
+    }
+  } catch (e) { errores++; }
+  console.log(`[Migracion] Total:${total} | Migrados:${migrados} | Completos:${yaCompletos} | Errores:${errores}`);
+  return { total, migrados, yaCompletos, errores };
 }

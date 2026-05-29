@@ -2,7 +2,7 @@ export const GRADE_8 = {
   id: 8,
   title: "Grado 8: Filosofía Austera Racional (Parte 4) y El Espiritismo Estudiado",
   type: "book",
-  book: "filosof-a-austera-racional",
+  book: "filosofia-austera-racional",
   lessonsCount: 120,
   themes: [
     "17949: CUARTA PARTE: LA LOGICA",

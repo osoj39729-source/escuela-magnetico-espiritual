@@ -167,16 +167,13 @@ export async function getStudentProfile(uid?: string): Promise<StudentProfile | 
   const id = uid || getCurrentUser()?.uid;
   if (!id) return null;
   
-  // 1. Intentar carga local (rápida)
-  if (map[id]) return map[id];
-
-  // 2. Si no está local, buscar en Firestore (Sincronización Cloud)
+  // Buscar en Firestore primero (Sincronización Cloud) para asegurar datos reales y actualizados
   try {
     const docRef = doc(db, 'students', id);
     const snap = await getDoc(docRef);
     if (snap.exists()) {
       const profile = { ...snap.data() } as StudentProfile;
-      // Guardar localmente para futuras consultas rápidas
+      // Guardar localmente para futuras consultas rápidas/fallbacks
       map[id] = profile;
       saveAllStudentsMap(map);
       return profile;
@@ -185,28 +182,29 @@ export async function getStudentProfile(uid?: string): Promise<StudentProfile | 
     console.error("Error al recuperar perfil desde Firestore:", err);
   }
 
+  // Fallback a carga local si Firestore falla (ej: offline)
+  if (map[id]) return map[id];
+
   return null;
 }
 
 export async function updateStudentProfile(uid: string, updates: Partial<StudentProfile>): Promise<void> {
   const map = getAllStudentsMap();
-  if (map[uid]) {
-    const existing = map[uid];
-    const merged = { ...existing };
-    for (const [key, value] of Object.entries(updates)) {
-      if (key === 'faculties' && typeof value === 'object' && value !== null) {
-        merged[key] = { ...(existing[key] as any || {}), ...value };
-      } else if (key === 'entries' && Array.isArray(value)) {
-        merged[key] = [...(existing[key] as any[] || []), ...value];
-      } else if (key === 'evolutionLog' && Array.isArray(value)) {
-        merged[key] = [...(existing[key] as any[] || []), ...value];
-      } else {
-        merged[key] = value;
-      }
+  const existing = map[uid] || {} as StudentProfile;
+  const merged = { ...existing };
+  for (const [key, value] of Object.entries(updates)) {
+    if (key === 'faculties' && typeof value === 'object' && value !== null) {
+      merged[key] = { ...(existing[key] as any || {}), ...value };
+    } else if (key === 'entries' && Array.isArray(value)) {
+      merged[key] = [...(existing[key] as any[] || []), ...value];
+    } else if (key === 'evolutionLog' && Array.isArray(value)) {
+      merged[key] = [...(existing[key] as any[] || []), ...value];
+    } else {
+      (merged as any)[key] = value;
     }
-    map[uid] = sanitizeObject(merged);
-    saveAllStudentsMap(map);
   }
+  map[uid] = sanitizeObject(merged);
+  saveAllStudentsMap(map);
 
   // Sync with Firestore
   try {

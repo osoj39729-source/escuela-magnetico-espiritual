@@ -15,6 +15,10 @@ export default defineConfig(({mode}) => {
       VitePWA({
         registerType: 'autoUpdate',
         devOptions: { enabled: true },
+        workbox: {
+          skipWaiting: true,
+          clientsClaim: true,
+        },
         manifest: {
           name: 'Escuela Magnetico-Espiritual de la Comuna Universal',
           short_name: 'EMECU',

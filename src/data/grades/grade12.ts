@@ -2,7 +2,7 @@ export const GRADE_12 = {
   id: 12,
   title: "Grado 12: Código de Amor Universal Tomo 1 y 2",
   type: "book",
-  book: "codigo-de-amor-universal-tomo-1",
+  book: "codigo-de-amor-universal",
   lessonsCount: 174,
   themes: [
     "422: P R E S E N T A C I Ó N",

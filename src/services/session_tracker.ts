@@ -7,8 +7,9 @@
 
 import { db } from '../firebase';
 import {
-  collection, addDoc, doc, updateDoc, serverTimestamp, getDoc
+  collection, addDoc, doc, updateDoc, serverTimestamp, getDoc, setDoc
 } from 'firebase/firestore';
+import { crearPerfilInicial } from './cognitive_engine';
 
 // ── Tipos ─────────────────────────────────────────────────────────────────────
 
@@ -147,6 +148,12 @@ export async function iniciarSesion(params: {
         sesionesTotal: (cogSnap.data().sesionesTotal || 0) + 1,
         ultimaSesion: new Date().toISOString(),
       });
+    } else {
+      // Crear el perfil cognitivo inicial inmediatamente en la primera sesión
+      const perfilInicial = crearPerfilInicial();
+      perfilInicial.sesionesTotal = 1;
+      perfilInicial.ultimaSesion = new Date().toISOString();
+      await setDoc(cogRef, perfilInicial);
     }
   } catch (err) {
     console.error('[SessionTracker] Error al iniciar sesión:', err);
