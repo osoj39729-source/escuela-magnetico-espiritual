@@ -3141,6 +3141,7 @@ function App() {
 
         {/* Language Switcher in Header */}
         <div className="flex items-center gap-3">
+          {!isMobile && (<>
           {/* Lessons Dropdown */}
           {studyMode === 'curriculum' && (
             <div className="relative group">
@@ -3442,6 +3443,7 @@ function App() {
                 ))}
             </select>
           </div>
+          </>)}
 
           <div className="flex gap-2 bg-slate-900/50 p-1 rounded-xl border border-slate-800/50">
             {['es', 'en', 'pt', 'fr'].map((lang) => (
@@ -3472,6 +3474,7 @@ function App() {
       </header>
 
       {/* Floating Library Controls (Below Header) */}
+      {!isMobile && (
       <div className="fixed top-20 md:top-24 right-4 md:right-8 z-40 flex flex-col items-end gap-2">
         {/* 2. Free Study Dropdown */}
         <div className="relative group w-full sm:w-auto">
@@ -3562,6 +3565,7 @@ function App() {
           </AnimatePresence>
         </div>
       </div>
+      )}
 
       <main className={isMobile ? "relative z-10 flex flex-col w-full px-2 pb-24 mt-2" : "relative z-10 grid grid-cols-1 landscape:grid-cols-3 lg:grid-cols-4 gap-4 landscape:gap-6 lg:gap-10 mt-4 px-2 sm:px-4 overflow-y-visible lg:overflow-visible"}>
         {isMobile ? (
