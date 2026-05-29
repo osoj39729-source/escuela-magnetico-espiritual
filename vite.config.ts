@@ -18,6 +18,7 @@ export default defineConfig(({mode}) => {
         workbox: {
           skipWaiting: true,
           clientsClaim: true,
+          maximumFileSizeToCacheInBytes: 6000000,
         },
         manifest: {
           name: 'Escuela Magnetico-Espiritual de la Comuna Universal',

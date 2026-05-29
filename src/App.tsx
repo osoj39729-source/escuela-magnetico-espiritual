@@ -921,6 +921,18 @@ function App() {
   const [continuousListen, setContinuousListen] = useState(false);
   const [isPhotoEnlarged, setIsPhotoEnlarged] = useState(false);
   
+  const enterApp = (p?: any) => {
+    const prof = p || studentProfile;
+    const isMobileDevice = window.innerWidth <= 768 || /Mobi|Android|iPhone/i.test(navigator.userAgent);
+    if (isMobileDevice) {
+      window.location.replace('/mobile-app/');
+    } else {
+      setShowIntro(false);
+      setIntroStep('chat');
+      fetchGreeting(prof?.currentGrade || 1, prof?.currentLesson || 1);
+    }
+  };
+  
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   
   useEffect(() => {
@@ -1240,10 +1252,11 @@ function App() {
             setMaxReachedLesson(profile.maxReachedLesson || profile.currentLesson || 1);
             setIsSynced(true);
             
-            setShowIntro(false);
-            setIntroStep('chat');
+            setShowIntro(true);
+            setIntroStep('intro');
           } else {
-            setIntroStep('registration');
+            setShowIntro(true);
+            setIntroStep('intro');
           }
         } else {
           setIsSynced(false);
@@ -1259,8 +1272,8 @@ function App() {
             if (profile) {
               setStudentProfile(profile);
               setIsSynced(true);
-              setShowIntro(false);
-              setIntroStep('chat');
+              setShowIntro(true);
+              setIntroStep('intro');
             } else {
               setIntroStep('registration');
             }
@@ -1722,9 +1735,7 @@ function App() {
 
   const handleSkipRegistration = () => {
     unlockAudio();
-    setShowIntro(false);
-    setIntroStep('chat');
-    fetchGreeting();
+    enterApp();
   };
 
   const handleRegistration = async (data: any) => {
@@ -1778,8 +1789,7 @@ function App() {
         setStudentProfile(localStudent);
         setUser(user);
         unlockAudio();
-        setShowIntro(false);
-        setIntroStep('chat');
+        enterApp(localStudent);
         setTimeout(() => {
           setIsTransitioning(false);
         }, 1500);
@@ -1803,9 +1813,7 @@ function App() {
             setLessonProgress(profile.currentLesson || 1);
             
             setTimeout(() => {
-              setShowIntro(false);
-              setIntroStep('chat');
-              fetchGreeting(profile.currentGrade || 1, profile.currentLesson || 1);
+              enterApp(profile);
               setTimeout(() => setIsTransitioning(false), 1500);
             }, 2000);
             return;
@@ -1857,9 +1865,7 @@ function App() {
         
         setTimeout(() => {
           unlockAudio();
-          setShowIntro(false);
-          setIntroStep('chat');
-          fetchGreeting(profile.currentGrade || 1, profile.currentLesson || 1);
+          enterApp(profile);
           setTimeout(() => {
             setIsTransitioning(false);
           }, 1500);
@@ -1985,9 +1991,7 @@ function App() {
     
     setTimeout(() => {
       unlockAudio();
-      setShowIntro(false);
-      setIntroStep('chat');
-      fetchGreeting(profile.currentGrade || 1, profile.currentLesson || 1);
+      enterApp(profile);
       setTimeout(() => setIsTransitioning(false), 1500);
     }, 2000);
   };
@@ -2710,9 +2714,11 @@ function App() {
                             unlock.volume = 0;
                             window.speechSynthesis.speak(unlock);
                           }
-                          setShowIntro(false); 
-                          setIntroStep('chat'); 
-                          fetchGreeting(); 
+                          if (studentProfile) {
+                            enterApp(studentProfile);
+                          } else {
+                            setIntroStep('registration');
+                          }
                         }} className="flex-1 px-5 py-3 bg-gradient-to-r from-amber-600 to-amber-500 text-slate-950 font-bold rounded-2xl shadow-lg hover:shadow-amber-500/30 transition-all text-sm flex items-center justify-center gap-2"><PlayCircle className="w-5 h-5" />{language === 'es' ? 'Entrar al Aula' : language === 'pt' ? 'Entrar na Aula' : 'Enter Classroom'}</button>
                         <button onClick={() => { if (window.speechSynthesis) window.speechSynthesis.cancel(); setIntroStep('registration'); }} className="flex-1 px-5 py-3 bg-transparent border-2 border-amber-500/40 text-amber-400 font-bold rounded-2xl hover:bg-amber-500/10 transition-all text-sm flex items-center justify-center gap-2"><GraduationCap className="w-5 h-5" />{language === 'es' ? 'Registrarse' : language === 'pt' ? 'Registrar' : 'Register'}</button>
                       </div>
