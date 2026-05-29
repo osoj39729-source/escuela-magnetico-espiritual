@@ -65,15 +65,15 @@ async function startServer() {
   });
 
   // Importar handlers del backend
-  const { handleChatStream, handleSystemStatus } = await import('./api/gemini-backend.ts');
-  const { default: syncStudent } = await import('./api/sync-student.ts');
+  const { handleChatStream, handleSystemStatus } = await import('./api-src/gemini-backend.ts');
+  const { default: syncStudent } = await import('./api-src/sync-student.ts');
   
   app.post("/api/chat-stream", handleChatStream);
   app.get("/api/system-status", handleSystemStatus);
   app.post("/api/sync-student", syncStudent as any);
   
   // Reset cuotas (invocado desde el Panel de Administración)
-  const { handleResetQuotas } = await import('./api/gemini-backend.ts');
+  const { handleResetQuotas } = await import('./api-src/gemini-backend.ts');
   app.post("/api/reset-quotas", handleResetQuotas);
 
   app.post("/api/send-verification", async (req, res) => {

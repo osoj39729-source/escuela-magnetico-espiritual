@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo, ChangeEvent, FormEvent } from 'react';
-import { Send, BookOpen, BrainCircuit, Mic, Volume2, Sparkles, Activity, Play, Pause, Square, Download, CheckCircle2, PlayCircle, ArrowRight, ArrowLeft, Loader2, User, LogOut, Shield, ShieldAlert, Settings, ChevronRight, BarChart3, Users, Clock, Globe, CreditCard, GraduationCap, MapPin, Phone, Mail, Briefcase, Fingerprint, FastForward, Lock, Award, ShieldCheck, Eye, EyeOff, Search, X, RotateCw } from 'lucide-react';
+import { Send, BookOpen, BrainCircuit, Mic, Volume2, Sparkles, Activity, Play, Pause, Square, Download, CheckCircle2, PlayCircle, ArrowRight, ArrowLeft, Loader2, User, LogOut, Shield, ShieldAlert, Settings, ChevronRight, BarChart3, Users, Clock, Globe, CreditCard, GraduationCap, MapPin, Phone, Mail, Briefcase, Fingerprint, FastForward, Lock, Award, ShieldCheck, Eye, EyeOff, Search, X, RotateCw, MessageSquare } from 'lucide-react';
 import { chatWithProfessorStream } from './services/geminiService';
 import { motion, AnimatePresence } from 'motion/react';
 import { jsPDF } from 'jspdf';
@@ -920,17 +920,13 @@ function App() {
   const [isListening, setIsListening] = useState(false);
   const [continuousListen, setContinuousListen] = useState(false);
   const [isPhotoEnlarged, setIsPhotoEnlarged] = useState(false);
+  const [activeMobileTab, setActiveMobileTab] = useState<'chat' | 'grades' | 'libros' | 'perfil'>('chat');
   
   const enterApp = (p?: any) => {
     const prof = p || studentProfile;
-    const isMobileDevice = window.innerWidth <= 768 || /Mobi|Android|iPhone/i.test(navigator.userAgent);
-    if (isMobileDevice) {
-      window.location.replace('/mobile-app/');
-    } else {
-      setShowIntro(false);
-      setIntroStep('chat');
-      fetchGreeting(prof?.currentGrade || 1, prof?.currentLesson || 1);
-    }
+    setShowIntro(false);
+    setIntroStep('chat');
+    fetchGreeting(prof?.currentGrade || 1, prof?.currentLesson || 1);
   };
   
   const [isOnline, setIsOnline] = useState(navigator.onLine);
@@ -3567,8 +3563,378 @@ function App() {
         </div>
       </div>
 
-      <main className="relative z-10 grid grid-cols-1 landscape:grid-cols-3 lg:grid-cols-4 gap-4 landscape:gap-6 lg:gap-10 mt-4 px-2 sm:px-4 overflow-y-visible lg:overflow-visible">
-        <motion.aside 
+      <main className={isMobile ? "relative z-10 flex flex-col w-full px-2 pb-24 mt-2" : "relative z-10 grid grid-cols-1 landscape:grid-cols-3 lg:grid-cols-4 gap-4 landscape:gap-6 lg:gap-10 mt-4 px-2 sm:px-4 overflow-y-visible lg:overflow-visible"}>
+        {isMobile ? (
+          <div className="flex-grow flex flex-col w-full space-y-4">
+            {/* Contenido según la pestaña activa en celular */}
+            {activeMobileTab === 'chat' && (
+              <div className="flex flex-col flex-1 w-full space-y-4 min-h-[75vh]">
+                {/* Cabecera del chat para celular (Control de Lecciones) */}
+                <div className="flex items-center justify-between px-4 py-3 bg-slate-900/40 backdrop-blur-md rounded-2xl border border-slate-800/50 shadow-xl">
+                  <div className="flex items-center gap-2">
+                    <button 
+                      disabled={lessonProgress <= 1}
+                      onClick={async () => {
+                        if (lessonProgress > 1) {
+                          const nuevaLeccion = lessonProgress - 1;
+                          setLessonProgress(nuevaLeccion);
+                          fetchGreeting(currentGrade, nuevaLeccion);
+                          if (user?.uid && studyMode === 'curriculum') {
+                            await reiniciarContadorLeccion(user.uid, currentGrade, nuevaLeccion);
+                            setInteraccionesEnLeccion(0);
+                            setModoValidacionIntensiva(false);
+                          }
+                        }
+                      }}
+                      className={`p-2 rounded-xl border transition-all ${lessonProgress <= 1 ? 'border-slate-800 text-slate-700 opacity-30 cursor-not-allowed' : 'border-amber-500/30 text-amber-400 hover:bg-amber-500/10'}`}
+                    >
+                      <ArrowLeft className="w-4 h-4" />
+                    </button>
+                    
+                    <div className="flex flex-col items-center min-w-[70px]">
+                      <span className="text-[8px] text-slate-500 uppercase font-bold tracking-[0.2em] mb-0.5">Lección</span>
+                      <span className="text-amber-100 text-xs font-mono font-bold">{lessonProgress} / {CURRICULUM.find(g => g.id === currentGrade)?.lessonsCount || 1}</span>
+                    </div>
+
+                    <button 
+                      disabled={!unlockedAllGrades && (lessonProgress >= maxReachedLesson && currentGrade >= maxReachedGrade)}
+                      onClick={async () => {
+                        const gradeData = CURRICULUM.find(g => g.id === currentGrade);
+                        if (lessonProgress < (gradeData?.lessonsCount || 0)) {
+                          const nuevaLeccion = lessonProgress + 1;
+                          setLessonProgress(nuevaLeccion);
+                          fetchGreeting(currentGrade, nuevaLeccion);
+                          if (user?.uid && studyMode === 'curriculum') {
+                            await reiniciarContadorLeccion(user.uid, currentGrade, nuevaLeccion);
+                            setInteraccionesEnLeccion(0);
+                            setModoValidacionIntensiva(false);
+                          }
+                        }
+                      }}
+                      className={`p-2 rounded-xl border transition-all ${(!unlockedAllGrades && (lessonProgress >= maxReachedLesson && currentGrade >= maxReachedGrade)) ? 'border-slate-800 text-slate-700 opacity-30 cursor-not-allowed' : 'border-amber-500/30 text-amber-400 hover:bg-amber-500/10'}`}
+                    >
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                  
+                  <div className="flex items-center gap-2">
+                    {isSynced ? (
+                      <span className="flex items-center gap-1 px-2.5 py-1 bg-green-500/10 border border-green-500/30 rounded-xl text-green-400 text-[10px] font-bold">
+                        <Globe className="w-3.5 h-3.5 animate-pulse" />
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-1 px-2.5 py-1 bg-yellow-500/10 border border-yellow-500/30 rounded-xl text-yellow-400 text-[10px] font-bold">
+                        <ShieldAlert className="w-3.5 h-3.5" />
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Historial de Chat Celular */}
+                <div className="flex-grow overflow-y-auto space-y-4 p-4 bg-slate-900/40 backdrop-blur-md rounded-3xl border border-slate-800/50 shadow-2xl relative scrollbar-thin max-h-[50vh] min-h-[300px]">
+                  <AnimatePresence initial={false}>
+                    {chat.map((msg, i) => (
+                      <motion.div 
+                        key={i} 
+                        initial={{ opacity: 0, y: 15, scale: 0.98 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        className={`flex items-end gap-2 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}
+                      >
+                        {msg.role === 'professor' && (
+                          <div className="flex-shrink-0 mb-0.5">
+                            <div className="w-8 h-8 rounded-full overflow-hidden border border-amber-500/30 bg-slate-800">
+                              <img src={TRINCADO_IMG} alt="Joaquín Trincado" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                            </div>
+                          </div>
+                        )}
+                        {msg.role === 'professor' && (msg.text.startsWith('MODO_BIBLIOTECA|') || msg.text.startsWith('LIBRARY_MODE|') || msg.text.startsWith('MODE_BIBLIOTH')) ? (() => {
+                          const parts = msg.text.split('|');
+                          const bookTitle = parts[1] || '';
+                          let chapters: string[] = [];
+                          try { chapters = JSON.parse(parts[2] || '[]'); } catch {}
+                          return (
+                            <div className="w-full max-w-lg">
+                              <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }}
+                                className="p-4 bg-gradient-to-br from-blue-950/80 to-slate-900/90 backdrop-blur-xl rounded-2xl border border-blue-500/30 shadow-xl">
+                                <div className="flex items-center gap-2 mb-3">
+                                  <BookOpen className="w-4 h-4 text-blue-400" />
+                                  <h3 className="text-amber-200 font-serif text-sm font-bold leading-tight">{bookTitle}</h3>
+                                </div>
+                                <div className="relative mb-3">
+                                  <input 
+                                    type="text"
+                                    placeholder={language === 'es' ? 'Buscar tema...' : 'Search theme...'}
+                                    value={librarySearch}
+                                    onChange={(e) => setLibrarySearch(e.target.value)}
+                                    className="w-full bg-slate-950/50 border border-blue-500/20 rounded-xl px-8 py-2 text-[11px] text-blue-200 outline-none"
+                                  />
+                                  <Search className="w-3.5 h-3.5 text-blue-500/50 absolute left-2.5 top-1/2 -translate-y-1/2" />
+                                </div>
+                                <div className="grid grid-cols-1 gap-1.5 max-h-48 overflow-y-auto pr-1 scrollbar-thin">
+                                  {chapters
+                                    .filter(ch => ch.toLowerCase().includes(librarySearch.toLowerCase()))
+                                    .map((chapter, ci) => {
+                                      const isBlocked = currentLibraryBook && BLOCKED_NODES[currentLibraryBook]?.includes(chapter);
+                                      return (
+                                        <button 
+                                          key={ci} 
+                                          disabled={isBlocked}
+                                          onClick={() => {
+                                            sendMessage(chapter);
+                                          }}
+                                          className={`w-full text-left px-3 py-2 rounded-lg text-[11px] transition-all ${
+                                            currentLibraryChapter === chapter
+                                              ? 'bg-blue-500 text-slate-950 font-bold'
+                                              : 'bg-slate-900/50 text-slate-300 hover:bg-slate-800'
+                                          }`}
+                                        >
+                                          {chapter}
+                                        </button>
+                                      );
+                                    })}
+                                </div>
+                              </motion.div>
+                            </div>
+                          );
+                        })() : (
+                          <div className={`p-3 rounded-2xl text-[13px] max-w-[85%] shadow-md ${
+                            msg.role === 'user' 
+                              ? 'bg-amber-500 text-slate-950 rounded-br-sm' 
+                              : 'bg-slate-800/90 text-slate-100 border border-slate-700/30 rounded-bl-sm'
+                          }`}>
+                            {studyMode === 'library' && msg.role === 'professor' && currentLibraryChapter && (
+                              <div className="flex items-center gap-1.5 mb-1.5 pb-1.5 border-b border-blue-500/20 text-blue-400 font-bold uppercase tracking-wider text-[9px]">
+                                <BookOpen className="w-3 h-3 flex-shrink-0" />
+                                <span>{currentLibraryChapter}</span>
+                              </div>
+                            )}
+                            <p className="leading-relaxed whitespace-pre-wrap font-sans">{msg.text}</p>
+                            {msg.role === 'professor' && (
+                              <div className="mt-2 pt-1.5 border-t border-slate-700/50 flex justify-end">
+                                <button onClick={() => speak(msg.text)}
+                                  className="flex items-center gap-1 px-2 py-1 bg-slate-900/50 hover:bg-amber-500/20 text-amber-400/70 hover:text-amber-400 rounded-lg text-[10px] font-medium transition-colors border border-slate-700/50">
+                                  <Volume2 className="w-3.5 h-3.5" />
+                                  {language === 'es' ? 'Repetir audio' : 'Repetir'}
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
+                  {loading && (
+                    <div className="flex justify-start">
+                      <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-3xl rounded-tl-sm p-4 flex gap-1.5 items-center">
+                        <span className="w-1.5 h-1.5 bg-amber-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                        <span className="w-1.5 h-1.5 bg-amber-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                        <span className="w-1.5 h-1.5 bg-amber-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                      </div>
+                    </div>
+                  )}
+                  <div ref={chatEndRef} />
+                </div>
+
+                {/* Input Flotante Celular */}
+                <div className="flex gap-2 items-center bg-slate-900/80 backdrop-blur-xl p-2 rounded-2xl border border-amber-500/20 shadow-2xl relative z-40">
+                  <button 
+                    onClick={toggleMicrophone} 
+                    className={`p-3 rounded-xl transition-all relative ${
+                      continuousListen || isListening 
+                        ? 'bg-red-500/20 text-red-400 animate-pulse' 
+                        : 'bg-slate-800 text-slate-400'
+                    }`}
+                  >
+                    {isListening ? <Activity className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
+                  </button>
+                  <input
+                    type="text"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && sendMessage(message)}
+                    className="flex-1 p-2.5 bg-transparent border-none focus:outline-none text-slate-200 text-xs"
+                    placeholder={isListening ? t.listening : t.placeholder}
+                  />
+                  <button 
+                    onClick={() => sendMessage(message)} 
+                    disabled={!message.trim() || loading}
+                    className="p-3 bg-gradient-to-r from-amber-600 to-amber-500 rounded-xl text-slate-950 disabled:opacity-40"
+                  >
+                    <Send className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {activeMobileTab === 'grades' && (
+              <div className="flex flex-col flex-1 p-4 space-y-4 text-left overflow-y-auto max-h-[75vh] pb-10">
+                <h2 className="text-lg font-bold text-amber-400 flex items-center gap-2">
+                  <GraduationCap className="w-5 h-5" /> {language === 'es' ? 'Grados de Estudio' : 'Grades'}
+                </h2>
+                <div className="space-y-4">
+                  {CURRICULUM.map((grade) => {
+                    const isUnlocked = unlockedAllGrades || grade.id <= maxReachedGrade;
+                    return (
+                      <div key={grade.id} className={`p-4 rounded-2xl border ${
+                        grade.id === currentGrade 
+                          ? 'bg-amber-500/10 border-amber-500/50' 
+                          : 'bg-slate-900/50 border-slate-800'
+                      }`}>
+                        <div className="flex justify-between items-center mb-2">
+                          <h3 className="text-xs font-bold text-amber-100">{grade.title}</h3>
+                          {!isUnlocked && <Lock className="w-3.5 h-3.5 text-slate-600" />}
+                        </div>
+                        <p className="text-[10px] text-slate-400 mb-3 leading-relaxed">Temas: {grade.themes.length}</p>
+                        
+                        <div className="grid grid-cols-1 gap-2">
+                          {grade.themes.map((theme, ti) => {
+                            const lessonNum = ti + 1;
+                            const isLessonUnlocked = isUnlocked && (grade.id < maxReachedGrade || lessonNum <= maxReachedLesson);
+                            return (
+                              <button
+                                key={ti}
+                                disabled={!isLessonUnlocked}
+                                onClick={async () => {
+                                  setCurrentGrade(grade.id);
+                                  setLessonProgress(lessonNum);
+                                  setStudyMode('curriculum');
+                                  setActiveMobileTab('chat');
+                                  setChat([]);
+                                  fetchGreeting(grade.id, lessonNum);
+                                  if (user?.uid) {
+                                    await reiniciarContadorLeccion(user.uid, grade.id, lessonNum);
+                                    setInteraccionesEnLeccion(0);
+                                    setModoValidacionIntensiva(false);
+                                  }
+                                }}
+                                className={`w-full text-left p-2.5 rounded-xl border text-[11px] flex items-center justify-between transition-all ${
+                                  currentGrade === grade.id && lessonProgress === lessonNum && studyMode === 'curriculum'
+                                    ? 'bg-amber-500 text-slate-950 border-amber-400 font-bold' 
+                                    : isLessonUnlocked 
+                                      ? 'bg-slate-800/40 text-slate-200 border-slate-700 hover:bg-slate-800' 
+                                      : 'bg-slate-950/20 text-slate-600 border-slate-900 opacity-40 cursor-not-allowed'
+                                }`}
+                              >
+                                <span className="line-clamp-1">Tópico {lessonNum}: {theme}</span>
+                                {isLessonUnlocked ? <PlayCircle className="w-4 h-4 flex-shrink-0" /> : <Lock className="w-3.5 h-3.5 flex-shrink-0" />}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {activeMobileTab === 'libros' && (
+              <div className="flex flex-col flex-1 p-4 space-y-4 text-left overflow-y-auto max-h-[75vh] pb-10">
+                <h2 className="text-lg font-bold text-amber-400 flex items-center gap-2">
+                  <BookOpen className="w-5 h-5" /> {language === 'es' ? 'Estudio Libre y Descargas' : 'Free Study'}
+                </h2>
+                <div className="grid grid-cols-1 gap-4">
+                  {LIBRARY_BOOKS.map((book) => (
+                    <div key={book.id} className="p-4 bg-slate-900/50 border border-slate-800 rounded-2xl flex flex-col gap-2">
+                      <div>
+                        <h3 className="text-xs font-bold text-slate-200 leading-tight">{book.title}</h3>
+                      </div>
+                      
+                      <div className="flex gap-2 mt-2">
+                        <button 
+                          onClick={() => {
+                            setActiveMobileTab('chat');
+                            openLibraryBook(book.id);
+                          }}
+                          className="flex-grow py-2 bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 rounded-xl border border-blue-500/20 text-[11px] font-bold transition-all text-center"
+                        >
+                          Estudiar Obra
+                        </button>
+                        {book.pdfUrl && (
+                          <a 
+                            href={book.pdfUrl}
+                            download
+                            className="px-3 py-2 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 rounded-xl border border-emerald-500/20 text-[11px] font-bold transition-all flex items-center justify-center gap-1"
+                          >
+                            <Download className="w-3.5 h-3.5" /> PDF
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {activeMobileTab === 'perfil' && (
+              <div className="flex flex-col flex-1 p-4 space-y-6 text-left items-center overflow-y-auto max-h-[75vh] pb-10">
+                <h2 className="text-lg font-bold text-amber-400 self-start flex items-center gap-2">
+                  <User className="w-5 h-5" /> {language === 'es' ? 'Mi Progreso' : 'Profile'}
+                </h2>
+                
+                <div className="w-16 h-16 rounded-full bg-amber-500/20 border border-amber-500 flex items-center justify-center text-amber-400 shadow-xl mt-4">
+                  <User className="w-8 h-8" />
+                </div>
+                <div className="text-center">
+                  <h3 className="text-sm font-bold text-amber-100">{studentProfile?.fullName || 'Invitado'}</h3>
+                  <p className="text-[10px] text-slate-500 mt-0.5">{user?.email || 'Modo Local'}</p>
+                </div>
+
+                <div className="w-full grid grid-cols-2 gap-3 mt-4">
+                  <div className="p-3 bg-slate-950/40 border border-slate-800 rounded-xl text-center">
+                    <span className="text-[8px] text-slate-500 uppercase font-bold tracking-widest block mb-0.5">Grado Actual</span>
+                    <span className="text-sm font-mono font-bold text-amber-400">{currentGrade}° Grado</span>
+                  </div>
+                  <div className="p-3 bg-slate-950/40 border border-slate-800 rounded-xl text-center">
+                    <span className="text-[8px] text-slate-500 uppercase font-bold tracking-widest block mb-0.5">Lección Activa</span>
+                    <span className="text-sm font-mono font-bold text-amber-400">Lección {lessonProgress}</span>
+                  </div>
+                </div>
+
+                <button 
+                  onClick={handleLogout}
+                  className="w-full mt-6 py-2.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-xl border border-red-500/20 text-xs font-bold transition-all flex items-center justify-center gap-1.5"
+                >
+                  <LogOut className="w-4 h-4" /> {language === 'es' ? 'Cerrar Sesión' : 'Sign Out'}
+                </button>
+              </div>
+            )}
+
+            {/* Navegación Flotante Celular */}
+            <div className="fixed bottom-0 left-0 right-0 h-16 bg-slate-950/95 backdrop-blur-lg border-t border-slate-800/80 flex items-center justify-around px-4 z-50 shadow-[0_-5px_20px_rgba(0,0,0,0.6)]">
+              <button 
+                onClick={() => setActiveMobileTab('chat')}
+                className={`flex flex-col items-center gap-1 transition-colors ${activeMobileTab === 'chat' ? 'text-amber-400' : 'text-slate-500'}`}
+              >
+                <MessageSquare className="w-5 h-5" />
+                <span className="text-[9px] font-bold">Chat</span>
+              </button>
+              <button 
+                onClick={() => setActiveMobileTab('grades')}
+                className={`flex flex-col items-center gap-1 transition-colors ${activeMobileTab === 'grades' ? 'text-amber-400' : 'text-slate-500'}`}
+              >
+                <GraduationCap className="w-5 h-5" />
+                <span className="text-[9px] font-bold">Grados</span>
+              </button>
+              <button 
+                onClick={() => setActiveMobileTab('libros')}
+                className={`flex flex-col items-center gap-1 transition-colors ${activeMobileTab === 'libros' ? 'text-amber-400' : 'text-slate-500'}`}
+              >
+                <BookOpen className="w-5 h-5" />
+                <span className="text-[9px] font-bold">Libros</span>
+              </button>
+              <button 
+                onClick={() => setActiveMobileTab('perfil')}
+                className={`flex flex-col items-center gap-1 transition-colors ${activeMobileTab === 'perfil' ? 'text-amber-400' : 'text-slate-500'}`}
+              >
+                <User className="w-5 h-5" />
+                <span className="text-[9px] font-bold">Perfil</span>
+              </button>
+            </div>
+          </div>
+        ) : (
+          <>
+            <motion.aside 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
@@ -4067,6 +4433,8 @@ function App() {
             </button>
           </motion.div>
         </section>
+          </>
+        )}
       </main>
       </div>
     </div>
