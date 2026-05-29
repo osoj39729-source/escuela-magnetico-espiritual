@@ -953,6 +953,7 @@ function App() {
   const [showChoiceButtons, setShowChoiceButtons] = useState(false);
   const [unlockedAllGrades, setUnlockedAllGrades] = useState(false);
   const [showGradesMenu, setShowGradesMenu] = useState(false);
+  const [showLessonsMenu, setShowLessonsMenu] = useState(false);
   const [showLibraryMenu, setShowLibraryMenu] = useState(false);
   const [showDownloadsMenu, setShowDownloadsMenu] = useState(false);
   const [studyMode, setStudyMode] = useState<'curriculum' | 'library'>('curriculum');
@@ -970,14 +971,16 @@ function App() {
   const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
   const [selectedVoiceURI, setSelectedVoiceURI] = useState<string>('');
   const [isPortrait, setIsPortrait] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [modoValidacionIntensiva, setModoValidacionIntensiva] = useState(false);
   const [interaccionesEnLeccion, setInteraccionesEnLeccion] = useState(0);
 
   useEffect(() => {
     const checkOrientation = () => {
       const isMobileDevice = window.innerWidth <= 768 || /Mobi|Android|iPhone/i.test(navigator.userAgent);
+      setIsMobile(isMobileDevice);
       const isCurrentlyPortrait = window.innerHeight > window.innerWidth;
-      setIsPortrait(isMobileDevice && isCurrentlyPortrait);
+      setIsPortrait(false);
     };
 
     checkOrientation();
@@ -2217,17 +2220,14 @@ function App() {
       recognition.interimResults = false;
 
       recognition.onresult = (event: any) => {
-        const current = event.resultIndex;
-        const transcript = event.results[current][0].transcript.trim();
-
-        if (transcript.toLowerCase().includes('profesor') || transcript.toLowerCase().includes('professor') || transcript.toLowerCase().includes('professeur')) {
-          setIsListening(true);
-          speak(t.listening);
-        } else if (isListening) {
-          sendMessage(transcript);
-          setIsListening(false);
-        } else {
-          setMessage(transcript);
+        let finalTranscript = '';
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          if (event.results[i].isFinal) {
+            finalTranscript += event.results[i][0].transcript + ' ';
+          }
+        }
+        if (finalTranscript) {
+          setMessage(prev => prev + finalTranscript);
         }
       };
 
@@ -3139,10 +3139,70 @@ function App() {
 
         {/* Language Switcher in Header */}
         <div className="flex items-center gap-3">
+          {/* Lessons Dropdown */}
+          {studyMode === 'curriculum' && (
+            <div className="relative group">
+              <button
+                onClick={() => { setShowLessonsMenu(!showLessonsMenu); setShowGradesMenu(false); setShowLibraryMenu(false); setShowDownloadsMenu(false); }}
+                className="flex items-center gap-2 px-4 py-2 bg-slate-900/50 border border-slate-800/50 rounded-xl text-amber-400 hover:bg-slate-800 hover:border-amber-500/30 transition-all shadow-lg text-xs font-bold"
+              >
+                <BookOpen className="w-5 h-5" />
+                <span className="hidden sm:inline font-bold uppercase tracking-widest text-xs">
+                  {language === 'es' ? `Lección ${lessonProgress}` : `Lesson ${lessonProgress}`}
+                </span>
+                <ChevronRight className={`w-4 h-4 transition-transform ${showLessonsMenu ? 'rotate-90' : ''}`} />
+              </button>
+              <AnimatePresence>
+                {showLessonsMenu && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    className="absolute top-full right-0 mt-2 w-72 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden z-[100]"
+                  >
+                    <div className="p-4 bg-slate-800/50 border-b border-slate-700/50 font-bold text-sm text-amber-400">
+                      {language === 'es' ? 'Temas del Grado' : 'Grade Lessons'}
+                    </div>
+                    <div className="max-h-80 overflow-y-auto p-2 space-y-1">
+                      {(CURRICULUM.find(g => g.id === currentGrade)?.themes || []).map((themeName, idx) => {
+                        const lessonNum = idx + 1;
+                        const isUnlocked = unlockedAllGrades || currentGrade < maxReachedGrade || (currentGrade === maxReachedGrade && lessonNum <= maxReachedLesson);
+                        return (
+                          <button
+                            key={lessonNum}
+                            disabled={!isUnlocked}
+                            onClick={() => {
+                              setLessonProgress(lessonNum);
+                              fetchGreeting(currentGrade, lessonNum);
+                              setShowLessonsMenu(false);
+                            }}
+                            className={`w-full text-left px-3 py-2 rounded-xl text-xs flex items-center justify-between transition-all ${
+                              lessonProgress === lessonNum 
+                                ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' 
+                                : isUnlocked 
+                                  ? 'hover:bg-slate-800 text-slate-300' 
+                                  : 'text-slate-700 cursor-not-allowed opacity-50'
+                            }`}
+                          >
+                            <span className="truncate max-w-[200px]">
+                              {lessonNum}. {themeName}
+                            </span>
+                            {!isUnlocked && <Lock className="w-3 h-3" />}
+                            {isUnlocked && lessonProgress > lessonNum && <CheckCircle2 className="w-3 h-3 text-green-500" />}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          )}
+
           {/* Grades Dropdown */}
           <div className="relative group">
             <button
-              onClick={() => { setShowGradesMenu(!showGradesMenu); setShowLibraryMenu(false); setShowDownloadsMenu(false); }}
+              onClick={() => { setShowGradesMenu(!showGradesMenu); setShowLessonsMenu(false); setShowLibraryMenu(false); setShowDownloadsMenu(false); }}
               className="flex items-center gap-2 px-4 py-2 bg-slate-900/50 border border-slate-800/50 rounded-xl text-amber-400 hover:bg-slate-800 hover:border-amber-500/30 transition-all shadow-lg"
             >
               <GraduationCap className="w-5 h-5" />
@@ -3962,7 +4022,7 @@ function App() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="mt-4 flex gap-3 items-center bg-slate-900/80 backdrop-blur-xl p-2 rounded-3xl border border-amber-500/20 focus-within:border-amber-500/60 focus-within:shadow-[0_0_20px_rgba(245,158,11,0.2)] transition-all shadow-2xl"
+            className={`mt-4 flex gap-3 items-center bg-slate-900/80 backdrop-blur-xl p-2 rounded-3xl border border-amber-500/20 focus-within:border-amber-500/60 focus-within:shadow-[0_0_20px_rgba(245,158,11,0.2)] transition-all shadow-2xl ${isMobile ? 'mb-20' : ''}`}
           >
             <button 
               onClick={toggleMicrophone} 
