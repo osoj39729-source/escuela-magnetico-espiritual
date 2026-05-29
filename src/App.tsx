@@ -3622,6 +3622,24 @@ function App() {
                   </div>
                   
                   <div className="flex items-center gap-2">
+                    {(isAudioPlaying || isAudioPaused) && (
+                      <div className="flex gap-1 bg-slate-950/60 p-0.5 rounded-lg border border-slate-800/50 mr-1">
+                        <button
+                          onClick={togglePauseResumeAudio}
+                          className="p-1.5 rounded-md text-amber-400 hover:bg-slate-800 transition-all"
+                          title={isAudioPaused ? t.resume : t.pause}
+                        >
+                          {isAudioPaused ? <Play className="w-3.5 h-3.5" /> : <Pause className="w-3.5 h-3.5" />}
+                        </button>
+                        <button
+                          onClick={stopAudio}
+                          className="p-1.5 rounded-md text-red-400 hover:bg-slate-800 transition-all"
+                          title={t.stop}
+                        >
+                          <Square className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    )}
                     {isSynced ? (
                       <span className="flex items-center gap-1 px-2.5 py-1 bg-green-500/10 border border-green-500/30 rounded-xl text-green-400 text-[10px] font-bold">
                         <Globe className="w-3.5 h-3.5 animate-pulse" />
