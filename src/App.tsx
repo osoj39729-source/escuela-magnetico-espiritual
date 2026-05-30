@@ -1650,8 +1650,10 @@ function App() {
   const speak = (text: string) => {
     stopAudio();
     shouldContinueSpeakingRef.current = true;
+    // Limpiar comentarios HTML (como COGNITIVE_UPDATE) para evitar que los sintetizadores de voz los lean
+    const cleanText = text.replace(/<!--[\s\S]*?-->/g, "").trim();
     // Add text to queue
-    const chunks = text.match(/[^.!?\n]+[.!?\n]+/g) || [text];
+    const chunks = cleanText.match(/[^.!?\n]+[.!?\n]+/g) || [cleanText];
     chunks.forEach(chunk => {
       if (chunk.trim().length > 0) ttsQueueRef.current.push(chunk);
     });
@@ -2405,7 +2407,7 @@ function App() {
         return updated;
       });
       
-      // Lanzar evaluación en segundo plano (IA priorizada)
+      // Lanzar evaluación en segundo plano (IA priorizada) e incorporar la sincronización local inmediata en el callback
       if (user?.uid) {
         evaluarYActualizarPerfil({
           uid: user.uid,
@@ -2415,6 +2417,19 @@ function App() {
           temaActual: effectiveChapter || themeName,
           gradoActual: currentGrade,
           deltasOverride: aiDeltas || undefined
+        }).then(perfilActualizado => {
+          if (perfilActualizado) {
+            const tema = studyMode === 'library' ? currentLibraryChapter : undefined;
+            const updatedCtx = construirContextoProfesor(
+              perfilActualizado, 
+              studentProfile?.fullName || 'Estudiante', 
+              currentGrade, 
+              lessonProgress, 
+              tema || undefined
+            );
+            setCognitiveContext(updatedCtx);
+            console.log("[Cognitive] Contexto sincronizado en caliente para el siguiente turno:", perfilActualizado.interaccionesTotal);
+          }
         });
         registrarInteraccion();
 

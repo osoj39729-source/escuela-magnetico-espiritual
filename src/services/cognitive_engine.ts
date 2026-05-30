@@ -247,9 +247,9 @@ export async function evaluarYActualizarPerfil(params: {
   temaActual?: string;
   gradoActual?: number;
   deltasOverride?: Record<string, number>; // Nueva opción para evaluación de IA
-}): Promise<void> {
+}): Promise<PerfilCognitivo | null> {
   const { uid, mensajeEstudiante, preguntaProfesor, historialMensajes, temaActual, gradoActual, deltasOverride } = params;
-  if (!uid || (!mensajeEstudiante.trim() && !deltasOverride)) return;
+  if (!uid || (!mensajeEstudiante.trim() && !deltasOverride)) return null;
 
   try {
     const profileRef = doc(db, 'students', uid, 'cognitive', 'profile');
@@ -338,7 +338,7 @@ export async function evaluarYActualizarPerfil(params: {
 
     if (!token) {
       console.warn('[CognitiveEngine] No hay token de sesión válido, abortando guardado proxy.');
-      return;
+      return perfilActualizado;
     }
 
     // Usar el Túnel HTTP Blindado (Vercel Backend)
@@ -360,9 +360,11 @@ export async function evaluarYActualizarPerfil(params: {
       console.error('[CognitiveEngine] El servidor rechazó el guardado proxy:', errText);
     }
 
+    return perfilActualizado;
   } catch (err) {
     // Error silencioso — no interrumpe el flujo del estudiante
     console.error('[CognitiveEngine] Error silencioso:', err);
+    return null;
   }
 }
 
