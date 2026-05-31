@@ -262,7 +262,17 @@ const RegistrationForm = ({ t, onSubmit, onLogin, onSkip, onBack, user, language
           <div className={`space-y-1.5 ${mode === 'login' ? 'md:col-span-1' : ''}`}>
             <label className="text-xs font-semibold text-slate-400 flex items-center gap-2 ml-1 uppercase tracking-wider"><Lock className="w-3.5 h-3.5 text-amber-500/70" /> {t.password}</label>
             <div className="relative">
-              <input required type={showPassword ? "text" : "password"} name="password" value={formData.password} onChange={handleChange} className="w-full bg-slate-950/50 border border-slate-800 rounded-xl px-4 py-3 text-slate-100 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 outline-none transition-all pr-12" />
+              <input
+                required
+                type={showPassword ? "text" : "password"}
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder={mode === 'login'
+                  ? (language === 'es' ? 'Escribe tu contraseña' : language === 'en' ? 'Enter your password' : language === 'pt' ? 'Digite sua senha' : 'Entrez votre mot de passe')
+                  : (language === 'es' ? 'Crea una contraseña segura' : language === 'en' ? 'Create a strong password' : language === 'pt' ? 'Crie uma senha segura' : 'Créez un mot de passe sûr')}
+                className="w-full bg-slate-950/50 border border-slate-800 rounded-xl px-4 py-3 text-slate-100 placeholder-slate-600 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 outline-none transition-all pr-12"
+              />
               <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-amber-500 transition-colors">
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
@@ -274,7 +284,15 @@ const RegistrationForm = ({ t, onSubmit, onLogin, onSkip, onBack, user, language
               <div className="space-y-1.5">
                 <label className="text-xs font-semibold text-slate-400 flex items-center gap-2 ml-1 uppercase tracking-wider"><Lock className="w-3.5 h-3.5 text-amber-500/70" /> {t.confirmPassword}</label>
                 <div className="relative">
-                  <input required type={showConfirmPassword ? "text" : "password"} name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} className="w-full bg-slate-950/50 border border-slate-800 rounded-xl px-4 py-3 text-slate-100 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 outline-none transition-all pr-12" />
+                  <input
+                    required
+                    type={showConfirmPassword ? "text" : "password"}
+                    name="confirmPassword"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    placeholder={language === 'es' ? 'Repite la contraseña' : language === 'en' ? 'Repeat your password' : language === 'pt' ? 'Repita a senha' : 'Répétez le mot de passe'}
+                    className="w-full bg-slate-950/50 border border-slate-800 rounded-xl px-4 py-3 text-slate-100 placeholder-slate-600 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 outline-none transition-all pr-12"
+                  />
                   <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-amber-500 transition-colors">
                     {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
