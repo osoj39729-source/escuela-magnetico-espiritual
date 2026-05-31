@@ -974,7 +974,11 @@ function App() {
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [isAudioPaused, setIsAudioPaused] = useState(false);
   const [sessionAudioEnabled, setSessionAudioEnabled] = useState(true); // Silencio de sesión persistente
-  const [audioSpeed, setAudioSpeed] = useState(1);
+  const [audioSpeed, setAudioSpeed] = useState(() => {
+    // Cargar velocidad guardada por este dispositivo (persiste entre sesiones)
+    const saved = localStorage.getItem('tts_speed');
+    return saved ? parseFloat(saved) : 1;
+  });
   const [currentGrade, setCurrentGrade] = useState(1);
   const [lessonProgress, setLessonProgress] = useState(1);
   const [lessonTitle, setLessonTitle] = useState("Discurso del Obispo Stromayer");
@@ -1146,10 +1150,11 @@ function App() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ text: fullText.trim(), lang: language })
           });
-          if (response.ok) {
+          if (response.ok && isMounted) {
             const blob = await response.blob();
             const url = URL.createObjectURL(blob);
             const audio = new Audio(url);
+            audio.playbackRate = audioSpeed; // Velocidad del slider del Maestro
             currentGeminiAudioRef.current = audio;
             audio.onended = () => { URL.revokeObjectURL(url); currentGeminiAudioRef.current = null; };
             audio.onerror = () => { URL.revokeObjectURL(url); currentGeminiAudioRef.current = null; speakGreetingFallback(); };
@@ -1201,6 +1206,8 @@ function App() {
   const speakingSessionRef = useRef(0);
   // Referencia al audio WAV de Gemini activo — para poder cancelarlo en stopAudio()
   const currentGeminiAudioRef = useRef<HTMLAudioElement | null>(null);
+  // AbortController para cancelar el fetch de Gemini TTS si stopAudio() es llamado durante la carga
+  const geminiAbortControllerRef = useRef<AbortController | null>(null);
   
   // TTS Queue para hablar
   const ttsQueueRef = useRef<string[]>([]);
@@ -1555,16 +1562,28 @@ function App() {
   // Recibe audio WAV completo y lo reproduce. Si falla → Web Speech API.
   const speakWithGemini = async (text: string): Promise<boolean> => {
     try {
+      // AbortController: cancela el fetch HTTP si stopAudio() es llamado mientras carga
+      const controller = new AbortController();
+      geminiAbortControllerRef.current = controller;
+
       const response = await fetch('/api/tts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: text.trim(), lang: language })
+        body: JSON.stringify({ text: text.trim(), lang: language }),
+        signal: controller.signal
       });
+      geminiAbortControllerRef.current = null;
+
       if (!response.ok) return false;
+      // Si stopAudio() fue llamado mientras cargaba, no reproducir (evita eco)
+      if (!shouldContinueSpeakingRef.current) return false;
+
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
       const audio = new Audio(url);
-      // Guardar referencia para poder detenerlo con stopAudio()
+      // Aplicar velocidad del slider al audio de Gemini
+      audio.playbackRate = audioSpeed;
+      // Guardar referencia para poder detenerlo/pausarlo con stopAudio()/togglePause()
       currentGeminiAudioRef.current = audio;
       return new Promise((resolve) => {
         audio.onended = () => { URL.revokeObjectURL(url); currentGeminiAudioRef.current = null; resolve(true); };
@@ -1572,6 +1591,7 @@ function App() {
         audio.play().catch(() => resolve(false));
       });
     } catch {
+      geminiAbortControllerRef.current = null;
       return false;
     }
   };
@@ -1649,7 +1669,12 @@ function App() {
     shouldContinueSpeakingRef.current = false;
     ttsQueueRef.current = []; // Clear queue
     isSpeakingQueueRef.current = false;
-    // Detener audio WAV de Gemini si está sonando (evita eco al repetir)
+    // Cancelar fetch en curso de Gemini TTS (evita eco cuando el audio aún está cargando)
+    if (geminiAbortControllerRef.current) {
+      geminiAbortControllerRef.current.abort();
+      geminiAbortControllerRef.current = null;
+    }
+    // Detener audio WAV de Gemini si está sonando
     if (currentGeminiAudioRef.current) {
       try {
         currentGeminiAudioRef.current.pause();
@@ -3423,7 +3448,11 @@ function App() {
                 max="2" 
                 step="0.1" 
                 value={audioSpeed} 
-                onChange={(e) => setAudioSpeed(parseFloat(e.target.value))}
+                onChange={(e) => {
+                  const v = parseFloat(e.target.value);
+                  setAudioSpeed(v);
+                  localStorage.setItem('tts_speed', v.toString()); // Guardar por dispositivo
+                }}
                 className="w-16 sm:w-24 h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-500"
               />
               <span className="text-[10px] text-amber-500/60 font-mono w-8">{audioSpeed}x</span>
