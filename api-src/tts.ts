@@ -12,10 +12,10 @@ const VOICE_MAP: Record<string, string> = {
 // ── Instrucción de habla — le dice a Gemini TTS CÓMO hablar ─────────────────
 // Va ANTES del texto. La IA la lee como directiva de interpretación.
 const SPEECH_INSTRUCTION: Record<string, string> = {
-  es: 'Habla como un maestro espiritual sereno y austero. Tono profundo y grave. Ritmo pausado y reflexivo. Pausa natural entre oraciones. Sin apresuramiento.\n\n',
-  en: 'Speak as a serene and austere spiritual teacher. Deep, grave tone. Slow, reflective pace. Natural pause between sentences. No rushing.\n\n',
-  pt: 'Fale como um mestre espiritual sereno e austero. Tom profundo e grave. Ritmo pausado e reflexivo. Pausa natural entre as frases.\n\n',
-  fr: 'Parle comme un maître spirituel serein et austère. Ton profond et grave. Rythme lent et réfléchi. Pause naturelle entre les phrases.\n\n',
+  es: 'Habla como un maestro espiritual sereno y austero. Voz profunda, grave y solemne. Cadencia natural y reflexiva. Dicción clara y serena.\n\n',
+  en: 'Speak as a serene and austere spiritual teacher. Deep, grave and solemn voice. Natural, reflective cadence. Clear and serene diction.\n\n',
+  pt: 'Fale como um mestre espiritual sereno e austero. Voz profunda, grave e solene. Cadência natural e reflexiva. Dicção clara e serena.\n\n',
+  fr: 'Parle comme un maître spirituel serein et austère. Voix profonde, grave et solennelle. Cadence naturelle et réfléchie. Diction claire et sereine.\n\n',
 };
 
 // ── PCM 16-bit → WAV ─────────────────────────────────────────────────────────

@@ -1143,7 +1143,29 @@ function App() {
       
       const speakGreeting = async () => {
         if (!isMounted) return;
-        // Intentar Gemini TTS primero (voz Charon — grave, sabia)
+
+        // ── PRIORIDAD 1: Archivo WAV pre-generado (instantáneo, sin llamada API) ──
+        const type = isReg ? 'registration' : 'professor';
+        const preGenUrl = `/audio/${type}_${language}.wav`;
+        try {
+          const checkRes = await fetch(preGenUrl, { method: 'HEAD' });
+          if (checkRes.ok) {
+            const audio = new Audio(preGenUrl);
+            audio.playbackRate = audioSpeed;
+            currentGeminiAudioRef.current = audio;
+            audio.onended = () => { currentGeminiAudioRef.current = null; };
+            audio.onerror = () => { currentGeminiAudioRef.current = null; speakGreetingGemini(); };
+            audio.play().catch(() => speakGreetingGemini());
+            return;
+          }
+        } catch { /* archivo no existe, continuar */ }
+
+        speakGreetingGemini();
+      };
+
+      // ── PRIORIDAD 2: Gemini TTS (voz Charon) ──────────────────────────────────
+      const speakGreetingGemini = async () => {
+        if (!isMounted) return;
         try {
           const response = await fetch('/api/tts', {
             method: 'POST',
@@ -1154,14 +1176,14 @@ function App() {
             const blob = await response.blob();
             const url = URL.createObjectURL(blob);
             const audio = new Audio(url);
-            audio.playbackRate = audioSpeed; // Velocidad del slider del Maestro
+            audio.playbackRate = audioSpeed;
             currentGeminiAudioRef.current = audio;
             audio.onended = () => { URL.revokeObjectURL(url); currentGeminiAudioRef.current = null; };
             audio.onerror = () => { URL.revokeObjectURL(url); currentGeminiAudioRef.current = null; speakGreetingFallback(); };
             audio.play().catch(() => speakGreetingFallback());
             return;
           }
-        } catch { /* Gemini no disponible — usar fallback */ }
+        } catch { /* Gemini no disponible */ }
         speakGreetingFallback();
       };
 
@@ -1612,12 +1634,18 @@ function App() {
     
     // Intentar Gemini TTS primero (voz Charon — grave, sabia, pausada)
     const geminiSuccess = await speakWithGemini(cleanText);
-    if (geminiSuccess) {
-      processSpeechQueue();
+    if (geminiSuccess) { processSpeechQueue(); return; }
+
+    // FIX 1: Si stopAudio() fue llamado (abort) mientras Gemini cargaba,
+    // NO iniciar Web Speech API. Silencio total, sin voz robótica.
+    if (!shouldContinueSpeakingRef.current) {
+      isSpeakingQueueRef.current = false;
+      setIsAudioPlaying(false);
+      setIsAudioPaused(false);
       return;
     }
 
-    // Fallback a Web Speech API si Gemini falla o no está disponible
+    // Fallback a Web Speech API solo si Gemini falló por error real (no por abort)
     if (!window.speechSynthesis) {
       processSpeechQueue();
       return;
@@ -1655,13 +1683,16 @@ function App() {
   };
 
   const speak = (text: string) => {
-    if (!sessionAudioEnabled) return; // Silencio de sesión activo — no generar audio
+    if (!sessionAudioEnabled) return;
     stopAudio();
     shouldContinueSpeakingRef.current = true;
-    // Limpiar comentarios HTML (como COGNITIVE_UPDATE)
     const cleanText = text.replace(/<!--[\s\S]*?-->/g, "").trim();
-    // Texto completo como 1 sola pieza — 1 llamada Gemini TTS por respuesta
-    if (cleanText.length > 0) ttsQueueRef.current.push(cleanText);
+    // FIX 2: Limitar a 1500 chars — evita timeout de Gemini TTS en textos largos
+    // El texto completo sigue visible en pantalla; solo el audio se limita
+    const ttsText = cleanText.length > 1500
+      ? cleanText.substring(0, cleanText.lastIndexOf(' ', 1500)) || cleanText.substring(0, 1500)
+      : cleanText;
+    if (ttsText.length > 0) ttsQueueRef.current.push(ttsText);
     processSpeechQueue();
   };
 
@@ -3685,18 +3716,34 @@ function App() {
                         </button>
                       </div>
                     )}
-                    {/* Botón silencio de sesión — celular */}
-                    <button
-                      onClick={() => { if (sessionAudioEnabled) stopAudio(); setSessionAudioEnabled(prev => !prev); }}
-                      title={sessionAudioEnabled ? 'Silenciar' : 'Activar audio'}
-                      className={`p-1.5 rounded-xl border transition-all ${
-                        sessionAudioEnabled
-                          ? 'border-amber-500/30 text-amber-400'
-                          : 'border-red-500/30 text-red-400 bg-red-500/10'
-                      }`}
-                    >
-                      {sessionAudioEnabled ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
-                    </button>
+                    {/* Botón silencio de sesión + slider velocidad — celular */}
+                    <div className="flex items-center gap-1.5">
+                      {/* Slider velocidad móvil */}
+                      <div className="flex items-center gap-1">
+                        <input
+                          type="range" min="0.5" max="2" step="0.1"
+                          value={audioSpeed}
+                          onChange={(e) => {
+                            const v = parseFloat(e.target.value);
+                            setAudioSpeed(v);
+                            localStorage.setItem('tts_speed', v.toString());
+                          }}
+                          className="w-14 h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-500"
+                        />
+                        <span className="text-[9px] text-amber-500/60 font-mono w-7">{audioSpeed}x</span>
+                      </div>
+                      <button
+                        onClick={() => { if (sessionAudioEnabled) stopAudio(); setSessionAudioEnabled(prev => !prev); }}
+                        title={sessionAudioEnabled ? 'Silenciar' : 'Activar audio'}
+                        className={`p-1.5 rounded-xl border transition-all ${
+                          sessionAudioEnabled
+                            ? 'border-amber-500/30 text-amber-400'
+                            : 'border-red-500/30 text-red-400 bg-red-500/10'
+                        }`}
+                      >
+                        {sessionAudioEnabled ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
+                      </button>
+                    </div>
                     {isSynced ? (
                       <span className="flex items-center gap-1 px-2.5 py-1 bg-green-500/10 border border-green-500/30 rounded-xl text-green-400 text-[10px] font-bold">
                         <Globe className="w-3.5 h-3.5 animate-pulse" />
