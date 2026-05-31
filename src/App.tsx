@@ -1675,6 +1675,18 @@ function App() {
   };
 
   const togglePauseResumeAudio = () => {
+    // ── Si Gemini está sonando: pausar/reanudar el HTMLAudioElement ────────────
+    if (currentGeminiAudioRef.current) {
+      if (isAudioPaused) {
+        currentGeminiAudioRef.current.play().catch(() => {});
+        setIsAudioPaused(false);
+      } else {
+        currentGeminiAudioRef.current.pause();
+        setIsAudioPaused(true);
+      }
+      return;
+    }
+    // ── Fallback: Web Speech API del navegador ─────────────────────────────────
     if (!window.speechSynthesis) return;
     if (isAudioPaused) {
       window.speechSynthesis.resume();
