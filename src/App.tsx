@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo, ChangeEvent, FormEvent } from 'react';
-import { Send, BookOpen, BrainCircuit, Mic, Volume2, Sparkles, Activity, Play, Pause, Square, Download, CheckCircle2, PlayCircle, ArrowRight, ArrowLeft, Loader2, User, LogOut, Shield, ShieldAlert, Settings, ChevronRight, BarChart3, Users, Clock, Globe, CreditCard, GraduationCap, MapPin, Phone, Mail, Briefcase, Fingerprint, FastForward, Lock, Award, ShieldCheck, Eye, EyeOff, Search, X, RotateCw, MessageSquare } from 'lucide-react';
+import { Send, BookOpen, BrainCircuit, Mic, Volume2, VolumeX, Sparkles, Activity, Play, Pause, Square, Download, CheckCircle2, PlayCircle, ArrowRight, ArrowLeft, Loader2, User, LogOut, Shield, ShieldAlert, Settings, ChevronRight, BarChart3, Users, Clock, Globe, CreditCard, GraduationCap, MapPin, Phone, Mail, Briefcase, Fingerprint, FastForward, Lock, Award, ShieldCheck, Eye, EyeOff, Search, X, RotateCw, MessageSquare } from 'lucide-react';
 import { chatWithProfessorStream } from './services/geminiService';
 import { motion, AnimatePresence } from 'motion/react';
 import { jsPDF } from 'jspdf';
@@ -973,6 +973,7 @@ function App() {
   const t = translations[language];
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [isAudioPaused, setIsAudioPaused] = useState(false);
+  const [sessionAudioEnabled, setSessionAudioEnabled] = useState(true); // Silencio de sesión persistente
   const [audioSpeed, setAudioSpeed] = useState(1);
   const [currentGrade, setCurrentGrade] = useState(1);
   const [lessonProgress, setLessonProgress] = useState(1);
@@ -1425,7 +1426,6 @@ function App() {
       
 
         let accumulated = '';
-        let spokenLength = 0;
         let lastUpdate = 0;
 
         const result = await chatWithProfessorStream(
@@ -1440,18 +1440,6 @@ function App() {
           studentProfile?.fullName || 'Alumno',
           (chunk) => {
             accumulated += chunk;
-            
-            // TTS Progresivo
-            const unseenText = accumulated.slice(spokenLength);
-            const sentenceMatch = unseenText.match(/.*[.!?\n]/);
-            if (sentenceMatch) {
-              const sentenceToSpeak = sentenceMatch[0];
-              spokenLength += sentenceToSpeak.length;
-              const cleanSentence = sentenceToSpeak.replace(/<!-- COGNITIVE_UPDATE: \{[\s\S]*?\} -->/g, "").split('<!--')[0].trim();
-              if (cleanSentence.length > 1) {
-                enqueueSpeech(cleanSentence);
-              }
-            }
 
             const now = Date.now();
             if (now - lastUpdate > 80) {
@@ -1485,12 +1473,8 @@ function App() {
 
         setChat([{ role: 'professor', text: finalText }]);
 
-        // Hablar el resto
-        const remainingText = finalText.slice(spokenLength);
-        const cleanRemaining = remainingText.replace(/<!-- COGNITIVE_UPDATE: \{[\s\S]*?\} -->/g, "").split('<!--')[0].trim();
-        if (cleanRemaining.length > 1) {
-          enqueueSpeech(cleanRemaining);
-        }
+        // Audio completo — 1 sola llamada Gemini TTS (voz Charon, sabia y pausada)
+        speak(finalText);
 
         // Actualizar perfil si hay evaluación inicial
         if (user?.uid && aiDeltas) {
@@ -1555,54 +1539,26 @@ function App() {
     }
   };
 
-  const speakWithAzure = async (text: string, lang: string) => {
-    const azureKey = import.meta.env.VITE_AZURE_SPEECH_KEY;
-    const azureRegion = import.meta.env.VITE_AZURE_SPEECH_REGION || 'eastus';
-    
-    if (!azureKey) return false;
-
+  // ── Gemini TTS — Voz sabia del Maestro Trincado ────────────────────────────
+  // Llama al endpoint /api/tts en Vercel (llave segura en servidor).
+  // Recibe audio WAV completo y lo reproduce. Si falla → Web Speech API.
+  const speakWithGemini = async (text: string): Promise<boolean> => {
     try {
-      // PRIORIDAD: 1. Voz seleccionada manualmente, 2. Voz por defecto del mapa de idiomas
-      const voiceMap: { [key: string]: string } = {
-        'es': 'es-NI-FedericoNeural',
-        'en': 'en-US-AndrewNeural',
-        'pt': 'pt-BR-FabioNeural',
-        'fr': 'fr-FR-HenriNeural'
-      };
-      
-      // Si hay una voz seleccionada en el estado y es de Azure (contiene Neural), la usamos.
-      // Si no, usamos el mapa por defecto (Federico para ES).
-      const voiceName = (selectedVoiceURI && selectedVoiceURI.includes('Neural')) 
-        ? selectedVoiceURI 
-        : (voiceMap[lang.split('-')[0]] || 'es-NI-FedericoNeural');
-      
-      const response = await fetch(`https://${azureRegion}.tts.speech.microsoft.com/cognitiveservices/v1`, {
+      const response = await fetch('/api/tts', {
         method: 'POST',
-        headers: {
-          'Ocp-Apim-Subscription-Key': azureKey,
-          'Content-Type': 'application/ssml+xml',
-          'X-Microsoft-OutputFormat': 'audio-16khz-128kbitrate-mono-mp3',
-          'User-Agent': 'MaestroTrincadoApp'
-        },
-        body: `<speak version='1.0' xml:lang='${lang}'><voice xml:lang='${lang}' xml:gender='Male' name='${voiceName}'>${text}</voice></speak>`
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: text.trim(), lang: language })
       });
-
-      if (!response.ok) throw new Error('Azure TTS error');
-
+      if (!response.ok) return false;
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
       const audio = new Audio(url);
-      
       return new Promise((resolve) => {
-        audio.onended = () => {
-          URL.revokeObjectURL(url);
-          resolve(true);
-        };
-        audio.onerror = () => resolve(false);
+        audio.onended = () => { URL.revokeObjectURL(url); resolve(true); };
+        audio.onerror = () => { URL.revokeObjectURL(url); resolve(false); };
         audio.play().catch(() => resolve(false));
       });
-    } catch (e) {
-      console.error('Azure TTS failed:', e);
+    } catch {
       return false;
     }
   };
@@ -1621,16 +1577,14 @@ function App() {
     const text = ttsQueueRef.current.shift() || "";
     const cleanText = text.trim();
     
-    // Intentar Azure primero si hay llave
-    if (import.meta.env.VITE_AZURE_SPEECH_KEY) {
-      const success = await speakWithAzure(cleanText, language === 'es' ? 'es-ES' : language === 'en' ? 'en-US' : language === 'pt' ? 'pt-BR' : 'fr-FR');
-      if (success) {
-        processSpeechQueue();
-        return;
-      }
+    // Intentar Gemini TTS primero (voz Charon — grave, sabia, pausada)
+    const geminiSuccess = await speakWithGemini(cleanText);
+    if (geminiSuccess) {
+      processSpeechQueue();
+      return;
     }
 
-    // Fallback a Web Speech API si Azure falla o no hay llave
+    // Fallback a Web Speech API si Gemini falla o no está disponible
     if (!window.speechSynthesis) {
       processSpeechQueue();
       return;
@@ -1668,15 +1622,13 @@ function App() {
   };
 
   const speak = (text: string) => {
+    if (!sessionAudioEnabled) return; // Silencio de sesión activo — no generar audio
     stopAudio();
     shouldContinueSpeakingRef.current = true;
-    // Limpiar comentarios HTML (como COGNITIVE_UPDATE) para evitar que los sintetizadores de voz los lean
+    // Limpiar comentarios HTML (como COGNITIVE_UPDATE)
     const cleanText = text.replace(/<!--[\s\S]*?-->/g, "").trim();
-    // Add text to queue
-    const chunks = cleanText.match(/[^.!?\n]+[.!?\n]+/g) || [cleanText];
-    chunks.forEach(chunk => {
-      if (chunk.trim().length > 0) ttsQueueRef.current.push(chunk);
-    });
+    // Texto completo como 1 sola pieza — 1 llamada Gemini TTS por respuesta
+    if (cleanText.length > 0) ttsQueueRef.current.push(cleanText);
     processSpeechQueue();
   };
 
@@ -2336,7 +2288,6 @@ function App() {
       let accumulated = '';
       let streamedStudentUpdate: any = null;
       let lastUpdate = 0;
-      let spokenLength = 0;
       
       // Importante: detener cualquier audio anterior y preparar la cola de voz
       stopAudio();
@@ -2373,18 +2324,6 @@ function App() {
         (chunk) => {
           accumulated += chunk;
           
-          // Detectar oraciones completas para hablar progresivamente
-          const unseenText = accumulated.slice(spokenLength);
-          const sentenceMatch = unseenText.match(/.*[.!?\n]/);
-          if (sentenceMatch) {
-            const sentenceToSpeak = sentenceMatch[0];
-            spokenLength += sentenceToSpeak.length;
-            const cleanSentence = sentenceToSpeak.replace(/<!-- COGNITIVE_UPDATE: \{[\s\S]*?\} -->/g, "").split('<!--')[0].trim();
-            if (cleanSentence.length > 1) {
-              enqueueSpeech(cleanSentence);
-            }
-          }
-
           const now = Date.now();
           if (now - lastUpdate > 80) { // Actualizar máximo cada 80ms
             setChat(prev => {
@@ -2475,12 +2414,8 @@ function App() {
         }
       }
       
-      // Hablar el resto que quede en el buffer
-      const remainingText = result.text.slice(spokenLength);
-      const cleanRemaining = remainingText.replace(/<!-- COGNITIVE_UPDATE: \{[\s\S]*?\} -->/g, "").split('<!--')[0].trim();
-      if (cleanRemaining.length > 1) {
-        enqueueSpeech(cleanRemaining);
-      }
+      // Audio completo — 1 sola llamada Gemini TTS (voz Charon)
+      speak(finalText);
       
       streamedStudentUpdate = result.studentUpdate || (aiDeltas && 'pass_lesson' in aiDeltas ? { pass_lesson: aiDeltas.pass_lesson } : null);
 
@@ -3432,6 +3367,19 @@ function App() {
             </div>
           )}
 
+          {/* Botón silencio de sesión — persiste toda la clase */}
+          <button
+            onClick={() => { if (sessionAudioEnabled) stopAudio(); setSessionAudioEnabled(prev => !prev); }}
+            title={sessionAudioEnabled ? 'Silenciar audio (toda la sesión)' : 'Activar audio de la sesión'}
+            className={`p-2 rounded-xl border transition-all ${
+              sessionAudioEnabled
+                ? 'border-amber-500/30 text-amber-400 hover:bg-amber-500/10'
+                : 'border-red-500/30 text-red-400 bg-red-500/10 hover:bg-red-500/20'
+            }`}
+          >
+            {sessionAudioEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+          </button>
+
           {/* Audio Speed Control */}
           <div className="flex flex-col items-center mr-4">
             <div className="text-[10px] text-slate-500 uppercase tracking-widest mb-1">{t.audioSpeed}</div>
@@ -3675,6 +3623,18 @@ function App() {
                         </button>
                       </div>
                     )}
+                    {/* Botón silencio de sesión — celular */}
+                    <button
+                      onClick={() => { if (sessionAudioEnabled) stopAudio(); setSessionAudioEnabled(prev => !prev); }}
+                      title={sessionAudioEnabled ? 'Silenciar' : 'Activar audio'}
+                      className={`p-1.5 rounded-xl border transition-all ${
+                        sessionAudioEnabled
+                          ? 'border-amber-500/30 text-amber-400'
+                          : 'border-red-500/30 text-red-400 bg-red-500/10'
+                      }`}
+                    >
+                      {sessionAudioEnabled ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
+                    </button>
                     {isSynced ? (
                       <span className="flex items-center gap-1 px-2.5 py-1 bg-green-500/10 border border-green-500/30 rounded-xl text-green-400 text-[10px] font-bold">
                         <Globe className="w-3.5 h-3.5 animate-pulse" />
