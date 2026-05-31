@@ -67,10 +67,12 @@ async function startServer() {
   // Importar handlers del backend
   const { handleChatStream, handleSystemStatus } = await import('./api-src/gemini-backend.ts');
   const { default: syncStudent } = await import('./api-src/sync-student.ts');
+  const { default: ttsHandler } = await import('./api-src/tts.ts');
   
   app.post("/api/chat-stream", handleChatStream);
   app.get("/api/system-status", handleSystemStatus);
   app.post("/api/sync-student", syncStudent as any);
+  app.post("/api/tts", ttsHandler as any);
   
   // Reset cuotas (invocado desde el Panel de Administración)
   const { handleResetQuotas } = await import('./api-src/gemini-backend.ts');

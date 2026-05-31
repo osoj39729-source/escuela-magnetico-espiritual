@@ -1137,35 +1137,44 @@ function App() {
       
       setCurrentPrompt(fullText);
       
-      const speakGreeting = () => {
+      const speakGreeting = async () => {
         if (!isMounted) return;
-        if (!window.speechSynthesis) return;
+        // Intentar Gemini TTS primero (voz Charon — grave, sabia)
+        try {
+          const response = await fetch('/api/tts', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: fullText.trim(), lang: language })
+          });
+          if (response.ok) {
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+            const audio = new Audio(url);
+            currentGeminiAudioRef.current = audio;
+            audio.onended = () => { URL.revokeObjectURL(url); currentGeminiAudioRef.current = null; };
+            audio.onerror = () => { URL.revokeObjectURL(url); currentGeminiAudioRef.current = null; speakGreetingFallback(); };
+            audio.play().catch(() => speakGreetingFallback());
+            return;
+          }
+        } catch { /* Gemini no disponible — usar fallback */ }
+        speakGreetingFallback();
+      };
+
+      // Fallback: Web Speech API del navegador
+      const speakGreetingFallback = () => {
+        if (!isMounted || !window.speechSynthesis) return;
         const utterance = new SpeechSynthesisUtterance(fullText);
         utterance.rate = 0.9;
         utterance.pitch = 0.4;
         utterance.volume = 1;
-
         const voices = window.speechSynthesis.getVoices();
-        let preferredVoice = voices.find(v => v.voiceURI === selectedVoiceURI);
-        
-        if (!preferredVoice) {
-          preferredVoice = voices.find(v => v.lang.startsWith('es') && v.name.toLowerCase().includes('male')) ||
-                           voices.find(v => v.lang.startsWith('es')) ||
-                           voices.find(v => v.lang.startsWith(language)) ||
-                           voices[0];
-        }
-        
-        if (preferredVoice) {
-          utterance.voice = preferredVoice;
-          utterance.lang = preferredVoice.lang;
-        } else {
-          utterance.lang = language === 'es' ? 'es-ES' : language;
-        }
-        
-        if (window.speechSynthesis) {
-          window.speechSynthesis.cancel();
-          window.speechSynthesis.speak(utterance);
-        }
+        let preferredVoice = voices.find(v => v.voiceURI === selectedVoiceURI) ||
+                             voices.find(v => v.lang.startsWith('es') && v.name.toLowerCase().includes('male')) ||
+                             voices.find(v => v.lang.startsWith(language));
+        if (preferredVoice) { utterance.voice = preferredVoice; utterance.lang = preferredVoice.lang; }
+        else { utterance.lang = language === 'es' ? 'es-ES' : language; }
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(utterance);
       };
 
       greetingTimeout = setTimeout(() => speakGreeting(), 300);
@@ -1190,8 +1199,10 @@ function App() {
   const photoTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const shouldContinueSpeakingRef = useRef(true);
   const speakingSessionRef = useRef(0);
+  // Referencia al audio WAV de Gemini activo — para poder cancelarlo en stopAudio()
+  const currentGeminiAudioRef = useRef<HTMLAudioElement | null>(null);
   
-  // TTS Queue para hablar progresivamente
+  // TTS Queue para hablar
   const ttsQueueRef = useRef<string[]>([]);
   const isSpeakingQueueRef = useRef(false);
   const hasInitialGreetingBeenFetched = useRef(false);
@@ -1553,9 +1564,11 @@ function App() {
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
       const audio = new Audio(url);
+      // Guardar referencia para poder detenerlo con stopAudio()
+      currentGeminiAudioRef.current = audio;
       return new Promise((resolve) => {
-        audio.onended = () => { URL.revokeObjectURL(url); resolve(true); };
-        audio.onerror = () => { URL.revokeObjectURL(url); resolve(false); };
+        audio.onended = () => { URL.revokeObjectURL(url); currentGeminiAudioRef.current = null; resolve(true); };
+        audio.onerror = () => { URL.revokeObjectURL(url); currentGeminiAudioRef.current = null; resolve(false); };
         audio.play().catch(() => resolve(false));
       });
     } catch {
@@ -1636,6 +1649,14 @@ function App() {
     shouldContinueSpeakingRef.current = false;
     ttsQueueRef.current = []; // Clear queue
     isSpeakingQueueRef.current = false;
+    // Detener audio WAV de Gemini si está sonando (evita eco al repetir)
+    if (currentGeminiAudioRef.current) {
+      try {
+        currentGeminiAudioRef.current.pause();
+        currentGeminiAudioRef.current.src = '';
+      } catch { /* ignorar */ }
+      currentGeminiAudioRef.current = null;
+    }
     if (!window.speechSynthesis) {
       setIsAudioPlaying(false);
       setIsAudioPaused(false);
