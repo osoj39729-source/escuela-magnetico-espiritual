@@ -104,6 +104,8 @@ const countryCodes = [
 
 const RegistrationForm = ({ t, onSubmit, onLogin, onSkip, onBack, user, language, externalError, setExternalError, onGoogleSignIn }: { t: any, onSubmit: (data: any) => void, onLogin: (email: string, pass: string) => void, onSkip?: () => void, onBack?: () => void, user: FirebaseUser | null, language: string, externalError?: any, setExternalError?: (err: any) => void, onGoogleSignIn?: () => void }) => {
   const [mode, setMode] = useState<'login' | 'register'>('login');
+  // Detectar celular para ocultar Google Sign-In (redirect bloqueado por navegadores móviles)
+  const isOnMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -232,7 +234,7 @@ const RegistrationForm = ({ t, onSubmit, onLogin, onSkip, onBack, user, language
           </button>
         </div>
 
-        {!user && (
+        {!user && !isOnMobileDevice && (
           <button
             type="button"
             onClick={onGoogleSignIn}
