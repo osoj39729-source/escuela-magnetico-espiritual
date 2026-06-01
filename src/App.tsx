@@ -1263,6 +1263,10 @@ function App() {
   const currentGeminiAudioRef = useRef<HTMLAudioElement | null>(null);
   // AbortController para cancelar el fetch de Gemini TTS si stopAudio() es llamado durante la carga
   const geminiAbortControllerRef = useRef<AbortController | null>(null);
+  // Contador de generación: evita que un fetchGreeting pendiente (de grados)
+  // hable después de que el usuario cambió a estudio libre. Cada cambio de modo
+  // incrementa este contador. fetchGreeting verifica antes de llamar speak().
+  const fetchGreetingGenRef = useRef(0);
   
   // TTS Queue para hablar
   const ttsQueueRef = useRef<string[]>([]);
@@ -1429,6 +1433,8 @@ function App() {
   }, [language]);
 
   const fetchGreeting = async (gradeOverride?: number, lessonOverride?: number, modeOverride?: 'curriculum' | 'library', cognitiveOverride?: string) => {
+    // Capturar generación actual — si cambia antes de speak(), este call es un fantasma
+    const myGen = ++fetchGreetingGenRef.current;
     // Si el idioma cambió, permitimos el refresco aunque ya haya saludado antes
     const languageChanged = lastLanguageRef.current !== language;
     lastLanguageRef.current = language;
@@ -1546,7 +1552,14 @@ function App() {
 
         setChat([{ role: 'professor', text: finalText }]);
 
-        // Audio completo — 1 sola llamada Gemini TTS (voz Charon, sabia y pausada)
+        // GUARD: si el modo cambió mientras el AI generaba (usuario fue a estudio libre)
+        // este fetchGreeting es un "fantasma" y NO debe hablar.
+        if (fetchGreetingGenRef.current !== myGen) {
+          console.log('[fetchGreeting] Cancelado — el modo cambió mientras cargaba. Sin audio.');
+          return;
+        }
+
+        // Audio completo — Azure TTS (Federico) o Gemini (Charon) como respaldo
         speak(finalText);
 
         // Actualizar perfil si hay evaluación inicial
@@ -2362,6 +2375,10 @@ function App() {
   const openLibraryBook = (bookId: string) => {
     const book = LIBRARY_BOOKS.find(b => b.id === bookId);
     if (!book) return;
+    // Invalidar cualquier fetchGreeting pendiente de modo grados
+    // para que no hable el intro curricular sobre el modo biblioteca.
+    fetchGreetingGenRef.current++;
+    stopAudio();
     setStudyMode('library');
     setCurrentLibraryBook(bookId);
     setCurrentLibraryChapter(null);
@@ -2417,6 +2434,8 @@ function App() {
       let streamedStudentUpdate: any = null;
       let lastUpdate = 0;
       
+      // Invalidar cualquier fetchGreeting pendiente (evita fantasma de grados en estudio libre)
+      fetchGreetingGenRef.current++;
       // Importante: detener cualquier audio anterior y preparar la cola de voz
       stopAudio();
       shouldContinueSpeakingRef.current = true;
@@ -4046,28 +4065,6 @@ function App() {
                   className="w-full mt-6 py-2.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-xl border border-red-500/20 text-xs font-bold transition-all flex items-center justify-center gap-1.5"
                 >
                   <LogOut className="w-4 h-4" /> {language === 'es' ? 'Cerrar Sesión' : 'Sign Out'}
-                </button>
-              </div>
-            )}
-
-            {/* ── Barra flotante Audio — visible en TODOS los modos (celular) ── */}
-            {/* Aparece cuando Azure/Gemini está hablando, sin importar el modo activo */}
-            {(isAudioPlaying || isAudioPaused) && (
-              <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-[60] flex items-center gap-2 bg-slate-900/95 border border-amber-500/40 rounded-2xl px-3 py-2 shadow-[0_0_20px_rgba(245,158,11,0.2)] backdrop-blur-md md:hidden">
-                <span className="text-[9px] text-amber-500/70 font-bold uppercase tracking-widest mr-1">Federico</span>
-                <button
-                  onClick={togglePauseResumeAudio}
-                  className="p-1.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 hover:bg-amber-500/20 transition-all"
-                  title={isAudioPaused ? 'Reanudar' : 'Pausar'}
-                >
-                  {isAudioPaused ? <Play className="w-3.5 h-3.5" /> : <Pause className="w-3.5 h-3.5" />}
-                </button>
-                <button
-                  onClick={stopAudio}
-                  className="p-1.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 transition-all"
-                  title="Detener"
-                >
-                  <Square className="w-3.5 h-3.5" />
                 </button>
               </div>
             )}
