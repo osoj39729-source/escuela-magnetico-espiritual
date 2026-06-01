@@ -1,7 +1,7 @@
 // api-src/tts.ts
 var AZURE_VOICE_MAP = {
-  es: { voice: "es-ES-AlvaroNeural", lang: "es-ES" },
-  // Formal, austero, europeo
+  es: { voice: "es-NI-FedericoNeural", lang: "es-NI" },
+  // Federico — grave, natural, familiar
   en: { voice: "en-US-BrandonNeural", lang: "en-US" },
   // Profundo, autoritario
   pt: { voice: "pt-BR-FabioNeural", lang: "pt-BR" },

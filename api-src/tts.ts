@@ -4,10 +4,10 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 // Voces neurales Microsoft — graves, solemnes, 500K chars/mes gratis
 // Latencia 1-3s. Respuesta WAV directo (sin conversión).
 const AZURE_VOICE_MAP: Record<string, { voice: string; lang: string }> = {
-  es: { voice: 'es-ES-AlvaroNeural', lang: 'es-ES' }, // Formal, austero, europeo
-  en: { voice: 'en-US-BrandonNeural', lang: 'en-US' }, // Profundo, autoritario
-  pt: { voice: 'pt-BR-FabioNeural',   lang: 'pt-BR' }, // Maduro, formal
-  fr: { voice: 'fr-FR-HenriNeural',   lang: 'fr-FR' }, // Solemne, francés
+  es: { voice: 'es-NI-FedericoNeural', lang: 'es-NI' }, // Federico — grave, natural, familiar
+  en: { voice: 'en-US-BrandonNeural',  lang: 'en-US' }, // Profundo, autoritario
+  pt: { voice: 'pt-BR-FabioNeural',    lang: 'pt-BR' }, // Maduro, formal
+  fr: { voice: 'fr-FR-HenriNeural',    lang: 'fr-FR' }, // Solemne, francés
 };
 
 function buildSSML(text: string, lang: string): string {
