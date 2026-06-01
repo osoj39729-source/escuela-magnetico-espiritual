@@ -1734,12 +1734,12 @@ function App() {
     shouldContinueSpeakingRef.current = false;
     ttsQueueRef.current = []; // Clear queue
     isSpeakingQueueRef.current = false;
-    // Cancelar fetch en curso de Gemini TTS (evita eco cuando el audio aún está cargando)
+    // Cancelar fetch en curso de Azure/Gemini TTS
     if (geminiAbortControllerRef.current) {
       geminiAbortControllerRef.current.abort();
       geminiAbortControllerRef.current = null;
     }
-    // Detener audio WAV de Gemini si está sonando
+    // Detener audio WAV si está sonando
     if (currentGeminiAudioRef.current) {
       try {
         currentGeminiAudioRef.current.pause();
@@ -1752,10 +1752,15 @@ function App() {
       setIsAudioPaused(false);
       return;
     }
-    // Known fix for Chromium/Edge: pause, resume, then cancel
+    // FIX Android: pause()+resume()+cancel() corrompe el audio context en Chrome Android
+    // causando que audio.play() falle y caiga a voz robótica.
+    // En Android usamos solo cancel(). En desktop usamos el truco pause+resume+cancel.
+    const isAndroid = /Android/i.test(navigator.userAgent);
     try {
-      window.speechSynthesis.pause();
-      window.speechSynthesis.resume();
+      if (!isAndroid) {
+        window.speechSynthesis.pause();
+        window.speechSynthesis.resume();
+      }
       window.speechSynthesis.cancel();
     } catch (e) {
       window.speechSynthesis.cancel();
@@ -4041,6 +4046,28 @@ function App() {
                   className="w-full mt-6 py-2.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-xl border border-red-500/20 text-xs font-bold transition-all flex items-center justify-center gap-1.5"
                 >
                   <LogOut className="w-4 h-4" /> {language === 'es' ? 'Cerrar Sesión' : 'Sign Out'}
+                </button>
+              </div>
+            )}
+
+            {/* ── Barra flotante Audio — visible en TODOS los modos (celular) ── */}
+            {/* Aparece cuando Azure/Gemini está hablando, sin importar el modo activo */}
+            {(isAudioPlaying || isAudioPaused) && (
+              <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-[60] flex items-center gap-2 bg-slate-900/95 border border-amber-500/40 rounded-2xl px-3 py-2 shadow-[0_0_20px_rgba(245,158,11,0.2)] backdrop-blur-md md:hidden">
+                <span className="text-[9px] text-amber-500/70 font-bold uppercase tracking-widest mr-1">Federico</span>
+                <button
+                  onClick={togglePauseResumeAudio}
+                  className="p-1.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 hover:bg-amber-500/20 transition-all"
+                  title={isAudioPaused ? 'Reanudar' : 'Pausar'}
+                >
+                  {isAudioPaused ? <Play className="w-3.5 h-3.5" /> : <Pause className="w-3.5 h-3.5" />}
+                </button>
+                <button
+                  onClick={stopAudio}
+                  className="p-1.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 transition-all"
+                  title="Detener"
+                >
+                  <Square className="w-3.5 h-3.5" />
                 </button>
               </div>
             )}
