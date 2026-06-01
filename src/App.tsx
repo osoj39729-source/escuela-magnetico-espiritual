@@ -136,6 +136,24 @@ const RegistrationForm = ({ t, onSubmit, onLogin, onSkip, onBack, user, language
   const setError = setExternalError || setInternalError;
 
   // Update form data when user changes (e.g. after Google Sign-In)
+  // ── Auto-actualización PWA ─────────────────────────────────────────────────
+  // Cuando Vercel despliega una nueva versión, el service worker detecta el cambio,
+  // toma control (skipWaiting+clientsClaim en vite.config), dispara controllerchange
+  // y la app se recarga automáticamente en todos los celulares sin acción del usuario.
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      let reloading = false;
+      const handleControllerChange = () => {
+        if (!reloading) {
+          reloading = true;
+          window.location.reload();
+        }
+      };
+      navigator.serviceWorker.addEventListener('controllerchange', handleControllerChange);
+      return () => navigator.serviceWorker.removeEventListener('controllerchange', handleControllerChange);
+    }
+  }, []);
+
   useEffect(() => {
     if (user) {
       setFormData(prev => ({
@@ -3733,34 +3751,18 @@ function App() {
                         </button>
                       </div>
                     )}
-                    {/* Botón silencio de sesión + slider velocidad — celular */}
-                    <div className="flex items-center gap-1.5">
-                      {/* Slider velocidad móvil */}
-                      <div className="flex items-center gap-1">
-                        <input
-                          type="range" min="0.5" max="2" step="0.1"
-                          value={audioSpeed}
-                          onChange={(e) => {
-                            const v = parseFloat(e.target.value);
-                            setAudioSpeed(v);
-                            localStorage.setItem('tts_speed', v.toString());
-                          }}
-                          className="w-14 h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-500"
-                        />
-                        <span className="text-[9px] text-amber-500/60 font-mono w-7">{audioSpeed}x</span>
-                      </div>
-                      <button
-                        onClick={() => { if (sessionAudioEnabled) stopAudio(); setSessionAudioEnabled(prev => !prev); }}
-                        title={sessionAudioEnabled ? 'Silenciar' : 'Activar audio'}
-                        className={`p-1.5 rounded-xl border transition-all ${
-                          sessionAudioEnabled
-                            ? 'border-amber-500/30 text-amber-400'
-                            : 'border-red-500/30 text-red-400 bg-red-500/10'
-                        }`}
-                      >
-                        {sessionAudioEnabled ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
-                      </button>
-                    </div>
+                    {/* Botón silencio de sesión — celular */}
+                    <button
+                      onClick={() => { if (sessionAudioEnabled) stopAudio(); setSessionAudioEnabled(prev => !prev); }}
+                      title={sessionAudioEnabled ? 'Silenciar' : 'Activar audio'}
+                      className={`p-1.5 rounded-xl border transition-all ${
+                        sessionAudioEnabled
+                          ? 'border-amber-500/30 text-amber-400'
+                          : 'border-red-500/30 text-red-400 bg-red-500/10'
+                      }`}
+                    >
+                      {sessionAudioEnabled ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
+                    </button>
                     {isSynced ? (
                       <span className="flex items-center gap-1 px-2.5 py-1 bg-green-500/10 border border-green-500/30 rounded-xl text-green-400 text-[10px] font-bold">
                         <Globe className="w-3.5 h-3.5 animate-pulse" />
