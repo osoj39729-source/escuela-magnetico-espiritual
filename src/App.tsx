@@ -1144,9 +1144,18 @@ function App() {
       const speakGreeting = async () => {
         if (!isMounted) return;
 
+        // Detener cualquier audio previo ANTES de iniciar el nuevo saludo
+        if (currentGeminiAudioRef.current) {
+          currentGeminiAudioRef.current.pause();
+          currentGeminiAudioRef.current.src = '';
+          currentGeminiAudioRef.current = null;
+        }
+        if (window.speechSynthesis) window.speechSynthesis.cancel();
+
         // ── PRIORIDAD 1: Archivo WAV pre-generado (instantáneo, sin llamada API) ──
         const type = isReg ? 'registration' : 'professor';
-        const preGenUrl = `/audio/${type}_${language}.wav`;
+        // v=3 fuerza refresco del caché del navegador/PWA con la voz nueva (Federico)
+        const preGenUrl = `/audio/${type}_${language}.wav?v=3`;
         try {
           const checkRes = await fetch(preGenUrl, { method: 'HEAD' });
           if (checkRes.ok) {
@@ -1217,6 +1226,12 @@ function App() {
       isMounted = false;
       clearTimeout(greetingTimeout);
       clearTimeout(choiceTimeout);
+      // FIX: Detener WAV pre-generado al cambiar paso (evita 2 voces simultáneas)
+      if (currentGeminiAudioRef.current) {
+        currentGeminiAudioRef.current.pause();
+        currentGeminiAudioRef.current.src = '';
+        currentGeminiAudioRef.current = null;
+      }
       if (window.speechSynthesis) window.speechSynthesis.cancel();
     };
   }, [introStep, language, selectedVoiceURI]);
@@ -2771,12 +2786,13 @@ function App() {
                             window.speechSynthesis.speak(unlock);
                           }
                           if (studentProfile) {
+                            stopAudio(); // Detener saludo del profesor al entrar al aula
                             enterApp(studentProfile);
                           } else {
                             setIntroStep('registration');
                           }
                         }} className="flex-1 px-5 py-3 bg-gradient-to-r from-amber-600 to-amber-500 text-slate-950 font-bold rounded-2xl shadow-lg hover:shadow-amber-500/30 transition-all text-sm flex items-center justify-center gap-2"><PlayCircle className="w-5 h-5" />{language === 'es' ? 'Entrar al Aula' : language === 'pt' ? 'Entrar na Aula' : 'Enter Classroom'}</button>
-                        <button onClick={() => { if (window.speechSynthesis) window.speechSynthesis.cancel(); setIntroStep('registration'); }} className="flex-1 px-5 py-3 bg-transparent border-2 border-amber-500/40 text-amber-400 font-bold rounded-2xl hover:bg-amber-500/10 transition-all text-sm flex items-center justify-center gap-2"><GraduationCap className="w-5 h-5" />{language === 'es' ? 'Registrarse' : language === 'pt' ? 'Registrar' : 'Register'}</button>
+                        <button onClick={() => { stopAudio(); setIntroStep('registration'); }} className="flex-1 px-5 py-3 bg-transparent border-2 border-amber-500/40 text-amber-400 font-bold rounded-2xl hover:bg-amber-500/10 transition-all text-sm flex items-center justify-center gap-2"><GraduationCap className="w-5 h-5" />{language === 'es' ? 'Registrarse' : language === 'pt' ? 'Registrar' : 'Register'}</button>
                       </div>
                     )}
                   </div>
