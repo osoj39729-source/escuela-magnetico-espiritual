@@ -1687,10 +1687,11 @@ function App() {
     stopAudio();
     shouldContinueSpeakingRef.current = true;
     const cleanText = text.replace(/<!--[\s\S]*?-->/g, "").trim();
-    // FIX 2: Limitar a 1500 chars — evita timeout de Gemini TTS en textos largos
-    // El texto completo sigue visible en pantalla; solo el audio se limita
-    const ttsText = cleanText.length > 1500
-      ? cleanText.substring(0, cleanText.lastIndexOf(' ', 1500)) || cleanText.substring(0, 1500)
+    // Límite 5000 chars — Azure TTS maneja textos largos sin timeout
+    // Cubre respuestas completas en modo grados y modo biblioteca
+    // (el texto completo siempre se muestra en pantalla)
+    const ttsText = cleanText.length > 5000
+      ? cleanText.substring(0, cleanText.lastIndexOf(' ', 5000)) || cleanText.substring(0, 5000)
       : cleanText;
     if (ttsText.length > 0) ttsQueueRef.current.push(ttsText);
     processSpeechQueue();
