@@ -1166,6 +1166,7 @@ function App() {
         if (currentGeminiAudioRef.current) {
           currentGeminiAudioRef.current.pause();
           currentGeminiAudioRef.current.src = '';
+          currentGeminiAudioRef.current.load(); // Forzar liberación del buffer (celulares viejos)
           currentGeminiAudioRef.current = null;
         }
         if (window.speechSynthesis) window.speechSynthesis.cancel();
@@ -1248,6 +1249,7 @@ function App() {
       if (currentGeminiAudioRef.current) {
         currentGeminiAudioRef.current.pause();
         currentGeminiAudioRef.current.src = '';
+        currentGeminiAudioRef.current.load(); // Forzar liberación del buffer (celulares viejos)
         currentGeminiAudioRef.current = null;
       }
       if (window.speechSynthesis) window.speechSynthesis.cancel();
@@ -1257,7 +1259,12 @@ function App() {
   const recognitionRef = useRef<any>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
   const photoTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const shouldContinueSpeakingRef = useRef(true);
+  // Generación de voz: contador atómico que invalida cualquier proceso de voz anterior.
+  // Cada vez que stopAudio() o speak() inician una nueva tanda, el contador incrementa.
+  // processSpeechQueue y speakWithGemini capturan el valor al empezar y solo actúan
+  // si la generación no cambió — eliminando la condición de carrera que causaba
+  // que la voz robótica (Web Speech API) sonara junto con Azure/Gemini.
+  const speakingGenerationRef = useRef(0);
   const speakingSessionRef = useRef(0);
   // Referencia al audio WAV de Gemini activo — para poder cancelarlo en stopAudio()
   const currentGeminiAudioRef = useRef<HTMLAudioElement | null>(null);
@@ -1620,7 +1627,7 @@ function App() {
   // Progressive TTS Queue
   const enqueueSpeech = (text: string) => {
     ttsQueueRef.current.push(text);
-    if (!isSpeakingQueueRef.current && shouldContinueSpeakingRef.current) {
+    if (!isSpeakingQueueRef.current) {
       processSpeechQueue();
     }
   };
@@ -1628,7 +1635,7 @@ function App() {
   // ── Gemini TTS — Voz sabia del Maestro Trincado ────────────────────────────
   // Llama al endpoint /api/tts en Vercel (llave segura en servidor).
   // Recibe audio WAV completo y lo reproduce. Si falla → Web Speech API.
-  const speakWithGemini = async (text: string): Promise<boolean> => {
+  const speakWithGemini = async (text: string, myGen: number): Promise<boolean> => {
     try {
       // AbortController: cancela el fetch HTTP si stopAudio() es llamado mientras carga
       const controller = new AbortController();
@@ -1642,9 +1649,15 @@ function App() {
       });
       geminiAbortControllerRef.current = null;
 
-      if (!response.ok) return false;
-      // Si stopAudio() fue llamado mientras cargaba, no reproducir (evita eco)
-      if (!shouldContinueSpeakingRef.current) return false;
+      if (!response.ok) {
+        console.log(`[VOZ] /api/tts respondió ${response.status} — Azure y Gemini fallaron → se usará Web Speech como último recurso`);
+        return false;
+      }
+      // Si la generación cambió mientras cargaba, no reproducir (evita eco y voz robótica)
+      if (myGen !== speakingGenerationRef.current) {
+        console.log(`[VOZ] Audio descartado — generación cambió durante carga (stopAudio fue llamado)`);
+        return false;
+      }
 
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
@@ -1653,19 +1666,27 @@ function App() {
       audio.playbackRate = audioSpeed;
       // Guardar referencia para poder detenerlo/pausarlo con stopAudio()/togglePause()
       currentGeminiAudioRef.current = audio;
+      console.log(`[VOZ] ▶ Reproduciendo audio (Azure/Gemini) — ${blob.size} bytes, gen=${myGen}`);
       return new Promise((resolve) => {
-        audio.onended = () => { URL.revokeObjectURL(url); currentGeminiAudioRef.current = null; resolve(true); };
-        audio.onerror = () => { URL.revokeObjectURL(url); currentGeminiAudioRef.current = null; resolve(false); };
-        audio.play().catch(() => resolve(false));
+        audio.onended = () => { URL.revokeObjectURL(url); currentGeminiAudioRef.current = null; console.log(`[VOZ] ✓ Audio completado gen=${myGen}`); resolve(true); };
+        audio.onerror = () => { URL.revokeObjectURL(url); currentGeminiAudioRef.current = null; console.warn(`[VOZ] ✗ Error reproduciendo audio gen=${myGen}`); resolve(false); };
+        audio.play().catch(() => { console.warn(`[VOZ] ✗ play() rechazado gen=${myGen}`); resolve(false); });
       });
-    } catch {
+    } catch (err: any) {
       geminiAbortControllerRef.current = null;
+      if (err?.name === 'AbortError') {
+        console.log(`[VOZ] Fetch abortado — stopAudio fue llamado durante carga`);
+      }
       return false;
     }
   };
 
   const processSpeechQueue = async () => {
-    if (ttsQueueRef.current.length === 0 || !shouldContinueSpeakingRef.current) {
+    // Capturar generación actual — si stopAudio() se llama mientras esperamos,
+    // la generación cambia y este proceso se invalida automáticamente.
+    const myGen = speakingGenerationRef.current;
+
+    if (ttsQueueRef.current.length === 0) {
       isSpeakingQueueRef.current = false;
       setIsAudioPlaying(false);
       return;
@@ -1678,13 +1699,13 @@ function App() {
     const text = ttsQueueRef.current.shift() || "";
     const cleanText = text.trim();
     
-    // Intentar Gemini TTS primero (voz Charon — grave, sabia, pausada)
-    const geminiSuccess = await speakWithGemini(cleanText);
+    // Intentar Azure/Gemini TTS (llama /api/tts → Azure primero, luego Gemini si falla)
+    const geminiSuccess = await speakWithGemini(cleanText, myGen);
     if (geminiSuccess) { processSpeechQueue(); return; }
 
-    // FIX 1: Si stopAudio() fue llamado (abort) mientras Gemini cargaba,
+    // FIX: Si la generación cambió mientras esperábamos el fetch (stopAudio fue llamado),
     // NO iniciar Web Speech API. Silencio total, sin voz robótica.
-    if (!shouldContinueSpeakingRef.current) {
+    if (myGen !== speakingGenerationRef.current) {
       isSpeakingQueueRef.current = false;
       setIsAudioPlaying(false);
       setIsAudioPaused(false);
@@ -1696,6 +1717,8 @@ function App() {
       processSpeechQueue();
       return;
     }
+
+    console.log(`[VOZ] ⚠ Azure y Gemini fallaron → usando Web Speech API del navegador (voz robótica) como último recurso`);
 
     const utterance = new SpeechSynthesisUtterance(cleanText);
     utterance.rate = audioSpeed;
@@ -1730,8 +1753,7 @@ function App() {
 
   const speak = (text: string) => {
     if (!sessionAudioEnabled) return;
-    stopAudio();
-    shouldContinueSpeakingRef.current = true;
+    stopAudio(); // incrementa la generación, invalidando cualquier voz en curso
     const cleanText = text.replace(/<!--[\s\S]*?-->/g, "").trim();
     // Límite 5000 chars — Azure TTS maneja textos largos sin timeout
     // Cubre respuestas completas en modo grados y modo biblioteca
@@ -1744,7 +1766,12 @@ function App() {
   };
 
   const stopAudio = () => {
-    shouldContinueSpeakingRef.current = false;
+    // Incrementar generación FIRST — invalida cualquier processSpeechQueue
+    // o speakWithGemini que esté en vuelo, evitando que caigan al fallback
+    // de Web Speech API (voz robótica).
+    const oldGen = speakingGenerationRef.current;
+    speakingGenerationRef.current++;
+    console.log(`[VOZ] ⏹ stopAudio — generación ${oldGen} → ${speakingGenerationRef.current}`);
     ttsQueueRef.current = []; // Clear queue
     isSpeakingQueueRef.current = false;
     // Cancelar fetch en curso de Azure/Gemini TTS
@@ -1757,6 +1784,7 @@ function App() {
       try {
         currentGeminiAudioRef.current.pause();
         currentGeminiAudioRef.current.src = '';
+        currentGeminiAudioRef.current.load(); // Forzar liberación del decodificador (crítico en celulares viejos)
       } catch { /* ignorar */ }
       currentGeminiAudioRef.current = null;
     }
@@ -2438,7 +2466,6 @@ function App() {
       fetchGreetingGenRef.current++;
       // Importante: detener cualquier audio anterior y preparar la cola de voz
       stopAudio();
-      shouldContinueSpeakingRef.current = true;
       
       const book = studyMode === 'library' ? LIBRARY_BOOKS.find(b => b.id === currentLibraryBook) : null;
 
@@ -2796,26 +2823,6 @@ function App() {
                     <img src={TRINCADO_IMG} onError={(e) => { const target = e.target as HTMLImageElement; if (target.src !== TRINCADO_IMG_FALLBACK) { target.src = TRINCADO_IMG_FALLBACK; }}} alt="Joaquin Trincado Mateo" className="w-full h-auto object-cover" referrerPolicy="no-referrer" />
                   </div>
                   <div className="flex-shrink-0 max-w-lg lg:max-w-xl text-left px-6 py-6 bg-slate-900/90 backdrop-blur-2xl border-2 border-amber-500/40 rounded-3xl z-30 shadow-2xl relative group">
-                    <div className="absolute -top-4 -right-4">
-                      <button 
-                        onClick={() => {
-                            if (window.speechSynthesis) {
-                              window.speechSynthesis.cancel();
-                              if (window.speechSynthesis.paused) {
-                                window.speechSynthesis.resume();
-                              }
-                              const ut = new SpeechSynthesisUtterance(t.professorGreeting);
-                              ut.lang = 'es-MX';
-                              ut.onstart = () => console.log("Audio started");
-                              ut.onerror = (e) => console.error("Audio error:", e);
-                              window.speechSynthesis.speak(ut);
-                            }
-                        }}
-                        className="p-5 bg-amber-500 text-slate-900 rounded-full shadow-[0_0_30px_rgba(245,158,11,0.5)] hover:scale-110 transition-transform active:scale-90"
-                      >
-                        <Volume2 className="w-8 h-8" />
-                      </button>
-                    </div>
                     <p className="text-sm md:text-lg lg:text-xl font-serif text-amber-50 leading-relaxed italic">{currentPrompt}</p>
                     {showChoiceButtons && (
                       <div className="flex flex-col sm:flex-row gap-3 mt-6">
@@ -2831,6 +2838,7 @@ function App() {
                             stopAudio(); // Detener saludo del profesor al entrar al aula
                             enterApp(studentProfile);
                           } else {
+                            stopAudio(); // Detener WAV antes de cambiar paso — crítico en celulares viejos
                             setIntroStep('registration');
                           }
                         }} className="flex-1 px-5 py-3 bg-gradient-to-r from-amber-600 to-amber-500 text-slate-950 font-bold rounded-2xl shadow-lg hover:shadow-amber-500/30 transition-all text-sm flex items-center justify-center gap-2"><PlayCircle className="w-5 h-5" />{language === 'es' ? 'Entrar al Aula' : language === 'pt' ? 'Entrar na Aula' : 'Enter Classroom'}</button>

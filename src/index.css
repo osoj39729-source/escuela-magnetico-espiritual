@@ -24,4 +24,13 @@ html, body, #root {
   overflow-x: hidden;
   overflow-y: auto !important;
   -webkit-overflow-scrolling: touch;
+  /* Prevenir pull-to-refresh en navegadores móviles (Chrome, Safari).
+     El gesto de arrastrar hacia abajo al estar en el tope del chat
+     ya no recargará la página ni sacará al usuario al intro/registro. */
+  overscroll-behavior-y: contain;
+}
+
+/* Prevenir pull-to-refresh también en contenedores de chat con scroll propio */
+.overflow-y-auto {
+  overscroll-behavior-y: contain;
 }
