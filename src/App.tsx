@@ -1466,6 +1466,31 @@ function App() {
       const activeCognitiveContext = cognitiveOverride || cognitiveContext;
 
       // ═══════════════════════════════════════════════════════════
+      // CONTEXTO DE CONTINUIDAD: Leer contador de interacciones
+      // de esta lección desde Firestore para que el profesor sepa
+      // si es una continuación y NO repita la introducción.
+      // ═══════════════════════════════════════════════════════════
+      let contextoContinuidad = '';
+      if (user?.uid && activeMode === 'curriculum') {
+        try {
+          const interacciones = await contarInteraccionesEnLeccion(user.uid, activeGrade, activeLesson);
+          if (interacciones > 0) {
+            contextoContinuidad = `
+[CONTEXTO DE CONTINUIDAD — EXCLUSIVO DEL MAESTRO]
+Este estudiante ya ha tenido ${interacciones} interacciones en esta misma lección (Grado ${activeGrade}, Lección ${activeLesson}).
+NO repitas el saludo inicial ni la introducción. El estudiante ya conoce el formato.
+Continúa la enseñanza desde donde quedaron en la interacción anterior.
+${interacciones >= 15 ? '⚠ MODO VALIDACIÓN ACTIVO: A partir de ahora, haz preguntas concretas sobre la esencia de la lección para evaluar comprensión. No aceptes respuestas vagas.' : interacciones >= 10 ? 'El estudiante está cerca de la fase de validación. Profundiza en los conceptos clave.' : ''}
+[FIN CONTEXTO DE CONTINUIDAD]
+`.trim();
+          }
+        } catch { /* si falla Firestore, continuar sin este contexto */ }
+      }
+      const contextoFinal = contextoContinuidad 
+        ? `${activeCognitiveContext}\n\n${contextoContinuidad}`
+        : activeCognitiveContext;
+
+      // ═══════════════════════════════════════════════════════════
       // RESOLUCIÓN DINÁMICA CURRICULAR (Hilo faltante reparado)
       // Cuando activeMode === 'curriculum', resolver el libro y capítulo
       // correspondientes a la lección actual SIN TOCAR currentLibraryBook
@@ -1539,7 +1564,7 @@ function App() {
           activeMode === 'curriculum' ? resolvedCurriculumChapter : (effectiveChapter || undefined),
           activeMode === 'curriculum' ? resolvedCurriculumBookId : (currentLibraryBook || undefined),
           user?.uid || undefined,
-          activeCognitiveContext,
+          contextoFinal,
           themeGuideline
         );
 
@@ -2632,12 +2657,23 @@ function App() {
       // Guardar progreso
       if (studentProfile) {
         try {
+          // Calcular valores REALES (no depender del state de React que aún no re-renderizó)
+          const gradeData = CURRICULUM.find(g => g.id === currentGrade);
+          const totalCount = gradeData?.lessonsCount || 50;
+          const pasoLeccion = streamedStudentUpdate?.pass_lesson;
+          const pasoGrado = pasoLeccion && lessonProgress >= totalCount && currentGrade < 13;
+          
+          const gradoReal = pasoGrado ? currentGrade + 1 : currentGrade;
+          const leccionReal = pasoGrado ? 1 : (pasoLeccion && lessonProgress < totalCount ? lessonProgress + 1 : lessonProgress);
+          const maxGradeReal = Math.max(maxReachedGrade, gradoReal);
+          const maxLessonReal = Math.max(maxReachedLesson, leccionReal);
+
           const updated = { 
             ...studentProfile, 
-            currentGrade, 
-            currentLesson: lessonProgress,
-            maxReachedGrade: Math.max(maxReachedGrade, currentGrade),
-            maxReachedLesson: Math.max(maxReachedLesson, lessonProgress)
+            currentGrade: gradoReal, 
+            currentLesson: leccionReal,
+            maxReachedGrade: maxGradeReal,
+            maxReachedLesson: maxLessonReal
           };
           const deltasParaAplicar = aiDeltas || (streamedStudentUpdate ? { ...streamedStudentUpdate } : null);
           if (deltasParaAplicar) {

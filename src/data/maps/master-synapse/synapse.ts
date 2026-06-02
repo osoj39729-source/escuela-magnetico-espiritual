@@ -135,6 +135,23 @@ export const MASTER_SYNAPSE_MAP = {
         "Alfaquí Vademécum": "Sistematización en preguntas del maestro al discípulo",
         "Grado 9 (Profilaxis)": "El espíritu no hereda deudas: consecuencia práctica de la trinidad"
       }
+    },
+    {
+      id: "espiritu_de_verdad_juez",
+      concepto: "El Espíritu de Verdad como Juez Supremo y Director del ciclo planetario",
+      definicion_doctrinal: "Entidad directora que encabeza la falange de espíritus misioneros. Es el Juez Supremo del ciclo planetario actual. Sus comunicaciones —recibidas por el médium Pedro Portillo entre 1911-1912, identificado como 'El Espíritu de Verdad Xavier'— no son opiniones sino fallos judiciales con fuerza de ley espiritual. Joaquín Trincado es su instrumento ejecutor en la Tierra, no el autor de la doctrina. La obra es colectiva: una falange de espíritus dirigida por esta entidad.",
+      filtro_antidogma: "CRÍTICO: No es el Espíritu Santo cristiano ni la tercera persona de la Trinidad. No es Eloí (el Principio Inteligente Creador Amorfo). No es Trincado mismo. No es un dios ni una deidad. Es una entidad directora que opera DENTRO de la Ley, aplicando la Ley de Justicia en el ciclo actual. Eliminar el culto a la personalidad de Trincado: él es el instrumento, no el autor.",
+      diferencia_clave_con_eloí: "Eloí es el Principio Inteligente Creador Amorfo — crea pero no juzga. El Espíritu de Verdad es una entidad directora que opera dentro de la creación, aplicando la Ley de Justicia como Juez Supremo del ciclo.",
+      identidad_mediumnica: "Se manifiesta como 'El Espíritu de Verdad Xavier', asociado al espíritu Francisco Xavier, a través de las posesiones del médium Pedro Portillo. Primera comunicación registrada: Febrero 25 de 1912. Comunicación con identidad completa: Marzo 31 de 1912. Las comunicaciones precursoras de 'El Juez' (Marzo 24, 1912) también se le atribuyen.",
+      presencia_en_libros: [
+        { libro: "Buscando a Dios", seccion: "10196: Párrafo II: EL ESPÍRITU DE VERDAD (Diciembre 17, médium Portillo)", enfasis: "Trincado como instrumento ejecutor del Espíritu de Verdad" },
+        { libro: "Primer Rayo de Luz", seccion: "11795: Sentencia", enfasis: "El libro no es opinión sino fallo judicial del Espíritu de Verdad" },
+        { libro: "Los Extremos se Tocan", seccion: "6067 y 8601: comunicaciones Feb-Mar 1912 (Portillo)", enfasis: "Identidad completa: Espíritu de Verdad Xavier; la falange de misioneros; Cuarta nebulosa" },
+        { libro: "Conócete a ti Mismo", seccion: "10284: EL ESPÍRITU DE VERDAD", enfasis: "Sección doctrinal dedicada" },
+        { libro: "Código de Amor Universal", seccion: "8753: Apéndice — Consulta al Espíritu de Verdad", enfasis: "Juez Supremo del ciclo; supervisa la aplicación del Código; su voz justifica misioneros y sentencia opresores" },
+        { libro: "Profilaxis de la Vida", seccion: "11134: Verdad en funciones de Juez Supremo", enfasis: "Función judicial en el contexto de la evolución y profilaxis humana" }
+      ],
+      advertencia: "El Discurso de Strossmayer (Grado 1) NO menciona al Espíritu de Verdad. Aparece por primera vez en Grado 2 (Buscando a Dios) y se desarrolla progresivamente hasta Grado 12."
     }
   ],
 
