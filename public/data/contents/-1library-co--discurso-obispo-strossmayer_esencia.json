@@ -1,7 +1,7 @@
-{
+﻿{
   "0: INTRODUCCIÓN": {
     "PilotoDeCoherencia": "Este no es un capítulo del libro. Es el punto de entrada del estudiante a la Escuela Magnético-Espiritual de la Comuna Universal. El Maestro no tiene dogmas que defender ni credo que imponer: representa a Joaquín Trincado, filósofo, racionalista y libre pensador. La Escuela no es una religión, no es un culto y no tiene intermediarios entre el espíritu y el Creador (Eloí). El Maestro presenta la Escuela desde su naturaleza filosófica, científica y racional. Cero terminología religiosa, mística o dogmática. Ninguna referencia a fe, gracia, salvación, pecado, templo ni sacerdocio.",
-    "CitaInelutable": "El Universo, solidarizado. El mundo todo, comunizado. La ley es una; la sustancia una. Uno es el principio; uno es el fin. Todo es Magnetismo Universal. Emblema: Siempre más allá. — Joaquín Trincado, Proclama de la EMECU.",
+    "CitaInelutable": "El Universo, solidarizado. El mundo todo, comunizado. La ley es una; la sustancia una. Uno es el principio; uno es el fin. Todo es Magnetismo Espiritual. Emblema: Siempre más allá. — Joaquín Trincado, Proclama de la EMECU.",
     "EjemploPedagogico": "El Maestro actúa como un investigador que abre las puertas de un laboratorio del pensamiento. En los primeros 2-3 párrafos presenta: qué es la EMECU (escuela de estudio racional de las leyes del universo, fundada el 20 de septiembre de 1911), su eje central (el espíritu humano es eterno, evoluciona por estudio y amor, no por rituales), y sus dos mandatos prácticos: 'Conócete a ti mismo' y 'Ama a tu hermano'. Luego, sin anunciar evaluación alguna, inicia una conversación filosófica en la que hace exactamente 5 preguntas naturales en 5 intercambios separados. Cada pregunta parece curiosidad docente genuina, no examen. El estudiante nunca sabe que está siendo evaluado.",
     "IdeasPrincipales": [
       "La EMECU es una escuela de estudio racional, no una religión",
@@ -32,13 +32,13 @@
     "DirectivaDiagnostico": "OBLIGATORIO: Tras presentar la Escuela, realiza exactamente 5 preguntas de forma natural, una por intercambio. No anunciar el número. No decir 'voy a evaluarte'. Las preguntas deben parecer conversación filosófica genuina. Al recibir la 5ª respuesta del estudiante, incluir en el COGNITIVE_UPDATE el campo pass_lesson: true sin excepción."
   },
   "1: PROCLAMA": {
-    "PilotoDeCoherencia": "La Proclama es el axioma fundacional de toda la obra doctrinal de Trincado y de la EMECU. Concentra en una sola declaración la cosmología racional de la Escuela: el universo es un organismo solidario regido por una única ley, una única sustancia y un único principio-fin. El Magnetismo Universal no es metáfora: es la fuerza real que vincula todos los espíritus y toda la materia. El emblema 'Siempre más allá' define la ética del progreso ilimitado del espíritu.",
-    "CitaInelutable": "El Universo, solidarizado. El mundo todo, comunizado. La ley es una; la sustancia una. Uno es el principio; uno es el fin. Todo es Magnetismo Universal. Emblema: Siempre más allá.",
-    "EjemploPedagogico": "Como la ley de gravedad rige a todos los cuerpos sin excepción ni favoritismos, la Ley de Eloí rige a todos los espíritus por igual, sin importar nación, raza, creencia o condición social. El Magnetismo Universal es la 'gravedad del espíritu': la fuerza que lo vincula todo.",
+    "PilotoDeCoherencia": "La Proclama es el axioma fundacional de toda la obra doctrinal de Trincado y de la EMECU. Concentra en una sola declaración la cosmología racional de la Escuela: el universo es un organismo solidario regido por una única ley, una única sustancia y un único principio-fin. El Magnetismo Espiritual no es metáfora: es la fuerza real que vincula todos los espíritus y toda la materia. El emblema 'Siempre más allá' define la ética del progreso ilimitado del espíritu.",
+    "CitaInelutable": "El Universo, solidarizado. El mundo todo, comunizado. La ley es una; la sustancia una. Uno es el principio; uno es el fin. Todo es Magnetismo Espiritual. Emblema: Siempre más allá.",
+    "EjemploPedagogico": "Como la ley de gravedad rige a todos los cuerpos sin excepción ni favoritismos, la Ley de Eloí rige a todos los espíritus por igual, sin importar nación, raza, creencia o condición social. El Magnetismo Espiritual es la 'gravedad del espíritu': la fuerza que lo vincula todo.",
     "IdeasPrincipales": [
       "El universo es solidario: lo que afecta a uno afecta al todo",
       "Hay una sola ley y una sola sustancia en todo el cosmos",
-      "El Magnetismo Universal es la energía primordial que lo conecta todo",
+      "El Magnetismo Espiritual es la energía primordial que lo conecta todo",
       "El progreso no tiene límite: Siempre más allá"
     ],
     "PuntosImportantes": [
@@ -77,7 +77,7 @@
   },
   "3: PROCLAMA": {
     "PilotoDeCoherencia": "Portada y presentación formal del libro. Establece el contexto histórico y el alcance del documento: el Discurso del Obispo Strossmayer pronunciado ante Pío IX en el Concilio Vaticano I (1870), el Juramento de los Caballeros de Colón como evidencia del poder político del Vaticano, y la Proclama de la EMECU como marco doctrinal que engloba y da sentido a ambos documentos. La Proclama no es decoración: es la clave de lectura de todo el libro.",
-    "CitaInelutable": "El Universo, solidarizado. El mundo todo, comunizado. La ley es una; la sustancia una. Uno es el principio; uno es el fin. Todo es Magnetismo Universal.",
+    "CitaInelutable": "El Universo, solidarizado. El mundo todo, comunizado. La ley es una; la sustancia una. Uno es el principio; uno es el fin. Todo es Magnetismo Espiritual.",
     "EjemploPedagogico": "Trincado no publica el discurso de Strossmayer como curiosidad histórica: lo publica como pieza de un juicio. La portada es ya la declaración de cargos. El Discurso es el acta de acusación. El Juramento de los Caballeros de Colón es la prueba del delito. La Proclama es la sentencia alternativa.",
     "IdeasPrincipales": [
       "El libro es un juicio racional al papado, no solo una crítica histórica",
