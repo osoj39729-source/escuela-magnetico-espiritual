@@ -1046,7 +1046,7 @@ function App() {
   };
 
   // Cargar esencia y preparar checklist para la lección actual
-  const cargarChecklist = async (grado: number, leccion: number, bookId?: string) => {
+  const cargarChecklist = async (grado: number, leccion: number, bookId?: string, themeName?: string) => {
     // Lección 1 Grado 1 es diagnóstico puro — no aplica checklist
     if (grado === 1 && leccion === 1) return;
     if (!bookId) return;
@@ -1054,10 +1054,33 @@ function App() {
     
     resetChecklist(grado, leccion);
     
+    // Función helper: generar ideas desde el nombre del tema
+    const generarIdeasDesdeTema = (tema: string): string[] => {
+      // Dividir el tema en fragmentos significativos
+      const limpio = tema.replace(/[—\-:,\.]/g, ' ').replace(/\s+/g, ' ').trim();
+      const palabras = limpio.split(' ').filter(w => w.length > 3);
+      // Agrupar en ideas de 2-3 palabras
+      const ideas: string[] = [];
+      for (let i = 0; i < palabras.length; i += 2) {
+        const idea = palabras.slice(i, i + 2).join(' ');
+        if (idea.length > 4) ideas.push(idea);
+      }
+      // Si no hay suficientes, usar el tema completo como idea principal
+      if (ideas.length === 0) ideas.push(tema);
+      // Añadir el tema completo como idea clave
+      if (tema.length > 10 && !ideas.includes(tema)) ideas.unshift(tema.substring(0, 60));
+      return ideas.slice(0, 6); // máximo 6 ideas generadas
+    };
+    
     try {
       const esencia = await loadBookEssence(bookId);
       if (!esencia || Object.keys(esencia).length === 0) {
-        console.log(`[CHECKLIST] Sin esencia para ${bookId} — solo caminos 2 y 3`);
+        // Sin esencia: generar ideas desde el nombre del tema
+        if (themeName) {
+          ideasClaveLeccionRef.current = generarIdeasDesdeTema(themeName);
+          totalIdeasLeccionRef.current = ideasClaveLeccionRef.current.length;
+          console.log(`[CHECKLIST] ⚡ Generadas ${totalIdeasLeccionRef.current} ideas desde tema "${themeName}" — G${grado} L${leccion} → 3 caminos`);
+        }
         return;
       }
       
@@ -1066,26 +1089,34 @@ function App() {
       const claves = Object.keys(esencia);
       let sectionKey = claves.find(k => k.startsWith(`${sectionIndex}:`));
       
-      // Fallback: buscar por índice numérico (por si el formato varía)
+      // Fallback: buscar por índice numérico
       if (!sectionKey) {
         sectionKey = claves.find(k => parseInt(k.split(':')[0]) === sectionIndex);
       }
       
-      if (!sectionKey) {
-        console.log(`[CHECKLIST] Sección ${sectionIndex} no encontrada en esencia de ${bookId} — solo caminos 2 y 3`);
-        return;
+      if (sectionKey) {
+        const seccion = esencia[sectionKey];
+        if (seccion?.IdeasPrincipales && Array.isArray(seccion.IdeasPrincipales)) {
+          ideasClaveLeccionRef.current = seccion.IdeasPrincipales;
+          totalIdeasLeccionRef.current = seccion.IdeasPrincipales.length;
+          console.log(`[CHECKLIST] ✅ Cargadas ${totalIdeasLeccionRef.current} ideas — G${grado} L${leccion} (${sectionKey}) → 3 caminos`);
+          return;
+        }
       }
       
-      const seccion = esencia[sectionKey];
-      if (seccion?.IdeasPrincipales && Array.isArray(seccion.IdeasPrincipales)) {
-        ideasClaveLeccionRef.current = seccion.IdeasPrincipales;
-        totalIdeasLeccionRef.current = seccion.IdeasPrincipales.length;
-        console.log(`[CHECKLIST] ✅ Cargadas ${totalIdeasLeccionRef.current} ideas — G${grado} L${leccion} (${sectionKey}) → 3 caminos activos`);
-      } else {
-        console.log(`[CHECKLIST] Sección ${sectionKey} sin IdeasPrincipales — solo caminos 2 y 3`);
+      // Sección no encontrada o sin IdeasPrincipales → generar desde tema
+      if (themeName) {
+        ideasClaveLeccionRef.current = generarIdeasDesdeTema(themeName);
+        totalIdeasLeccionRef.current = ideasClaveLeccionRef.current.length;
+        console.log(`[CHECKLIST] ⚡ Generadas ${totalIdeasLeccionRef.current} ideas desde tema "${themeName}" — G${grado} L${leccion} → 3 caminos`);
       }
     } catch(e) {
-      console.warn('[CHECKLIST] Error cargando esencia:', e, '— solo caminos 2 y 3');
+      console.warn('[CHECKLIST] Error cargando esencia:', e);
+      // Último recurso: generar desde tema
+      if (themeName) {
+        ideasClaveLeccionRef.current = generarIdeasDesdeTema(themeName);
+        totalIdeasLeccionRef.current = ideasClaveLeccionRef.current.length;
+      }
     }
   };
 
@@ -1594,7 +1625,7 @@ ${interacciones >= 15 ? '⚠ MODO VALIDACIÓN ACTIVO: A partir de ahora, haz pre
 
       // ── Cargar checklist de ideas para la lección ──
       if (activeMode === 'curriculum') {
-        await cargarChecklist(activeGrade, activeLesson, resolvedCurriculumBookId);
+        await cargarChecklist(activeGrade, activeLesson, resolvedCurriculumBookId, themeName);
       }
 
       if (activeGrade === 1 && activeLesson === 1 && activeMode === 'curriculum') {
@@ -2600,7 +2631,7 @@ ${interacciones >= 15 ? '⚠ MODO VALIDACIÓN ACTIVO: A partir de ahora, haz pre
 
       // ── Cargar checklist y enriquecer contexto ──
       if (studyMode === 'curriculum') {
-        await cargarChecklist(currentGrade, lessonProgress, resolvedSendBookId);
+        await cargarChecklist(currentGrade, lessonProgress, resolvedSendBookId, sendThemeName);
       }
       const contextoConChecklist = `${cognitiveContext}\n${buildPendingIdeasContext()}`;
 
