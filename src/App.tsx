@@ -2708,10 +2708,10 @@ ${interacciones >= 15 ? '⚠ MODO VALIDACIÓN ACTIVO: A partir de ahora, haz pre
             localStorage.setItem('emecu_students', JSON.stringify(studentsMap));
           } catch(_syncErr) { /* no bloquear el flujo por error de sincronización */ }
           
-          // Actualizar en Firestore si está logueado
+          // Actualizar en Firestore si está logueado — CON REINTENTOS
           if (user) {
             const docRef = doc(db, 'students', user.uid);
-            await updateDoc(docRef, {
+            const datosParaGuardar = {
               currentGrade: updated.currentGrade,
               currentLesson: updated.currentLesson,
               maxReachedGrade: updated.maxReachedGrade,
@@ -2725,9 +2725,41 @@ ${interacciones >= 15 ? '⚠ MODO VALIDACIÓN ACTIVO: A partir de ahora, haz pre
                 reason: 30,
                 will: 30,
               }
-            });
+            };
+            
+            let guardado = false;
+            let ultimoError = '';
+            for (let intento = 0; intento < 3; intento++) {
+              try {
+                await updateDoc(docRef, datosParaGuardar);
+                console.log(`[GUARDADO] ✅ Firestore actualizado: G${datosParaGuardar.currentGrade} L${datosParaGuardar.currentLesson} (intento ${intento + 1})`);
+                guardado = true;
+                break;
+              } catch (err: any) {
+                ultimoError = err?.message || String(err);
+                console.warn(`[GUARDADO] ⚠️ Intento ${intento + 1}/3 falló: ${ultimoError}`);
+                if (intento < 2) await new Promise(r => setTimeout(r, 1000 * (intento + 1))); // backoff: 1s, 2s
+              }
+            }
+            
+            if (!guardado) {
+              console.error(`[GUARDADO] ❌ FALLÓ tras 3 intentos. Datos en localStorage pero NO en Firestore. Error: ${ultimoError}`);
+              // Guardar flag de recuperación para que el Observador pueda detectarlo
+              try {
+                localStorage.setItem('emecu_pending_sync', JSON.stringify({
+                  uid: user.uid,
+                  timestamp: Date.now(),
+                  currentGrade: datosParaGuardar.currentGrade,
+                  currentLesson: datosParaGuardar.currentLesson,
+                  error: ultimoError
+                }));
+              } catch(_) { /* no bloquear por fallo de localStorage */ }
+            } else {
+              // Limpiar flag de recuperación si existía
+              localStorage.removeItem('emecu_pending_sync');
+            }
           }
-        } catch(e) { console.error('Error saving progress:', e); }
+        } catch(e) { console.error('[GUARDADO] Error en bloque de guardado:', e); }
       }
     } catch (error: any) {
       console.error(error);

@@ -1,54 +1,7 @@
-// ===============================================================
-// Assumed Data Model
-// ===============================================================
-//
-// Collection: students
-// Document ID: {studentId} (Firebase Auth UID)
-// Fields:
-//   - fullName: string (required)
-//   - address: string
-//   - phone: string
-//   - email: string (required)
-//   - economicActivity: string
-//   - educationLevel: string
-//   - idNumber: string (required)
-//   - nationality: string
-//   - registrationDate: timestamp (required)
-//   - lastInteraction: timestamp
-//   - currentGrade: number (1-13)
-//   - currentLesson: number
-//   - intelligenceScore: number
-//   - isVerified: bool
-//   - verificationCode: string
-//   - faculties: map (perceptiveIntelligence, memory, imagination, attention, judgment, reason, will)
-//   - role: string (student, admin)
-//
-// Collection: students/{studentId}/interactions
-// Document ID: {interactionId}
-// Fields:
-//   - studentId: string
-//   - timestamp: timestamp
-//   - message: string
-//   - response: string
-//   - evaluation: map
-//
-// Collection: certificates
-// Document ID: {certificateId}
-// Fields:
-//   - studentId: string
-//   - grade: number
-//   - issueDate: timestamp
-//   - studentName: string
-//
-// ===============================================================
-
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // ===============================================================
-    // Helper Functions
-    // ===============================================================
     function isAuthenticated() {
       return request.auth != null;
     }
@@ -59,8 +12,8 @@ service cloud.firestore {
 
     function isAdmin() {
       return isAuthenticated() &&
-        (request.auth.token.email == "nelsonosoriogarcia@gmail.com" ||
-         request.auth.token.email == "osoj39729@gmail.com" ||
+        (request.auth.token.email == "osoj39729@gmail.com" ||
+         request.auth.token.email == "nelsonosoriogarcia@gmail.com" ||
          (exists(/databases/$(database)/documents/students/$(request.auth.uid)) &&
           get(/databases/$(database)/documents/students/$(request.auth.uid)).data.role == 'admin'));
     }
@@ -86,23 +39,10 @@ service cloud.firestore {
              data.studentName is string;
     }
 
-    // ===============================================================
-    // Rules
-    // ===============================================================
-
     match /students/{studentId} {
-      // Students can read their own profile, Admins can read all
       allow read: if isOwner(studentId) || isAdmin();
-      
-      // Students can create their own profile (initial registration)
-      // Admins can also create
       allow create: if (isOwner(studentId) && isValidStudent(request.resource.data) && request.resource.data.role == 'student') || isAdmin();
-      
-      // Students can update their own profile (but not their role)
-      // Admins can update anything
       allow update: if (isOwner(studentId) && isValidStudent(request.resource.data) && request.resource.data.role == resource.data.role) || isAdmin();
-      
-      // Only admins can delete
       allow delete: if isAdmin();
 
       match /interactions/{interactionId} {
@@ -112,7 +52,11 @@ service cloud.firestore {
       }
 
       match /cognitive/{docId} {
-        // El motor cognitivo (backend/frontend) actualiza esto a nombre del estudiante
+        allow read: if isOwner(studentId) || isAdmin();
+        allow write: if isOwner(studentId) || isAdmin();
+      }
+
+      match /validation/{docId} {
         allow read: if isOwner(studentId) || isAdmin();
         allow write: if isOwner(studentId) || isAdmin();
       }
@@ -123,7 +67,6 @@ service cloud.firestore {
     }
 
     match /sessions/{sessionId} {
-      // El tracker graba sesiones
       allow read: if (isAuthenticated() && request.auth.uid == resource.data.uid) || isAdmin();
       allow create: if isAuthenticated() && request.auth.uid == request.resource.data.uid;
       allow update: if isAuthenticated() && request.auth.uid == resource.data.uid;
@@ -131,15 +74,8 @@ service cloud.firestore {
     }
 
     match /certificates/{certificateId} {
-      // Students can read their own certificates, Admins can read all
       allow read: if (isAuthenticated() && request.auth.uid == resource.data.studentId) || isAdmin();
-      
-      // Only admins or the system (via student profile check) can create
-      // For simplicity in this demo, we allow the student to create their own certificate record
-      // if they are authenticated and the studentId matches.
       allow create: if isAuthenticated() && request.auth.uid == request.resource.data.studentId && isValidCertificate(request.resource.data);
-      
-      // Only admins can update or delete certificates
       allow update, delete: if isAdmin();
     }
   }
