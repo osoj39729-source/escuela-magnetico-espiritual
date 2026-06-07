@@ -2731,7 +2731,7 @@ ${interacciones >= 15 ? '⚠ MODO VALIDACIÓN ACTIVO: A partir de ahora, haz pre
             let ultimoError = '';
             for (let intento = 0; intento < 3; intento++) {
               try {
-                await updateDoc(docRef, datosParaGuardar);
+                await setDoc(docRef, datosParaGuardar, { merge: true }); // merge: funciona aunque el doc no exista
                 console.log(`[GUARDADO] ✅ Firestore actualizado: G${datosParaGuardar.currentGrade} L${datosParaGuardar.currentLesson} (intento ${intento + 1})`);
                 guardado = true;
                 break;
