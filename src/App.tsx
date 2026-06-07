@@ -11,13 +11,15 @@ import type { LocalUser as FirebaseUser } from './firebase';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { iniciarSesion, cerrarSesion, registrarInteraccion, actualizarTemaEnSesion } from './services/session_tracker';
 import { evaluarYActualizarPerfil, leerPerfilCognitivo, construirContextoProfesor, TRADUCCION_FACULTADES } from './services/cognitive_engine';
+import { loadBookEssence } from './services/contentLoader';
 import { 
   debeAplicarValidacion, 
   contarInteraccionesEnLeccion, 
   incrementarInteraccionesEnLeccion, 
   activarModoValidacionIntensiva,
   estaModoValidacionIntensiva,
-  reiniciarContadorLeccion
+  reiniciarContadorLeccion,
+  validarRespuesta
 } from './services/essenceValidator';
 
 declare global {
@@ -1026,6 +1028,70 @@ function App() {
   const [modoValidacionIntensiva, setModoValidacionIntensiva] = useState(false);
   const [interaccionesEnLeccion, setInteraccionesEnLeccion] = useState(0);
 
+  // ── Sistema de Checklist de Ideas (evaluación progresiva por esencias) ──
+  const ideasCubiertasRef = useRef<Set<number>>(new Set());
+  const ideasClaveLeccionRef = useRef<string[]>([]);
+  const totalIdeasLeccionRef = useRef<number>(0);
+  const leccionChecklistRef = useRef<{grado: number, leccion: number} | null>(null);
+  
+  // Reiniciar checklist al cambiar de lección
+  const resetChecklist = (grado: number, leccion: number) => {
+    if (leccionChecklistRef.current?.grado !== grado || leccionChecklistRef.current?.leccion !== leccion) {
+      ideasCubiertasRef.current = new Set();
+      ideasClaveLeccionRef.current = [];
+      totalIdeasLeccionRef.current = 0;
+      leccionChecklistRef.current = { grado, leccion };
+      console.log(`[CHECKLIST] Reset para G${grado} L${leccion}`);
+    }
+  };
+
+  // Cargar esencia y preparar checklist para la lección actual
+  const cargarChecklist = async (grado: number, leccion: number, bookId?: string) => {
+    if (grado !== 1 || !bookId) return; // Solo Grado 1 por ahora
+    resetChecklist(grado, leccion);
+    if (ideasClaveLeccionRef.current.length > 0) return; // Ya cargado
+    
+    try {
+      const esencia = await loadBookEssence(bookId);
+      if (!esencia || Object.keys(esencia).length === 0) return;
+      
+      // El section index = leccion - 1 (lesson 1 → section 0, etc.)
+      const sectionIndex = leccion - 1;
+      const claves = Object.keys(esencia);
+      const sectionKey = claves.find(k => k.startsWith(`${sectionIndex}:`));
+      if (!sectionKey) { console.warn(`[CHECKLIST] No se encontró sección ${sectionIndex} en esencia`); return; }
+      
+      const seccion = esencia[sectionKey];
+      if (seccion?.IdeasPrincipales && Array.isArray(seccion.IdeasPrincipales)) {
+        ideasClaveLeccionRef.current = seccion.IdeasPrincipales;
+        totalIdeasLeccionRef.current = seccion.IdeasPrincipales.length;
+        console.log(`[CHECKLIST] Cargadas ${totalIdeasLeccionRef.current} ideas para G${grado} L${leccion} (${sectionKey})`);
+      }
+    } catch(e) {
+      console.warn('[CHECKLIST] Error cargando esencia:', e);
+    }
+  };
+
+  // Construir string de IDEAS PENDIENTES para Gemini
+  const buildPendingIdeasContext = (): string => {
+    const ideas = ideasClaveLeccionRef.current;
+    const cubiertas = ideasCubiertasRef.current;
+    if (ideas.length === 0) return '';
+    
+    const pendientes = ideas
+      .map((idea, i) => cubiertas.has(i) ? null : `❓ ${i + 1}. ${idea}`)
+      .filter(Boolean);
+    const cubiertasList = ideas
+      .map((idea, i) => cubiertas.has(i) ? `✅ ${i + 1}. ${idea}` : null)
+      .filter(Boolean);
+    
+    if (pendientes.length === 0 && cubiertasList.length > 0) {
+      return `\n[CHECKLIST DE IDEAS: TODAS CUBIERTAS — ${cubiertasList.length}/${ideas.length}]\n${cubiertasList.join('\n')}\nINSTRUCCIÓN: El estudiante ha demostrado dominio de TODAS las ideas clave. Emite pass_lesson: true.`;
+    }
+    
+    return `\n[CHECKLIST DE IDEAS — AVANCE: ${cubiertasList.length}/${ideas.length}]\nCUBIERTAS:\n${cubiertasList.join('\n') || '(ninguna aún)'}\nPENDIENTES (enfócate en ESTAS):\n${pendientes.join('\n')}\nINSTRUCCIÓN: NO repitas las ideas ya cubiertas. Enfócate en las pendientes. Si el estudiante demuestra ≥${Math.ceil(ideas.length * 0.75)} ideas, emite pass_lesson: true.`;
+  };
+
   useEffect(() => {
     const checkOrientation = () => {
       const isMobileDevice = window.innerWidth <= 768 || /Mobi|Android|iPhone/i.test(navigator.userAgent);
@@ -1487,8 +1553,8 @@ ${interacciones >= 15 ? '⚠ MODO VALIDACIÓN ACTIVO: A partir de ahora, haz pre
         } catch { /* si falla Firestore, continuar sin este contexto */ }
       }
       const contextoFinal = contextoContinuidad 
-        ? `${activeCognitiveContext}\n\n${contextoContinuidad}`
-        : activeCognitiveContext;
+        ? `${activeCognitiveContext}\n\n${contextoContinuidad}\n${buildPendingIdeasContext()}`
+        : `${activeCognitiveContext}\n${buildPendingIdeasContext()}`;
 
       // ═══════════════════════════════════════════════════════════
       // RESOLUCIÓN DINÁMICA CURRICULAR (Hilo faltante reparado)
@@ -1508,6 +1574,11 @@ ${interacciones >= 15 ? '⚠ MODO VALIDACIÓN ACTIVO: A partir de ahora, haz pre
       const resolvedCurriculumChapter = activeMode === 'curriculum' ? (themeName || undefined) : undefined;
       const themeGuideline = themeName && activeGrade === 1 ? GRADE_1_GUIDELINES[themeName] : undefined;
       console.log(`[Currículo RAG] Resolviendo → bookId: ${resolvedCurriculumBookId} | chapter: ${resolvedCurriculumChapter} | guideline: ${themeGuideline ? 'Sí' : 'No'}`);
+
+      // ── Cargar checklist de ideas para la lección ──
+      if (activeMode === 'curriculum') {
+        await cargarChecklist(activeGrade, activeLesson, resolvedCurriculumBookId);
+      }
 
       if (activeGrade === 1 && activeLesson === 1 && activeMode === 'curriculum') {
         startPrompt = language === 'es'
@@ -2510,6 +2581,12 @@ ${interacciones >= 15 ? '⚠ MODO VALIDACIÓN ACTIVO: A partir de ahora, haz pre
       const themeGuideline = sendThemeName && currentGrade === 1 ? GRADE_1_GUIDELINES[sendThemeName] : undefined;
       console.log(`[Currículo RAG] sendMessage → bookId: ${resolvedSendBookId} | chapter: ${resolvedSendChapter} | guideline: ${themeGuideline ? 'Sí' : 'No'}`);
 
+      // ── Cargar checklist y enriquecer contexto ──
+      if (studyMode === 'curriculum') {
+        await cargarChecklist(currentGrade, lessonProgress, resolvedSendBookId);
+      }
+      const contextoConChecklist = `${cognitiveContext}\n${buildPendingIdeasContext()}`;
+
       const result = await chatWithProfessorStream(
         msg, 
         currentHistory, 
@@ -2538,7 +2615,7 @@ ${interacciones >= 15 ? '⚠ MODO VALIDACIÓN ACTIVO: A partir de ahora, haz pre
         studyMode === 'curriculum' ? resolvedSendChapter : (effectiveChapter || undefined),
         studyMode === 'curriculum' ? resolvedSendBookId : (currentLibraryBook || undefined),
         user?.uid,
-        cognitiveContext,
+        contextoConChecklist,
         themeGuideline,
         modoValidacionIntensiva
       );
@@ -2591,6 +2668,37 @@ ${interacciones >= 15 ? '⚠ MODO VALIDACIÓN ACTIVO: A partir de ahora, haz pre
         });
         registrarInteraccion();
 
+        // ── EVALUACIÓN HEURÍSTICA: Checklist de Ideas (desde interacción 1) ──
+        const ideasClave = ideasClaveLeccionRef.current;
+        if (studyMode === 'curriculum' && ideasClave.length > 0) {
+          const resultadoCheck = validarRespuesta(msg, ideasClave);
+          let nuevasIdeas = 0;
+          ideasClave.forEach((idea, i) => {
+            // Verificar si esta idea específica fue detectada en la respuesta del estudiante
+            const ideaNormalizada = idea.toLowerCase().replace(/[^a-záéíóúüñ0-9\s]/g, '');
+            const palabrasClave = ideaNormalizada.split(/\s+/).filter(w => w.length > 4);
+            const detectada = resultadoCheck.ideasDetectadas.some(d => {
+              const dNorm = d.toLowerCase();
+              return palabrasClave.some(p => dNorm.includes(p));
+            });
+            if (detectada && !ideasCubiertasRef.current.has(i)) {
+              ideasCubiertasRef.current.add(i);
+              nuevasIdeas++;
+            }
+          });
+          
+          if (nuevasIdeas > 0) {
+            console.log(`[CHECKLIST] ✅ +${nuevasIdeas} ideas nuevas detectadas: ${ideasCubiertasRef.current.size}/${ideasClave.length} total`);
+          }
+          
+          // Si todas las ideas están cubiertas, forzar pass_lesson
+          const cobertura = ideasCubiertasRef.current.size / ideasClave.length;
+          if (cobertura >= 0.8 && !streamedStudentUpdate?.pass_lesson) {
+            console.log(`[CHECKLIST] 🎉 ${Math.round(cobertura * 100)}% cobertura — forzando pass_lesson`);
+            streamedStudentUpdate = { ...(streamedStudentUpdate || {}), pass_lesson: true };
+          }
+        }
+
         // Lógica de validación por esencias (solo en modo curriculum)
         if (studyMode === 'curriculum') {
           const debeValidar = debeAplicarValidacion(currentGrade, lessonProgress);
@@ -2642,6 +2750,8 @@ ${interacciones >= 15 ? '⚠ MODO VALIDACIÓN ACTIVO: A partir de ahora, haz pre
           if (nextLesson > maxReachedLesson || currentGrade > maxReachedGrade) {
             setMaxReachedLesson(nextLesson);
           }
+          // Resetear checklist para la nueva lección
+          resetChecklist(currentGrade, nextLesson);
         } else if (currentGrade < 13) {
           // Fin de grado - Diploma
           setShowDiploma(currentGrade);
@@ -2651,6 +2761,8 @@ ${interacciones >= 15 ? '⚠ MODO VALIDACIÓN ACTIVO: A partir de ahora, haz pre
           setMaxReachedGrade(nextGrade);
           setMaxReachedLesson(1);
           generateCertificate(currentGrade);
+          // Resetear checklist para el nuevo grado
+          resetChecklist(nextGrade, 1);
         }
       }
 
@@ -3370,6 +3482,7 @@ ${interacciones >= 15 ? '⚠ MODO VALIDACIÓN ACTIVO: A partir de ahora, haz pre
                             disabled={!isUnlocked}
                             onClick={() => {
                               setLessonProgress(lessonNum);
+                              resetChecklist(currentGrade, lessonNum);
                               fetchGreeting(currentGrade, lessonNum);
                               setShowLessonsMenu(false);
                             }}
@@ -3794,6 +3907,7 @@ ${interacciones >= 15 ? '⚠ MODO VALIDACIÓN ACTIVO: A partir de ahora, haz pre
                           const nuevaLeccion = lessonProgress - 1;
                           setLessonProgress(nuevaLeccion);
                           fetchGreeting(currentGrade, nuevaLeccion);
+                          resetChecklist(currentGrade, nuevaLeccion);
                           if (user?.uid && studyMode === 'curriculum') {
                             await reiniciarContadorLeccion(user.uid, currentGrade, nuevaLeccion);
                             setInteraccionesEnLeccion(0);
@@ -3819,6 +3933,7 @@ ${interacciones >= 15 ? '⚠ MODO VALIDACIÓN ACTIVO: A partir de ahora, haz pre
                           const nuevaLeccion = lessonProgress + 1;
                           setLessonProgress(nuevaLeccion);
                           fetchGreeting(currentGrade, nuevaLeccion);
+                          resetChecklist(currentGrade, nuevaLeccion);
                           if (user?.uid && studyMode === 'curriculum') {
                             await reiniciarContadorLeccion(user.uid, currentGrade, nuevaLeccion);
                             setInteraccionesEnLeccion(0);
@@ -4045,6 +4160,7 @@ ${interacciones >= 15 ? '⚠ MODO VALIDACIÓN ACTIVO: A partir de ahora, haz pre
                                   setStudyMode('curriculum');
                                   setActiveMobileTab('chat');
                                   setChat([]);
+                                  resetChecklist(grade.id, lessonNum);
                                   fetchGreeting(grade.id, lessonNum);
                                   if (user?.uid) {
                                     await reiniciarContadorLeccion(user.uid, grade.id, lessonNum);
@@ -4295,6 +4411,7 @@ ${interacciones >= 15 ? '⚠ MODO VALIDACIÓN ACTIVO: A partir de ahora, haz pre
                       const nuevaLeccion = lessonProgress - 1;
                       setLessonProgress(nuevaLeccion);
                       fetchGreeting(currentGrade, nuevaLeccion);
+                      resetChecklist(currentGrade, nuevaLeccion);
                       // Reiniciar contador de validación al cambiar de lección
                       if (user?.uid && studyMode === 'curriculum') {
                         await reiniciarContadorLeccion(user.uid, currentGrade, nuevaLeccion);
@@ -4337,6 +4454,7 @@ ${interacciones >= 15 ? '⚠ MODO VALIDACIÓN ACTIVO: A partir de ahora, haz pre
                       const nuevaLeccion = lessonProgress + 1;
                       setLessonProgress(nuevaLeccion);
                       fetchGreeting(currentGrade, nuevaLeccion);
+                      resetChecklist(currentGrade, nuevaLeccion);
                       // Reiniciar contador de validación al cambiar de lección
                       if (user?.uid && studyMode === 'curriculum') {
                         await reiniciarContadorLeccion(user.uid, currentGrade, nuevaLeccion);
