@@ -1047,30 +1047,45 @@ function App() {
 
   // Cargar esencia y preparar checklist para la lección actual
   const cargarChecklist = async (grado: number, leccion: number, bookId?: string) => {
-    // Lección 1 es diagnóstico puro — no aplica checklist
+    // Lección 1 Grado 1 es diagnóstico puro — no aplica checklist
     if (grado === 1 && leccion === 1) return;
-    if (grado !== 1 || !bookId) return; // Solo Grado 1 por ahora
-    resetChecklist(grado, leccion);
+    if (!bookId) return;
     if (ideasClaveLeccionRef.current.length > 0) return; // Ya cargado
+    
+    resetChecklist(grado, leccion);
     
     try {
       const esencia = await loadBookEssence(bookId);
-      if (!esencia || Object.keys(esencia).length === 0) return;
+      if (!esencia || Object.keys(esencia).length === 0) {
+        console.log(`[CHECKLIST] Sin esencia para ${bookId} — solo caminos 2 y 3`);
+        return;
+      }
       
-      // El section index = leccion - 1 (lesson 1 → section 0, etc.)
+      // Section index = leccion - 1 (lesson 1 → section 0, ...)
       const sectionIndex = leccion - 1;
       const claves = Object.keys(esencia);
-      const sectionKey = claves.find(k => k.startsWith(`${sectionIndex}:`));
-      if (!sectionKey) { console.warn(`[CHECKLIST] No se encontró sección ${sectionIndex} en esencia`); return; }
+      let sectionKey = claves.find(k => k.startsWith(`${sectionIndex}:`));
+      
+      // Fallback: buscar por índice numérico (por si el formato varía)
+      if (!sectionKey) {
+        sectionKey = claves.find(k => parseInt(k.split(':')[0]) === sectionIndex);
+      }
+      
+      if (!sectionKey) {
+        console.log(`[CHECKLIST] Sección ${sectionIndex} no encontrada en esencia de ${bookId} — solo caminos 2 y 3`);
+        return;
+      }
       
       const seccion = esencia[sectionKey];
       if (seccion?.IdeasPrincipales && Array.isArray(seccion.IdeasPrincipales)) {
         ideasClaveLeccionRef.current = seccion.IdeasPrincipales;
         totalIdeasLeccionRef.current = seccion.IdeasPrincipales.length;
-        console.log(`[CHECKLIST] Cargadas ${totalIdeasLeccionRef.current} ideas para G${grado} L${leccion} (${sectionKey})`);
+        console.log(`[CHECKLIST] ✅ Cargadas ${totalIdeasLeccionRef.current} ideas — G${grado} L${leccion} (${sectionKey}) → 3 caminos activos`);
+      } else {
+        console.log(`[CHECKLIST] Sección ${sectionKey} sin IdeasPrincipales — solo caminos 2 y 3`);
       }
     } catch(e) {
-      console.warn('[CHECKLIST] Error cargando esencia:', e);
+      console.warn('[CHECKLIST] Error cargando esencia:', e, '— solo caminos 2 y 3');
     }
   };
 
