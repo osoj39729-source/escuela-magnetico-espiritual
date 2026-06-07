@@ -1047,6 +1047,8 @@ function App() {
 
   // Cargar esencia y preparar checklist para la lección actual
   const cargarChecklist = async (grado: number, leccion: number, bookId?: string) => {
+    // Lección 1 es diagnóstico puro — no aplica checklist
+    if (grado === 1 && leccion === 1) return;
     if (grado !== 1 || !bookId) return; // Solo Grado 1 por ahora
     resetChecklist(grado, leccion);
     if (ideasClaveLeccionRef.current.length > 0) return; // Ya cargado
