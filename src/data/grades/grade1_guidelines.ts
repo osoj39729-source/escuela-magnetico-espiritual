@@ -1,115 +1,71 @@
 export const GRADE_1_GUIDELINES: Record<string, string> = {
-  "12: [Tema Complementario] La Supuesta Primacía de Pedro a la Luz de la Historia":
-    "Instruye al estudiante sobre cómo el Obispo Strossmayer refuta históricamente que Pedro haya ejercido alguna vez primacía o soberanía monárquica sobre los otros apóstoles. Enseña que la igualdad original de los apóstoles demuestra que el papado romano es una autoproclamación de dominio puramente político.",
 
-  "13: [Tema Complementario] El Análisis Histórico de los Papas Herejes":
-    "Muestra con hechos históricos mencionados por Strossmayer cómo múltiples papas cayeron en la herejía y el error (como Honorio y Liberio). El fin de esta lección es que el alumno comprenda que los pontífices son hombres comunes propicios al error y al desvío moral.",
+  // ═══════════════════════════════════════════════════════════════
+  // BLOQUE A: Fundamento doctrinal nuclear (L1-L12)
+  // Intacto — contenido doctrinal directo del libro Strossmayer
+  // ═══════════════════════════════════════════════════════════════
 
-  "14: [Tema Complementario] El Concilio Vaticano I y la Imposición del Silencio":
-    "Explica al estudiante las intrigas políticas, presiones y censura con las que Pío IX impuso el silencio a los obispos de la minoría opositora en 1870. Demuestra que las verdades eclesiásticas son acuerdos políticos forzados por el poder romano.",
+  "0: INTRODUCCIÓN": "", // Diagnóstico puro — sin guideline (manejado por fetchGreeting)
 
-  "15: [Tema Complementario] La Contradicción entre los Obispos de Oriente y Occidente":
-    "Analiza el cisma histórico entre la Iglesia de Roma y las Iglesias orientales. Guía al estudiante a comprender que el poder universal reclamado por Roma fue rechazado desde la antigüedad, evidenciando que su autoridad es un invento geopolítico occidental.",
+  "1: PROCLAMA":
+    "La Proclama es el axioma fundacional de toda la obra doctrinal de Trincado y de la EMECU. Concentra en una sola declaración la cosmología racional: el universo es un organismo solidario regido por una única ley, una única sustancia y un único principio-fin. El Magnetismo Espiritual es la fuerza real que vincula todos los espíritus y toda la materia. El emblema 'Siempre más allá' define la ética del progreso ilimitado del espíritu. Ideas clave: universo solidarizado, ley única, Magnetismo Espiritual, progreso sin límites, comunización del mundo.",
 
-  "16: [Tema Complementario] Historia de las Falsas Decretales y la Usurpación del Poder":
-    "Detalla el uso histórico que la Iglesia romana hizo de documentos falsificados (como las decretales pseudoisidorianas y la Donación de Constantino) para justificar su dominio territorial y soberanía temporal. Fomenta el análisis crítico del estudiante.",
+  "2: DISCURSO DEL OBISPO STROSSMAYER":
+    "Sección introductoria del Discurso del Obispo Strossmayer. Strossmayer es un obispo católico que, por honradez intelectual, expuso ante el Vaticano las contradicciones históricas del papado. Trincado lo usa como testigo involuntario de la verdad: un hombre del sistema que desmontó el sistema desde adentro. El argumento central: Pedro nunca estuvo en Roma como obispo, nunca ejerció primacía, y las bases del papado son legendarias, no documentales.",
 
-  "17: [Tema Complementario] Los Concilios Ecuménicos Convocados por Emperadores":
-    "Enseña el hecho histórico de que los primeros grandes concilios de la historia de la iglesia no fueron convocados ni presididos por papas, sino por emperadores romanos. Rompe la mentira de que el Obispo de Roma ejercía un mando universal incuestionable en la antigüedad.",
+  "3: PROCLAMA":
+    "Portada y presentación formal del libro. Establece el contexto histórico: el Discurso de Strossmayer ante Pío IX (1870), el Juramento de los Caballeros de Colón como evidencia del poder político del Vaticano, y la Proclama como marco doctrinal. El libro es un juicio racional al papado, no solo una crítica histórica. La Proclama es la clave de lectura de toda la obra.",
 
-  "18: [Tema Complementario] El Cisma de Occidente y la Lucha entre Múltiples Papas":
-    "Expón el período histórico en el que coexistieron dos y tres papas simultáneamente, excomulgándose y declarándose anticristos entre sí por ambición de poder. Muestra el absurdo racional de considerar infalible a una institución dividida por intereses políticos.",
+  "4: DISCURSO DEL OBISPO STROSSMAYER":
+    "Inicio del texto histórico del obispo ante el Concilio. Strossmayer demuestra que Pedro nunca actuó como Papa en ningún texto del Nuevo Testamento. El Concilio de Jerusalén, las epístolas, Pentecostés: en ninguno Pedro actúa con primacía. Scaligero clasifica el episcopado de Pedro en Roma como 'leyenda ridícula'. Método: usar las propias fuentes del catolicismo para refutarlo.",
 
-  "19: [Tema Complementario] La Evolución de la Tiara y la Corona: Del Pescador al Monarca":
-    "Contrasta la sencillez e indigencia histórica de los primeros cristianos con la opulencia, coronación imperial y lujos de los papas medievales. Ilustra cómo la ambición convirtió una corriente espiritual humilde en una monarquía absoluta.",
+  "5: ESCUELA MAGNÉTICO - ESPIRITUAL DE":
+    "Presentación del nombre completo de la institución y cuatro citas proféticas que demuestran un principio clave: la verdad no pertenece a ninguna religión. La 'Llamada Última a la Conciencia' no es apocalipsis: es un llamado racional. La EMECU recoge siglos de libre pensamiento. El nombre completo de la Escuela es un programa filosófico-político completo.",
 
-  "20: [Tema Complementario] Desmitificación del Dogma de la Infalibilidad Papal":
-    "Desmenuza filosóficamente el absurdo de pretender que un ser humano de carne y hueso sea infalible. Demuestra cómo este dogma, proclamado en 1870 para sostener el decadente poder político papal, ofende la lógica, la historia y la razón humana.",
+  "6: LLAMADA ULTIMA A LA CONCIENCIA EN LA ACCION DE LA JUSTICIA SUPREMA":
+    "Convocatoria racional a todos los espíritus libres para que ejerzan su soberanía intelectual. La 'Justicia Suprema' no es castigo divino: es la operación automática de la ley del universo cuando el desequilibrio alcanza su máximo. Las guerras y revoluciones son efectos de esa ley. La Escuela es la vía racional para salir del ciclo de error antes del colapso.",
 
-  "21: [Tema Complementario] El Celibato Sacerdotal y sus Consecuencias Morales":
-    "Explica el origen netamente económico del celibato (impedido para evitar que los bienes territoriales de la iglesia pasaran a herederos familiares) y analiza sus lamentables consecuencias en el desvío moral y la salud psicológica natural del clero.",
+  "7: A LOS HOMBRES LIBRES Y LAS MADRES ULTRAJADAS":
+    "El texto más combativo de Trincado. Manifiesto a los hombres que piensan con cabeza propia y a las mujeres sometidas por el dogma. Diagnóstico crudo de la religión como causa de todas las guerras. Si Pío IX ordena 'mantener la iglesia a costa de la sangre de toda la humanidad', la respuesta lógica es 'salvar a la humanidad a costa de la muerte de las religiones'. La religión es relegación de derechos.",
 
-  "22: [Tema Complementario] El Tráfico de Indulgencias e Intercesión Pagada":
-    "Analiza la comercialización del perdón de los pecados y el cobro por liberar almas del purgatorio. Libera al estudiante de la superstición de que las deudas espirituales pueden expiarse mediante transacciones monetarias, indulgencias o rituales pagados.",
+  "8: JURAMENTO DE LOS CABALLEROS DE COLON":
+    "Prueba documental del poder político secreto del Vaticano. El juramento exige obediencia absoluta al Papa sobre cualquier poder civil, legal o familiar. El Vaticano no necesita ejércitos propios cuando infiltra los ajenos. Complemento político al argumento histórico-teológico de Strossmayer.",
 
-  "23: [Tema Complementario] El Dogma de la Inmaculada Concepción frente a la Ley Natural":
-    "Muestra cómo este dogma promulgado a mediados del siglo XIX contradice las leyes biológicas y físicas del nacimiento y la gestación natural. Enseña al alumno a rechazar postulados absurdos impuestos para exaltar una fe ciega e irracional.",
+  "9: PROLOGO":
+    "El texto doctrinal más completo del Grado 1. Cosmología completa del espiritismo racional: trinidad espíritu-alma-cuerpo, evolución permanente, reencarnación como aprendizaje, igualdad absoluta de los espíritus, y causa única de los males humanos: la religión como sistema que impidió conocer la verdadera naturaleza del ser. El espíritu es eterno; el alma es el archivo; el cuerpo es el instrumento temporal. No hay inocentes ni culpables: solo espíritus en distintos grados de progreso.",
 
-  "24: [Tema Complementario] La Falsedad del Sacramento de la Confesión Auricular":
-    "Desmitifica el supuesto poder del sacerdote para absolver faltas morales. Explica al alumno cómo la confesión privada con el sacerdote se convirtió en un mecanismo de control de conciencias, espionaje político y anulación de la responsabilidad personal directa.",
+  "10: DISCURSO DEL OBISPO STROSSMAYER":
+    "Sección central: Strossmayer cita a Padres de la Iglesia, concilios y los más respetados historiadores católicos para demostrar que el papado no existió en los primeros siglos. La infalibilidad fue proclamada en 1870 —momento de máxima debilidad política del Vaticano— y rechazada por todos los reyes de la tierra. La asamblea respondió con gritos de censura: la mejor prueba de que el argumento era irrebatible.",
 
-  "25: [Tema Complementario] El Culto a las Imágenes y la Idolatría Moderna":
-    "Examina cómo la veneración de reliquias, huesos de santos y estatuas de piedra o yeso es una prolongación del fetichismo antiguo. Enseña que los ídolos adormecen el juicio racional de las masas para mantener el negocio de los templos.",
+  "11: EPILOGO":
+    "Cierre judicial de Trincado: la iglesia católica es declarada culpable de todos los males que afligen al mundo. La sentencia es inapelable porque la prueba la dieron los propios testigos del sistema. Pero la solución no es odio: es la proclamación de la Comuna Universal bajo el Código de Amor Universal. La culpa es de la institución, no de los engañados. Conecta directamente con el Grado 2: Buscando a Eloí.",
 
-  "26: [Tema Complementario] La Mentira de la Excomunión y la Condenación Eterna":
-    "Extirpa de raíz en la conciencia del estudiante el terror psicológico al infierno y al castigo divino perpetuo. Explica que la excomunión es un arma inútil usada para infundir sumisión, y que ningún hombre tiene poder para condenar a otro.",
+  // ═══════════════════════════════════════════════════════════════
+  // BLOQUE B: Consolidación crítica (L13-L19)
+  // 36 lecciones fusionadas en 7 ejes temáticos nucleares
+  // ═══════════════════════════════════════════════════════════════
 
-  "27: [Tema Complementario] Anatomía del Miedo como Herramienta de Dominación":
-    "Desmenuza los mecanismos psicológicos con los que el dogma inyecta culpa, pecado original y temor al dolor eterno para anular la voluntad intelectual del estudiante. Enseña que el miedo es el peor enemigo del libre albedrío.",
+  "12: [Consolidación] La Falsificación Histórica del Papado: Pedro, Herejías y Decretales":
+    "Lección de consolidación que integra y demuestra con rigor histórico que el papado romano carece de fundamento real. Cubre tres ejes: (1) Pedro nunca ejerció primacía —los propios textos del Nuevo Testamento y los Padres de la Iglesia lo confirman—; (2) múltiples papas cayeron en herejía y error (Honorio, Liberio), evidenciando que los pontífices son hombres falibles; (3) la Iglesia usó documentos falsificados —las decretales pseudoisidorianas y la Donación de Constantino— para justificar su dominio territorial. Enseña al estudiante el método del libre examen: verificar toda afirmación de autoridad con fuentes primarias. Ideas clave: ausencia histórica de Pedro en Roma, herejías papales documentadas, falsificación como método de construcción del poder.",
 
-  "28: [Tema Complementario] El Monopolio del Cielo y la Exclusividad de la Verdad":
-    "Refuta racionalmente la máxima sectaria romano-católica que afirma que fuera de su iglesia no hay salvación. Enseña al alumno que el progreso ético e intelectual es patrimonio universal de todo espíritu libre, sin importar instituciones.",
+  "13: [Consolidación] El Vaticano como Construcción Política: Concilios, Cismas y Coronas":
+    "Demuestra que la Iglesia Católica no es una institución espiritual sino un aparato de poder político construido a lo largo de siglos. Tres ejes: (1) los primeros concilios fueron convocados por emperadores romanos, no por papas; (2) el cisma entre Oriente y Occidente evidencia que la autoridad universal de Roma fue siempre rechazada; (3) la evolución del papado de pescador humilde a monarca coronado —con tiara, ejército y tesoro— es la historia de una ambición política disfrazada de fe. El dogma de la infalibilidad (1870) fue proclamado precisamente cuando el poder político del Vaticano colapsaba. Ideas clave: concilios como asambleas políticas, cisma Oriente-Occidente como prueba de rechazo, evolución de la corona papal.",
 
-  "29: [Tema Complementario] Psicología del Fanatismo y de la Fe Ciega":
-    "Analiza el fenómeno psicológico por el cual una persona prefiere renunciar a su propio intelecto y obedecer ciegamente la directiva de un líder religioso o dogma por comodidad, temor o pereza intelectual.",
+  "14: [Consolidación] Mecanismos de Control Eclesiástico: Celibato, Indulgencias y Confesión":
+    "Analiza tres herramientas con las que la Iglesia controló cuerpos, conciencias y economías durante siglos. (1) El celibato sacerdotal: origen económico —impedir que bienes pasaran a herederos— con graves consecuencias morales y psicológicas. (2) Las indulgencias: comercialización del perdón que prometía liberar almas del purgatorio mediante pago. (3) La confesión auricular: mecanismo de control de conciencias que anula la responsabilidad personal directa y convierte al sacerdote en intermediario obligatorio. Los tres comparten un patrón: disfrazar el control de sagrado. Ideas clave: celibato económico, tráfico de indulgencias, confesión como herramienta de dominación psicológica.",
 
-  "30: [Tema Complementario] La Inquisición y la Persecución de la Razón":
-    "Examina las hogueras, la tortura y los juicios sumarios con los que Roma sofocó la ciencia, el libre examen y la verdad. Ilustra que la intolerancia y la violencia son las herramientas predilectas de la ignorancia cuando se ve amenazada.",
+  "15: [Consolidación] Dogmas contra la Razón Natural: Infalibilidad, Inmaculada y Purgatorio":
+    "Examina dogmas católicos que contradicen frontalmente las leyes naturales, la biología y la lógica. (1) La infalibilidad papal: pretender que un ser humano es infalible ofende la razón. (2) La Inmaculada Concepción: contradice las leyes biológicas del nacimiento. (3) El purgatorio: invención medieval diseñada para recolectar riquezas mediante misas y limosnas. (4) El culto a imágenes: prolongación del fetichismo antiguo que adormece el juicio racional. (5) La excomunión: arma psicológica para infundir sumisión —ningún hombre tiene poder para condenar a otro. Ideas clave: razón contra dogma, leyes naturales contra mitos, crítica de la idolatría y el negocio espiritual.",
 
-  "31: [Tema Complementario] El Control de la Literatura y el Index Librorum Prohibitorum":
-    "Instruye al estudiante sobre la quema y censura sistemática de libros científicos, filosóficos e históricos que Roma prohibía bajo pena de excomunión, demostrando su afán por mantener a los pueblos sumidos en el oscurantismo intelectual.",
+  "16: [Consolidación] Psicología del Dominio Religioso: Miedo, Fanatismo y Exclusividad":
+    "Desmenuza los mecanismos psicológicos con los que el dogma anula la voluntad intelectual. (1) Anatomía del miedo: cómo la Iglesia inyecta culpa, pecado original y terror al infierno para paralizar el libre albedrío. (2) Fanatismo y fe ciega: el fenómeno por el cual una persona prefiere renunciar a su intelecto por comodidad o pereza mental. (3) El monopolio de la verdad: la máxima 'fuera de la Iglesia no hay salvación' refutada —el progreso ético es patrimonio de todo espíritu libre. (4) La infantilización del creyente: lágrimas de estatuas, apariciones y profecías mantenidas para evitar que el estudiante plantee dudas racionales. Ideas clave: miedo como herramienta de control, psicología del fanatismo, soberanía intelectual como liberación.",
 
-  "32: [Tema Complementario] El Purgatorio: La Creación del Negocio del Más Allá":
-    "Desnuda el invento eclesiástico medieval del purgatorio como un burdo negocio diseñado para recolectar riquezas mediante misas de difuntos, limosnas y cofradías. Libera la mente del estudiante de la explotación económica del dolor familiar.",
+  "17: [Consolidación] Violencia Institucional: Inquisición, Cruzadas y Censura":
+    "Documenta con hechos históricos la violencia sistemática de la Iglesia contra el pensamiento libre. (1) La Inquisición: hogueras, tortura y juicios sumarios para sofocar la ciencia y el libre examen. (2) Las Cruzadas y bulas de conquista: papas bendiciendo guerras, saqueos y exterminio. (3) El Index Librorum Prohibitorum: quema y censura de libros científicos y filosóficos para mantener a los pueblos en el oscurantismo. (4) La fabricación política de dogmas en concilios ecuménicos: verdades de fe debatidas y votadas como acuerdos políticos. Ideas clave: intolerancia como política institucional, censura del conocimiento, historia documentada de la violencia eclesiástica.",
 
-  "33: [Tema Complementario] La Infantilización del Creyente mediante el Misticismo":
-    "Analiza cómo las supuestas lágrimas de estatuas, apariciones espectaculares y profecías místicas son alentadas por el clero para infantilizar el discernimiento y evitar que el estudiante plantee dudas racionales o lógicas.",
+  "18: [Consolidación] Alternativas Racionales: Ciencia, Moral Natural y Soberanía Intelectual":
+    "Presenta el camino positivo que Trincado ofrece tras la demolición del error. (1) La ciencia y la filosofía frente a la teología dogmática: evolución basada en leyes naturales y demostración empírica. (2) La ley moral natural: la rectitud, la honradez y la fraternidad no dependen de mandamientos —son inherentes a la condición humana racional. (3) El Libre Examen: el deber moral de analizar autónomamente toda afirmación sin arrodillar el intelecto. (4) La razón como juez soberano: ningún concepto absurdo debe aceptarse bajo obediencia ciega. (5) La honestidad intelectual: una vez demostrada la falsedad del dogma, el deber es dejar de sostener la mentira. Ideas clave: ciencia contra dogma, moral natural, soberanía intelectual, razón como autoridad suprema.",
 
-  "34: [Tema Complementario] La Desmitificación de los Ídolos Religiosos y la Recuperación de su Humanidad":
-    "Instruye al estudiante sobre cómo las religiones deifican a figuras humanas históricas para usarlas como marcas de dominación psicológica y política. Enseña a despojar a cualquier filósofo o reformador del pasado de todo manto divino o milagroso, devolviéndole su estatus estrictamente humano y sujeto a las leyes naturales.",
-
-  "35: [Tema Complementario] La Ley Moral Natural frente a los Códigos de Control Eclesiástico":
-    "Analiza cómo la verdadera ética es inherente a la razón humana y al progreso evolutivo del espíritu, desvinculándola de cualquier revelación, libro sagrado o código sacerdotal diseñado para subordinar la conciencia individual.",
-
-  "36: [Tema Complementario] La Estructura Horizontal del Pensamiento Libre frente al Centralismo Monárquico":
-    "Refuta toda estructura jerárquica espiritual o eclesiástica. Enseña que en el libre examen y en el estudio de las leyes naturales, la verdad se construye de forma colectiva y horizontal, demostrando que las asambleas autócratas romanas son usurpaciones del derecho natural de razonar.",
-
-  "37: [Tema Complementario] El Negocio de la Teocracia: El Tráfico con el Destino del Espíritu":
-    "Desenmascara el fraude teocrático de prometer 'reinos celestiales' o castigos de ultratumba para someter la conducta material de los pueblos en la Tierra y consolidar un imperio financiero y político secular bajo disfraces espirituales.",
-
-  "38: [Tema Complementario] Racionalismo y Austeridad frente a la Teatralidad y Liturgia del Ritual":
-    "Compara la sobriedad del pensamiento lógico y el estudio científico con el fasto, los ornamentos de oro, los sahumerios y la teatralidad del rito católico. Enseña al alumno que el ritualismo busca aturdir los sentidos físicos para anular el juicio crítico del cerebro.",
-
-  "39: [Tema Complementario] La Fabricación Política de Dogmas en los Concilios Ecuménicos":
-    "Detalla cómo los llamados dogmas de fe fueron fabricados, debatidos, modificados y votados en asambleas políticas humanas llamadas Concilios, impulsados por emperadores y prelados para unificar imperios bajo una tiranía ideológica.",
-
-  "40: [Tema Complementario] La Barbarie Religiosa: Cruzadas, Bulas de Conquista e Inquisición":
-    "Estudia con rigor histórico cómo los papas y el clero emitieron bulas que bendecían guerras de conquista, saqueos territoriales, quema de pensadores y el exterminio de poblaciones enteras, demostrando la absoluta incompatibilidad entre la fraternidad natural y el dogma religioso.",
-
-  "41: [Tema Complementario] El Libre Examen frente al Dogma de la Sumisión":
-    "Fomenta en el estudiante la soberanía intelectual del Libre Examen: el deber moral de analizar de forma autónoma toda afirmación, lectura y concepto, sin arrodillar su intelecto ante ninguna autoridad eclesiástica.",
-
-  "42: [Tema Complementario] La Razón como Juez Soberano del Espíritu":
-    "Enseña que la razón y la lógica son los sentidos naturales que posee la conciencia humana para juzgar la verdad. Explica que ningún concepto absurdo debe ser aceptado bajo el pretexto falaz de la obediencia ciega.",
-
-  "43: [Tema Complementario] La Ciencia y la Filosofía frente a la Teología Dogmática":
-    "Contrasta la evolución científica basada en leyes naturales, demostración empírica y observación física, frente al estancamiento de los dogmas inmutables que persiguieron y quemaron a científicos e investigadores en la historia.",
-
-  "44: [Tema Complementario] El Deber Moral del Espíritu de salir de la Ignorancia":
-    "Orienta al alumno a comprender que la ignorancia no es una virtud que agrade a la divinidad, sino un estado de adormecimiento del que todo espíritu debe salir mediante el estudio honesto, el esfuerzo lógico y la valentía mental.",
-
-  "45: [Tema Complementario] La Liberación del Miedo y la Adquisición de la Soberanía Intelectual":
-    "Enseña que la verdadera adultez espiritual comienza al extinguir el temor al demonio, al infierno y al castigo divino, asumiendo con valentía el protagonismo y la total responsabilidad de los propios actos y del propio destino.",
-
-  "46: [Tema Complementario] La Honestidad Intelectual de los Hombres Libres":
-    "Aborda el deber ético de la coherencia: una vez que el entendimiento lógico del estudiante le ha demostrado la falsedad de la doctrina dogmática de Roma, su responsabilidad es dejar de sostener la mentira y actuar con valentía intelectual en su vida diaria.",
-
-  "47: [Tema Complementario] La Diferencia entre Moral Natural y Reglas de la Iglesia":
-    "Demuestra que la rectitud moral, la honradez y la fraternidad activa son virtudes inherentes a la condición humana natural y racional, y no dependen de mandamientos eclesiásticos, limosnas o asistencias rituales a templos.",
-
-  "48: [Tema Complementario] La Destrucción de los Ídolos de Piedra y de Carne":
-    "Lleva al estudiante a derribar el respeto místico hacia el clero romano. Enseña a ver a papas, obispos y sacerdotes como simples hombres comunes que vistieron hábitos imperiales para autoproclamarse intermediarios exclusivos del espíritu.",
-
-  "49: [Tema Complementario] El Primer Peldaño: El Terreno Limpio para la Verdad":
-    "Lección final del Grado 1. Consiste en integrar todo lo aprendido: al demoler la superstición vaticana, la culpa eclesiástica y el miedo dogmático, el entendimiento del estudiante ha quedado limpio y su razón liberada para iniciar el Grado 2 de estudios científicos."
+  "19: [Integración] El Primer Peldaño: Terreno Limpio para el Grado 2":
+    "Lección final del Grado 1. Integra todo lo aprendido: al demoler la superstición vaticana, la culpa eclesiástica y el miedo dogmático, el entendimiento del estudiante ha quedado limpio y su razón liberada. Se ha derribado todo ídolo de piedra y de carne. El camino está despejado para iniciar el Grado 2: Buscando a Dios, donde comienza la construcción positiva sobre el terreno limpio. La ignorancia no es virtud: es un estado del que todo espíritu debe salir mediante el estudio honesto y la valentía mental. Ideas clave: integración de lo aprendido, liberación del miedo, puente hacia el Grado 2, adultez espiritual como soberanía intelectual."
 };
