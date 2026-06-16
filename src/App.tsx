@@ -1183,11 +1183,16 @@ function App() {
       const saved = localStorage.getItem('emecu_student');
       if (saved) {
         const profile = JSON.parse(saved);
-        setStudentProfile(profile);
+        // Normalizar: si el estudiante tiene más lecciones de las que existen (por reducción de 50→20)
+        const gradeData = CURRICULUM.find(g => g.id === (profile.currentGrade || 1));
+        const maxLesson = gradeData?.lessonsCount || 50;
+        const lessonClamped = Math.min(profile.currentLesson || 1, maxLesson);
+        const maxReachedClamped = Math.min(profile.maxReachedLesson || profile.currentLesson || 1, maxLesson);
+        setStudentProfile({...profile, currentLesson: lessonClamped, maxReachedLesson: maxReachedClamped});
         setCurrentGrade(profile.currentGrade || 1);
-        setLessonProgress(profile.currentLesson || 1);
+        setLessonProgress(lessonClamped);
         setMaxReachedGrade(profile.maxReachedGrade || profile.currentGrade || 1);
-        setMaxReachedLesson(profile.maxReachedLesson || profile.currentLesson || 1);
+        setMaxReachedLesson(maxReachedClamped);
       }
     } catch(e) { console.log('No saved profile'); }
   }, []);
@@ -1461,10 +1466,14 @@ function App() {
           if (profile) {
             setStudentProfile(profile);
             setIsAdminUser(profile.role === 'admin' || currentUser.email === "nelsonosoriogarcia@gmail.com");
+            const gData = CURRICULUM.find(g => g.id === (profile.currentGrade || 1));
+            const maxL = gData?.lessonsCount || 50;
+            const lessonClamped = Math.min(profile.currentLesson || 1, maxL);
+            const maxRClamped = Math.min(profile.maxReachedLesson || profile.currentLesson || 1, maxL);
             setCurrentGrade(profile.currentGrade || 1);
-            setLessonProgress(profile.currentLesson || 1);
+            setLessonProgress(lessonClamped);
             setMaxReachedGrade(profile.maxReachedGrade || profile.currentGrade || 1);
-            setMaxReachedLesson(profile.maxReachedLesson || profile.currentLesson || 1);
+            setMaxReachedLesson(maxRClamped);
             setIsSynced(true);
             
             setShowIntro(true);
@@ -2090,10 +2099,12 @@ ${interacciones >= 15 ? '⚠ MODO VALIDACIÓN ACTIVO: A partir de ahora, haz pre
             // Activamos el overlay ANTES de cambiar cualquier estado visual
             setIsTransitioning(true);
             
+            const gDataR = CURRICULUM.find(g => g.id === (profile.currentGrade || 1));
+            const maxLR = gDataR?.lessonsCount || 50;
             setStudentProfile(profile);
             setUser(cred.user);
             setCurrentGrade(profile.currentGrade || 1);
-            setLessonProgress(profile.currentLesson || 1);
+            setLessonProgress(Math.min(profile.currentLesson || 1, maxLR));
             
             setTimeout(() => {
               enterApp(profile);
@@ -2141,10 +2152,13 @@ ${interacciones >= 15 ? '⚠ MODO VALIDACIÓN ACTIVO: A partir de ahora, haz pre
         // Activamos el overlay ANTES de cambiar estados de la UI
         setIsTransitioning(true);
 
+        const gData2 = CURRICULUM.find(g => g.id === (profile.currentGrade || 1));
+        const maxL2 = gData2?.lessonsCount || 50;
+        const lessonClamped2 = Math.min(profile.currentLesson || 1, maxL2);
         setStudentProfile(profile);
         setUser(user);
         setCurrentGrade(profile.currentGrade || 1);
-        setLessonProgress(profile.currentLesson || 1);
+        setLessonProgress(lessonClamped2);
         
         setTimeout(() => {
           unlockAudio();
@@ -2267,8 +2281,10 @@ ${interacciones >= 15 ? '⚠ MODO VALIDACIÓN ACTIVO: A partir de ahora, haz pre
 
     setStudentProfile(profile);
     setIsAdminUser(profile.role === 'admin' || user.email === "nelsonosoriogarcia@gmail.com");
+    const gDataE = CURRICULUM.find(g => g.id === (profile.currentGrade || 1));
+    const maxLE = gDataE?.lessonsCount || 50;
     setCurrentGrade(profile.currentGrade || 1);
-    setLessonProgress(profile.currentLesson || 1);
+    setLessonProgress(Math.min(profile.currentLesson || 1, maxLE));
     setMaxReachedGrade(profile.maxReachedGrade || profile.currentGrade || 1);
     setMaxReachedLesson(profile.maxReachedLesson || profile.currentLesson || 1);
     
