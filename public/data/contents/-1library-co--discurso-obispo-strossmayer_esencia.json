@@ -1,4 +1,4 @@
-﻿{
+{
   "0: INTRODUCCIÓN": {
     "PilotoDeCoherencia": "Este no es un capítulo del libro. Es el punto de entrada del estudiante a la Escuela Magnético-Espiritual de la Comuna Universal. El Maestro no tiene dogmas que defender ni credo que imponer: representa a Joaquín Trincado, filósofo, racionalista y libre pensador. La Escuela no es una religión, no es un culto y no tiene intermediarios entre el espíritu y el Creador (Eloí). El Maestro presenta la Escuela desde su naturaleza filosófica, científica y racional. Cero terminología religiosa, mística o dogmática. Ninguna referencia a fe, gracia, salvación, pecado, templo ni sacerdocio.",
     "CitaInelutable": "El Universo, solidarizado. El mundo todo, comunizado. La ley es una; la sustancia una. Uno es el principio; uno es el fin. Todo es Magnetismo Espiritual. Emblema: Siempre más allá. — Joaquín Trincado, Proclama de la EMECU.",
@@ -282,6 +282,199 @@
       "Ley_de_Amor",
       "Espiritu_de_Verdad_y_Juez",
       "Juicio_de_Espiritus_y_Hombres",
+      "Eloi"
+    ]
+  },
+  "12: [Consolidación] La Falsificación Histórica del Papado: Pedro, Herejías y Decretales": {
+    "PilotoDeCoherencia": "Lección de consolidación histórica. El estudiante ya conoce el discurso de Strossmayer y las 12 secciones del libro. Ahora integra y profundiza: la ausencia de Pedro en Roma como hecho documentado, la herejía de múltiples pontífices como prueba de falibilidad humana, y la falsificación sistemática de documentos —decretales pseudoisidorianas, Donación de Constantino— como método de construcción del poder papal. El objetivo no es repetir lo ya enseñado sino consolidar el juicio crítico: si las fuentes del propio catolicismo desmienten al papado, ninguna autoridad externa necesita refutarlo.",
+    "CitaInelutable": "Que San Pedro haya estado en Roma reposa solo sobre la tradición; si hubiese sido obispo de Roma, ¿cómo podéis probar con su episcopado su supremacía? Scaligero no vacila en decir que el episcopado de San Pedro y su residencia en Roma deben clasificarse entre las leyendas ridículas. — Strossmayer, Concilio Vaticano I.",
+    "EjemploPedagogico": "Como un edificio construido sobre cimientos de papel que se derrumba al examinar sus planos originales, el papado se sostuvo sobre documentos que la propia crítica histórica católica demostró falsos. La falsificación no fue un accidente: fue el método. Sin esas decretales, el edificio entero carece de base.",
+    "IdeasPrincipales": [
+      "Pedro nunca ejerció primacía sobre los demás apóstoles",
+      "Múltiples papas fueron herejes documentados, probando su falibilidad",
+      "La Iglesia usó documentos falsificados para construir su autoridad",
+      "El método de la verdad es el libre examen de fuentes primarias"
+    ],
+    "PuntosImportantes": [
+      "Strossmayer cita fuentes internas católicas — el argumento es irrebatible desde dentro",
+      "Honorio fue condenado como hereje por el Sexto Concilio: un Papa hereje anula la infalibilidad",
+      "Las decretales pseudoisidorianas fueron usadas por 700 años antes de ser reconocidas como fraude",
+      "El libre examen no es rebeldía: es el deber de todo espíritu consciente"
+    ],
+    "NodosSinapticos": [
+      "Infalibilidad_Papal",
+      "Libre_Examen",
+      "Falsificacion_Historica",
+      "Juicio_de_Espiritus_y_Hombres",
+      "Sentencia_a_las_Religiones"
+    ]
+  },
+  "13: [Consolidación] El Vaticano como Construcción Política: Concilios, Cismas y Coronas": {
+    "PilotoDeCoherencia": "Demostración de que la Iglesia Católica no desciende de ninguna revelación divina sino de asambleas políticas humanas. Los primeros concilios fueron convocados por emperadores romanos —no por papas— para unificar imperios bajo una ideología. El cisma Oriente-Occidente prueba que la autoridad universal de Roma fue rechazada desde la antigüedad. La evolución del papado —del pescador humilde al monarca coronado con tiara, ejército y tesoro— es la historia de una ambición política disfrazada de institución espiritual. La infalibilidad de 1870 fue proclamada precisamente cuando el poder temporal del Vaticano colapsaba: un acto de desesperación política, no de revelación.",
+    "CitaInelutable": "La verdad no necesita concilios que la voten, ni emperadores que la convoquen, ni ejércitos que la impongan. La verdad es una y se sostiene sola. — Trincado, Comentario al Discurso.",
+    "EjemploPedagogico": "Como una corporación que pierde su monopolio comercial y, en el último minuto, se autoproclama única autorizada por el cielo para retener a sus clientes, el Vaticano en 1870, al perder los Estados Pontificios, declaró al Papa infalible. No fue fe: fue estrategia de supervivencia institucional.",
+    "IdeasPrincipales": [
+      "Los concilios fueron asambleas políticas, no revelaciones",
+      "El rechazo de Oriente demuestra que Roma nunca tuvo autoridad universal",
+      "La corona papal es evolución de ambición política, no de misión espiritual",
+      "La infalibilidad de 1870 fue proclamación de debilidad, no de fortaleza"
+    ],
+    "PuntosImportantes": [
+      "Nicea, Constantinopla, Éfeso: todos convocados por emperadores, no por obispos de Roma",
+      "El Gran Cisma de 1054 no fue herejía de Oriente: fue rechazo a la usurpación romana",
+      "La Donación de Constantino —documento que cedió Roma al Papa— era una falsificación del siglo VIII",
+      "Pío IX perdió los Estados Pontificios en 1870; ese mismo año se declaró infalible"
+    ],
+    "NodosSinapticos": [
+      "Teocracia_Papal",
+      "Oscurantismo_Papal",
+      "Fobia_Papal",
+      "Sentencia_a_las_Religiones"
+    ]
+  },
+  "14: [Consolidación] Mecanismos de Control Eclesiástico: Celibato, Indulgencias y Confesión": {
+    "PilotoDeCoherencia": "Análisis de tres herramientas institucionales de control sobre cuerpos, economías y conciencias. El celibato sacerdotal tuvo origen económico: la Iglesia necesitaba impedir que sus bienes territoriales pasaran a herederos familiares. Las indulgencias convirtieron el perdón en mercancía. La confesión auricular transformó al sacerdote en intermediario obligatorio entre el espíritu y su propia conciencia, anulando la responsabilidad personal. Los tres mecanismos comparten un patrón: disfrazar el control material de mandato divino.",
+    "CitaInelutable": "La religión, según definición en filosofía austera de los hechos, es relegación de derechos; confirmado en que, para ser fiel hijo de la iglesia ha de creer con fe ciega: es decir, ha de ser un sin conciencia, un burro atado al carro, sin ningún derecho ni discernimiento. — Trincado, A los Hombres Libres.",
+    "EjemploPedagogico": "Como una empresa que prohíbe a sus empleados tener familia para que el salario no salga de la compañía, el celibato no fue pureza espiritual sino blindaje patrimonial. Como un vendedor que cobra por un servicio que no puede prestar, el sacerdote vende absolución que ningún ser humano tiene autoridad para conceder.",
+    "IdeasPrincipales": [
+      "El celibato fue instituido por motivos económicos, no espirituales",
+      "Las indulgencias comercializaron el perdón como transacción financiera",
+      "La confesión auricular anula la responsabilidad directa del espíritu",
+      "El control institucional se disfraza de mandato sagrado"
+    ],
+    "PuntosImportantes": [
+      "El Primer Concilio de Letrán (1123) prohibió el matrimonio sacerdotal para proteger bienes eclesiásticos",
+      "Tetzel vendía indulgencias con la frase: tan pronto como la moneda suena, el alma vuela",
+      "La confesión obligatoria fue impuesta por el IV Concilio de Letrán (1215) — antes no existía",
+      "Ningún espíritu necesita intermediario para responder ante la ley universal"
+    ],
+    "NodosSinapticos": [
+      "Religion_es_Relegacion",
+      "Inutilidad_Historica_de_la_Religion",
+      "Criminalidad_Papal",
+      "Oscurantismo_Papal",
+      "Libre_Examen"
+    ]
+  },
+  "15: [Consolidación] Dogmas contra la Razón Natural: Infalibilidad, Inmaculada y Purgatorio": {
+    "PilotoDeCoherencia": "Examen racional de dogmas católicos que contradicen las leyes naturales, la biología y la lógica elemental. La infalibilidad papal pretende que un ser humano de carne y hueso no puede errar —afrenta directa a la razón. La Inmaculada Concepción contradice las leyes biológicas de la gestación. El purgatorio fue inventado en la Edad Media como mecanismo de recaudación económica mediante misas, limosnas y cofradías. El culto a imágenes es prolongación del fetichismo antiguo. La excomunión es un arma psicológica: ningún ser humano tiene poder real para condenar a otro. Todos estos dogmas comparten la misma estructura: violar la ley natural para establecer un monopolio espiritual.",
+    "CitaInelutable": "El espíritu tiene la Ley Divina; los cuerpos tienen la Ley de la materia; pero el alma, producto quintaesencial de la materia y vivificada por el espíritu para servir de intermediario, no tiene Ley: no puede tener Ley. — Trincado, Prólogo.",
+    "EjemploPedagogico": "Como quien afirma que dos más dos son cinco por decreto y amenaza con castigo eterno a quien use la aritmética, la Iglesia declara dogma lo que la razón demuestra imposible. La naturaleza no obedece concilios: la biología no se vota, la física no se excomulga.",
+    "IdeasPrincipales": [
+      "La infalibilidad humana es una contradicción lógica",
+      "Los dogmas marianos contradicen las leyes biológicas naturales",
+      "El purgatorio fue un negocio medieval, no una realidad espiritual",
+      "La idolatría y excomunión son herramientas de control, no verdades"
+    ],
+    "PuntosImportantes": [
+      "Ningún ser humano es infalible: es ley de la naturaleza que toda conciencia puede errar",
+      "La Inmaculada Concepción fue proclamada en 1854 —18 siglos después— sin base escrituraria ni científica",
+      "El purgatorio no aparece en la Biblia: fue formalizado en el Concilio de Lyon (1274)",
+      "Los ídolos de yeso y madera adormecen el juicio; el espíritu libre no se arrodilla ante objetos"
+    ],
+    "NodosSinapticos": [
+      "Infalibilidad_Papal",
+      "Inutilidad_Historica_de_la_Religion",
+      "Dogmatismo",
+      "Libre_Examen",
+      "Leyes_del_Espiritu"
+    ]
+  },
+  "16: [Consolidación] Psicología del Dominio Religioso: Miedo, Fanatismo y Exclusividad": {
+    "PilotoDeCoherencia": "Disección de los mecanismos psicológicos mediante los cuales el dogma anula la voluntad intelectual del ser humano. El miedo —al infierno, al castigo eterno, a la condenación— es la herramienta primaria: paraliza el libre albedrío y vuelve al creyente dócil. El fanatismo y la fe ciega son fenómenos de renuncia intelectual: el sujeto prefiere obedecer que pensar, por comodidad o pereza mental. La máxima fuera de la Iglesia no hay salvación es el monopolio de la verdad: un cerco psicológico que impide al espíritu buscar fuera del corral. La infantilización mediante lágrimas de estatuas y apariciones mantiene al creyente en estado de minoría de edad intelectual permanente.",
+    "CitaInelutable": "Porque el juicio será hecho sin misericordia al que no usó de misericordia. — Santiago. Y la religión, que se proclama misericordiosa, es la primera en negarla al que osa pensar. — Trincado, Llamada Última a la Conciencia.",
+    "EjemploPedagogico": "Como un padre que encierra a su hijo en un sótano oscuro y le dice que afuera hay monstruos para que nunca salga, la Iglesia encierra al espíritu en el miedo para que nunca ejerza su razón. El día que el hijo enciende una vela y ve que el sótano está vacío, el padre pierde todo su poder.",
+    "IdeasPrincipales": [
+      "El miedo es la herramienta primaria de dominación psicológica religiosa",
+      "El fanatismo es renuncia voluntaria al intelecto por comodidad",
+      "La exclusividad de la salvación es un cerco mental, no una verdad",
+      "La infantilización mantiene al espíritu en minoría de edad permanente"
+    ],
+    "PuntosImportantes": [
+      "El miedo al infierno fue construido gradualmente: los primeros cristianos no creían en él",
+      "La fe ciega es definida por Trincado como relegación de derechos: renuncia a la soberanía intelectual",
+      "La máxima extra ecclesiam nulla salus fue rechazada por el propio Concilio Vaticano II",
+      "La adultez espiritual comienza cuando el espíritu asume la responsabilidad total de su destino"
+    ],
+    "NodosSinapticos": [
+      "Religion_es_Relegacion",
+      "Mayoria_de_Edad_Espiritual",
+      "Espiritu_de_Verdad",
+      "Libre_Examen",
+      "Responsabilidad_Espiritual"
+    ]
+  },
+  "17: [Consolidación] Violencia Institucional: Inquisición, Cruzadas y Censura": {
+    "PilotoDeCoherencia": "Documentación de la violencia sistemática ejercida por la institución católica contra el pensamiento libre durante siglos. La Inquisición —hogueras, tortura y juicios sin defensa— sofocó la ciencia naciente y eliminó físicamente a quienes osaron contradecir el dogma. Las Cruzadas y bulas de conquista bendijeron guerras de saqueo y exterminio de poblaciones enteras. El Index Librorum Prohibitorum mantuvo a los pueblos en el oscurantismo mediante la quema y censura de libros científicos y filosóficos. La fabricación de dogmas en concilios —verdades de fe debatidas como acuerdos políticos— completa el cuadro de una institución que usó la violencia como método y la mentira como sistema.",
+    "CitaInelutable": "Salvar a la humanidad a costa de la muerte de las religiones. — Trincado, A los Hombres Libres y las Madres Ultrajadas.",
+    "EjemploPedagogico": "Como un tribunal que quema al abogado defensor para que nadie cuestione la sentencia, la Inquisición no buscaba la verdad sino silenciar a quien pudiera encontrarla. Galileo, Giordano Bruno, Miguel Servet: la lista de víctimas es el currículum de la intolerancia.",
+    "IdeasPrincipales": [
+      "La Inquisición fue un sistema de eliminación física del pensamiento libre",
+      "Las Cruzadas fueron guerras de conquista bendecidas por papas",
+      "El Index Librorum Prohibitorum censuró el conocimiento durante siglos",
+      "Los dogmas se fabricaron en asambleas políticas, no por revelación"
+    ],
+    "PuntosImportantes": [
+      "Giordano Bruno fue quemado vivo en 1600 por afirmar la pluralidad de mundos",
+      "La bula Inter Caetera (1493) del Papa Alejandro VI donó América a España para su conquista",
+      "El Index incluyó a Copérnico, Galileo, Kepler, Descartes, Voltaire, Rousseau, Kant y Victor Hugo",
+      "El Concilio de Trento (1545-1563) fabricó dogmas como respuesta política a la Reforma, no como revelación"
+    ],
+    "NodosSinapticos": [
+      "Criminalidad_Papal",
+      "Oscurantismo_Papal",
+      "Teocracia_Papal",
+      "Religion_Unica_Causa_Guerras",
+      "Sentencia_a_las_Religiones"
+    ]
+  },
+  "18: [Consolidación] Alternativas Racionales: Ciencia, Moral Natural y Soberanía Intelectual": {
+    "PilotoDeCoherencia": "Presentación del camino constructivo que Trincado ofrece tras demoler el error. La ciencia y la filosofía —basadas en leyes naturales, demostración empírica y observación— son los instrumentos del conocimiento verdadero, frente a la teología dogmática que persiguió a científicos. La moral natural no depende de mandamientos ni códigos eclesiásticos: la rectitud, la honradez y la fraternidad activa son virtudes inherentes a la condición humana racional. El Libre Examen es el deber de analizar autónomamente toda afirmación sin arrodillar el intelecto ante autoridad alguna. La razón es el juez soberano del espíritu: ningún concepto absurdo debe aceptarse bajo obediencia ciega. La honestidad intelectual completa el cuadro: una vez demostrada la falsedad, el deber es dejar de sostener la mentira.",
+    "CitaInelutable": "Conócete a ti mismo. Ama a tu hermano. Estas dos leyes contienen todo el código moral que un espíritu necesita para progresar. No requieren templos, intermediarios ni amenazas. — Trincado, Principios de la EMECU.",
+    "EjemploPedagogico": "Como quien derriba una casa construida sobre arena movediza y luego edifica sobre roca, el Grado 1 demolió el error; ahora se presentan los cimientos de lo verdadero. La ciencia no necesita altares, la moral no necesita mandamientos, y el espíritu libre no necesita intermediarios entre él y las leyes del universo.",
+    "IdeasPrincipales": [
+      "La ciencia y la filosofía son los instrumentos del conocimiento verdadero",
+      "La moral es inherente a la razón humana, no a códigos eclesiásticos",
+      "El Libre Examen es el deber de todo espíritu consciente",
+      "La honestidad intelectual exige abandonar la mentira una vez descubierta"
+    ],
+    "PuntosImportantes": [
+      "La ciencia opera por leyes naturales; la teología por decretos — son incompatibles",
+      "Trincado enseña que el bien no se hace por temor al castigo sino por amor a la ley",
+      "El Libre Examen fue defendido por el protestantismo pero solo Trincado lo llevó a su conclusión lógica",
+      "La coherencia entre lo que se sabe y lo que se hace es la base de la integridad del espíritu"
+    ],
+    "NodosSinapticos": [
+      "Libre_Examen",
+      "Ley_de_Amor",
+      "Conocete_a_ti_mismo",
+      "Siete_Facultades_del_Espiritu",
+      "Evolucion_del_Espiritu"
+    ]
+  },
+  "19: [Integración] El Primer Peldaño: Terreno Limpio para el Grado 2": {
+    "PilotoDeCoherencia": "Cierre integrador del Grado 1. El estudiante ha recorrido el camino completo: del axioma de la PROCLAMA al EPÍLOGO de la sentencia; de la refutación histórica de Strossmayer a la consolidación de las alternativas racionales. El dogma católico ha sido examinado, desmontado y declarado culpable por sus propias fuentes. La superstición vaticana, la culpa eclesiástica y el miedo dogmático han sido demolidos. Los ídolos de piedra y de carne han caído. El entendimiento del estudiante ha quedado limpio y su razón liberada. La ignorancia no es virtud que agrade a la divinidad: es un estado del que todo espíritu debe salir. El Grado 2 —Buscando a Eloí— espera para iniciar la construcción positiva. La adultez espiritual comienza aquí: con la soberanía intelectual plenamente asumida.",
+    "CitaInelutable": "Daos todos los hombres al brazo fraternal, bajo el sol o credo de que cada uno de vuestros espíritus forma parte integrante y todos la unidad solidaria, con una sola ley: la de amor, que siempre te ocultaron con el baldón caridad. — Trincado, Epílogo.",
+    "EjemploPedagogico": "Como el arquitecto que, tras limpiar el terreno de escombros, traza la primera línea de la nueva construcción, el estudiante ha despejado su mente de siglos de error acumulado. Lo que sigue no es creer: es conocer. El Grado 2 no será otra demolición: será la construcción del edificio del conocimiento sobre el terreno limpio que este grado ha preparado.",
+    "IdeasPrincipales": [
+      "El dogma ha sido desmontado por sus propias fuentes y testigos",
+      "El miedo, la culpa y la superstición han sido erradicados de la conciencia",
+      "La razón está liberada y la soberanía intelectual ha sido asumida",
+      "El espíritu está listo para el Grado 2: la construcción del conocimiento verdadero"
+    ],
+    "PuntosImportantes": [
+      "El Grado 1 fue la pars destruens; el Grado 2 será la pars construens",
+      "La adultez espiritual no se alcanza por edad sino por soberanía intelectual",
+      "Todo ídolo —de piedra, de carne o de idea— debe ser examinado, no adorado",
+      "La ignorancia no es virtud: es la prisión de la que el estudio libera al espíritu",
+      "El Código de Amor Universal es el siguiente paso: del juicio a la construcción"
+    ],
+    "NodosSinapticos": [
+      "Mayoria_de_Edad_Espiritual",
+      "Sentencia_a_las_Religiones",
+      "Espiritu_de_Verdad",
+      "Comunismo_Espiritual",
+      "Ley_de_Amor",
       "Eloi"
     ]
   }
