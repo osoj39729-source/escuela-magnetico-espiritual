@@ -3252,75 +3252,141 @@ ${interacciones >= 15 ? '⚠ MODO VALIDACIÓN ACTIVO: A partir de ahora, haz pre
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/90 backdrop-blur-2xl p-4 md:p-10"
+            className="fixed inset-0 z-[1000] flex items-center justify-center bg-[radial-gradient(ellipse_at_center,rgba(15,23,42,0.95),rgba(0,0,0,0.98))] backdrop-blur-3xl p-4 md:p-10"
           >
             <motion.div
               initial={{ scale: 0.8, y: 50, rotateY: 45 }}
               animate={{ scale: 1, y: 0, rotateY: 0 }}
               exit={{ scale: 0.8, y: 50, opacity: 0 }}
               transition={{ type: "spring", damping: 15, stiffness: 100 }}
-              className="relative max-w-4xl w-full aspect-[1.414/1] bg-slate-950 border-4 border-amber-500/50 rounded-lg shadow-[0_0_100px_rgba(245,158,11,0.4)] overflow-hidden p-8 md:p-16 flex flex-col items-center justify-between text-center"
+              className="relative max-w-3xl w-full bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 border-2 border-amber-500/40 rounded-2xl shadow-[0_0_120px_rgba(245,158,11,0.25)] overflow-hidden"
             >
-              {/* Background watermark */}
-              <div className="absolute inset-0 opacity-10 flex items-center justify-center pointer-events-none">
-                <img src="https://emecu.org.gt/wp-content/uploads/2021/03/Escudo_Emecu-PNG.webp" className="w-2/3 object-contain" alt="" />
-              </div>
+              {/* Doble borde dorado interior */}
+              <div className="absolute inset-3 border border-amber-500/20 rounded-xl pointer-events-none" />
+              <div className="absolute inset-6 border border-amber-500/10 rounded-lg pointer-events-none" />
 
-              <div className="relative z-10 w-full flex flex-col items-center">
+              <div className="relative z-10 p-8 md:p-14 flex flex-col items-center text-center">
+                {/* Insignia */}
                 <motion.div 
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
+                  className="mb-4"
+                >
+                  <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center shadow-[0_0_40px_rgba(245,158,11,0.5)]">
+                    <Award className="w-10 h-10 md:w-12 md:h-12 text-slate-950" />
+                  </div>
+                </motion.div>
+
+                {/* Título con gradiente */}
+                <motion.h1 
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 }}
-                  className="mb-6"
+                  className="text-2xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-amber-500 to-amber-300 mb-2 tracking-tight"
                 >
-                  <Award className="w-16 h-16 md:w-24 md:h-24 text-amber-500 animate-pulse" />
+                  {t.certificateTitle}
+                </motion.h1>
+
+                <motion.div 
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ delay: 0.7, duration: 0.8 }}
+                  className="w-48 h-0.5 bg-gradient-to-r from-transparent via-amber-500 to-transparent mb-6" 
+                />
+
+                <motion.p 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.9 }}
+                  className="text-slate-400 text-sm md:text-base uppercase tracking-[0.3em] mb-3"
+                >
+                  {t.certificateAwarded}
+                </motion.p>
+
+                <motion.h2 
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.1 }}
+                  className="text-3xl md:text-5xl font-serif font-bold text-white mb-6 tracking-tight drop-shadow-[0_0_30px_rgba(245,158,11,0.4)]"
+                >
+                  {studentProfile?.fullName}
+                </motion.h2>
+
+                <motion.p 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1.3 }}
+                  className="max-w-xl text-slate-300 text-sm md:text-lg leading-relaxed mb-6"
+                >
+                  {t.certificateBody} <span className="text-amber-400 font-bold">GRADO {showDiploma}</span> de la Escuela Magnetico-Espiritual de la Comuna Universal.
+                </motion.p>
+
+                <motion.div 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1.5 }}
+                  className="w-full max-w-xs mb-8"
+                >
+                  <div className="flex justify-between text-[10px] text-slate-500 mb-1 px-1">
+                    <span>Grado {showDiploma}</span>
+                    <span className="text-amber-400 font-bold">✓ Completado</span>
+                    <span>Grado {showDiploma + 1}</span>
+                  </div>
+                  <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                    <motion.div 
+                      initial={{ width: 0 }}
+                      animate={{ width: '100%' }}
+                      transition={{ delay: 1.7, duration: 1.5, ease: "easeOut" }}
+                      className="h-full bg-gradient-to-r from-amber-600 to-amber-400 rounded-full"
+                    />
+                  </div>
                 </motion.div>
 
-                <h1 className="text-2xl md:text-5xl font-serif text-amber-400 mb-4 tracking-tighter">
-                  {t.certificateTitle}
-                </h1>
-                
-                <div className="w-32 h-1 bg-gradient-to-r from-transparent via-amber-500 to-transparent mb-8" />
-                
-                <p className="text-slate-400 italic text-lg mb-4">{t.certificateAwarded}</p>
-                
-                <h2 className="text-3xl md:text-6xl font-serif text-white mb-8 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">
-                  {studentProfile?.fullName}
-                </h2>
-                
-                <p className="max-w-2xl text-slate-300 text-lg md:text-xl leading-relaxed">
-                  {t.certificateBody} <span className="text-amber-400 font-bold">GRADO {showDiploma}</span> de la Escuela Magnetico-Espiritual de la Comuna Universal.
-                </p>
-              </div>
+                <motion.div 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 2 }}
+                  className="flex flex-col items-center mb-8"
+                >
+                  <div className="w-40 h-px bg-amber-500/50 mb-2" />
+                  <p className="text-amber-300/80 font-serif text-sm">Joaquín Trincado Mateo</p>
+                  <p className="text-slate-500 text-[10px] uppercase tracking-[0.3em]">Director Fundador · EMECU 1911</p>
+                </motion.div>
 
-              <div className="relative z-10 w-full flex flex-col items-center gap-6">
-                <div className="flex flex-col items-center">
-                   <div className="w-48 h-px bg-slate-700 mb-2" />
-                   <p className="text-amber-200/60 font-serif text-sm">Joaquín Trincado Mateo</p>
-                   <p className="text-slate-500 text-[10px] uppercase tracking-widest">Director Fundador</p>
-                </div>
-
-                <div className="flex gap-4">
+                {/* Botones de acción */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 2.2 }}
+                  className="flex flex-col sm:flex-row gap-4 w-full max-w-md"
+                >
                   <button 
                     onClick={() => generateCertificate(showDiploma)}
-                    className="px-8 py-3 bg-amber-500 text-slate-950 font-bold rounded-xl shadow-lg hover:bg-amber-400 transition-all flex items-center gap-2"
+                    className="flex-1 px-6 py-3.5 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold rounded-xl shadow-lg shadow-amber-500/30 hover:from-amber-400 hover:to-amber-500 hover:shadow-amber-500/50 transition-all flex items-center justify-center gap-2 group"
                   >
-                    <Download className="w-5 h-5" />
+                    <Download className="w-5 h-5 group-hover:scale-110 transition-transform" />
                     {t.downloadCertificate}
                   </button>
                   <button 
                     onClick={() => {
+                      const nextGrade = showDiploma + 1;
                       setShowDiploma(null);
                       setChat([]);
-                      fetchGreeting(currentGrade, 1);
+                      setCurrentGrade(nextGrade);
+                      setLessonProgress(1);
+                      if (nextGrade > maxReachedGrade) setMaxReachedGrade(nextGrade);
+                      setMaxReachedLesson(1);
+                      fetchGreeting(nextGrade, 1);
                     }}
-                    className="px-8 py-3 bg-slate-800 text-white font-bold rounded-xl hover:bg-slate-700 transition-all"
+                    className="flex-1 px-6 py-3.5 bg-gradient-to-r from-slate-800 to-slate-700 text-white font-bold rounded-xl border border-slate-600 hover:border-amber-500/50 hover:from-slate-700 hover:to-slate-600 transition-all flex items-center justify-center gap-2 group"
                   >
-                    {language === 'es' ? 'Continuar al Siguiente Grado' : 
-                     language === 'en' ? 'Continue to Next Grade' : 
-                     language === 'pt' ? 'Continuar para o Próximo Grau' : 'Continuer au Grade Suivant'}
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    {language === 'es' ? 'Grado ' + (showDiploma + 1) : 
+                     language === 'en' ? 'Grade ' + (showDiploma + 1) : 
+                     language === 'pt' ? 'Grau ' + (showDiploma + 1) : 'Degré ' + (showDiploma + 1)}
                   </button>
-                </div>
+                </motion.div>
               </div>
             </motion.div>
             
