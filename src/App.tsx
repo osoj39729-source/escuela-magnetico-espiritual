@@ -2816,17 +2816,24 @@ ${interacciones >= 15 ? '⚠ MODO VALIDACIÓN ACTIVO: A partir de ahora, haz pre
           }
           // Resetear checklist para la nueva lección
           resetChecklist(currentGrade, nextLesson);
-        } else if (currentGrade < 13) {
-          // Fin de grado - Diploma
+        } else if (currentGrade <= 13) {
+          // Fin de grado - Diploma (Grados 1-13)
+          const esGradoFinal = currentGrade === 13;
           setShowDiploma(currentGrade);
-          const nextGrade = currentGrade + 1;
-          setCurrentGrade(nextGrade);
-          setLessonProgress(1);
-          setMaxReachedGrade(nextGrade);
-          setMaxReachedLesson(1);
+          if (!esGradoFinal) {
+            const nextGrade = currentGrade + 1;
+            setCurrentGrade(nextGrade);
+            setLessonProgress(1);
+            setMaxReachedGrade(nextGrade);
+            setMaxReachedLesson(1);
+            resetChecklist(nextGrade, 1);
+          } else {
+            // Grado 13: no hay siguiente grado — diploma de graduación total
+            setLessonProgress(totalCount);
+            setMaxReachedGrade(13);
+            setMaxReachedLesson(totalCount);
+          }
           generateCertificate(currentGrade);
-          // Resetear checklist para el nuevo grado
-          resetChecklist(nextGrade, 1);
         }
       }
 
@@ -3245,9 +3252,9 @@ ${interacciones >= 15 ? '⚠ MODO VALIDACIÓN ACTIVO: A partir de ahora, haz pre
         )}
       </AnimatePresence>
 
-      {/* Diploma overlay */}
+      {/* Diploma overlay — Condicional: G1-G12 estándar || G13 Graduación Total */}
       <AnimatePresence>
-        {showDiploma && (
+        {showDiploma && showDiploma < 13 && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -3261,162 +3268,284 @@ ${interacciones >= 15 ? '⚠ MODO VALIDACIÓN ACTIVO: A partir de ahora, haz pre
               transition={{ type: "spring", damping: 15, stiffness: 100 }}
               className="relative max-w-3xl w-full bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 border-2 border-amber-500/40 rounded-2xl shadow-[0_0_120px_rgba(245,158,11,0.25)] overflow-hidden"
             >
-              {/* Doble borde dorado interior */}
               <div className="absolute inset-3 border border-amber-500/20 rounded-xl pointer-events-none" />
               <div className="absolute inset-6 border border-amber-500/10 rounded-lg pointer-events-none" />
-
               <div className="relative z-10 p-8 md:p-14 flex flex-col items-center text-center">
-                {/* Insignia */}
-                <motion.div 
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
-                  className="mb-4"
-                >
+                <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3, type: "spring", stiffness: 200 }} className="mb-4">
                   <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center shadow-[0_0_40px_rgba(245,158,11,0.5)]">
                     <Award className="w-10 h-10 md:w-12 md:h-12 text-slate-950" />
                   </div>
                 </motion.div>
-
-                {/* Título con gradiente */}
-                <motion.h1 
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 }}
-                  className="text-2xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-amber-500 to-amber-300 mb-2 tracking-tight"
-                >
+                <motion.h1 initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="text-2xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-amber-500 to-amber-300 mb-2 tracking-tight">
                   {t.certificateTitle}
                 </motion.h1>
-
-                <motion.div 
-                  initial={{ scaleX: 0 }}
-                  animate={{ scaleX: 1 }}
-                  transition={{ delay: 0.7, duration: 0.8 }}
-                  className="w-48 h-0.5 bg-gradient-to-r from-transparent via-amber-500 to-transparent mb-6" 
-                />
-
-                <motion.p 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.9 }}
-                  className="text-slate-400 text-sm md:text-base uppercase tracking-[0.3em] mb-3"
-                >
+                <motion.div initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ delay: 0.7, duration: 0.8 }} className="w-48 h-0.5 bg-gradient-to-r from-transparent via-amber-500 to-transparent mb-6" />
+                <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }} className="text-slate-400 text-sm md:text-base uppercase tracking-[0.3em] mb-3">
                   {t.certificateAwarded}
                 </motion.p>
-
-                <motion.h2 
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.1 }}
-                  className="text-3xl md:text-5xl font-serif font-bold text-white mb-6 tracking-tight drop-shadow-[0_0_30px_rgba(245,158,11,0.4)]"
-                >
+                <motion.h2 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.1 }} className="text-3xl md:text-5xl font-serif font-bold text-white mb-6 tracking-tight drop-shadow-[0_0_30px_rgba(245,158,11,0.4)]">
                   {studentProfile?.fullName}
                 </motion.h2>
-
-                <motion.p 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1.3 }}
-                  className="max-w-xl text-slate-300 text-sm md:text-lg leading-relaxed mb-6"
-                >
+                <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.3 }} className="max-w-xl text-slate-300 text-sm md:text-lg leading-relaxed mb-6">
                   {t.certificateBody} <span className="text-amber-400 font-bold">GRADO {showDiploma}</span> de la Escuela Magnetico-Espiritual de la Comuna Universal.
                 </motion.p>
-
-                <motion.div 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1.5 }}
-                  className="w-full max-w-xs mb-8"
-                >
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }} className="w-full max-w-xs mb-8">
                   <div className="flex justify-between text-[10px] text-slate-500 mb-1 px-1">
                     <span>Grado {showDiploma}</span>
                     <span className="text-amber-400 font-bold">✓ Completado</span>
                     <span>Grado {showDiploma + 1}</span>
                   </div>
                   <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
-                    <motion.div 
-                      initial={{ width: 0 }}
-                      animate={{ width: '100%' }}
-                      transition={{ delay: 1.7, duration: 1.5, ease: "easeOut" }}
-                      className="h-full bg-gradient-to-r from-amber-600 to-amber-400 rounded-full"
-                    />
+                    <motion.div initial={{ width: 0 }} animate={{ width: '100%' }} transition={{ delay: 1.7, duration: 1.5, ease: "easeOut" }} className="h-full bg-gradient-to-r from-amber-600 to-amber-400 rounded-full" />
                   </div>
                 </motion.div>
-
-                <motion.div 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 2 }}
-                  className="flex flex-col items-center mb-8"
-                >
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2 }} className="flex flex-col items-center mb-8">
                   <div className="w-40 h-px bg-amber-500/50 mb-2" />
                   <p className="text-amber-300/80 font-serif text-sm">Joaquín Trincado Mateo</p>
                   <p className="text-slate-500 text-[10px] uppercase tracking-[0.3em]">Director Fundador · EMECU 1911</p>
                 </motion.div>
-
-                {/* Botones de acción */}
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 2.2 }}
-                  className="flex flex-col sm:flex-row gap-4 w-full max-w-md"
-                >
-                  <button 
-                    onClick={() => generateCertificate(showDiploma)}
-                    className="flex-1 px-6 py-3.5 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold rounded-xl shadow-lg shadow-amber-500/30 hover:from-amber-400 hover:to-amber-500 hover:shadow-amber-500/50 transition-all flex items-center justify-center gap-2 group"
-                  >
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 2.2 }} className="flex flex-col sm:flex-row gap-4 w-full max-w-md">
+                  <button onClick={() => generateCertificate(showDiploma)} className="flex-1 px-6 py-3.5 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold rounded-xl shadow-lg shadow-amber-500/30 hover:from-amber-400 hover:to-amber-500 hover:shadow-amber-500/50 transition-all flex items-center justify-center gap-2 group">
                     <Download className="w-5 h-5 group-hover:scale-110 transition-transform" />
                     {t.downloadCertificate}
                   </button>
-                  <button 
-                    onClick={() => {
-                      const nextGrade = showDiploma + 1;
-                      setShowDiploma(null);
-                      setChat([]);
-                      setCurrentGrade(nextGrade);
-                      setLessonProgress(1);
-                      if (nextGrade > maxReachedGrade) setMaxReachedGrade(nextGrade);
-                      setMaxReachedLesson(1);
-                      fetchGreeting(nextGrade, 1);
-                    }}
-                    className="flex-1 px-6 py-3.5 bg-gradient-to-r from-slate-800 to-slate-700 text-white font-bold rounded-xl border border-slate-600 hover:border-amber-500/50 hover:from-slate-700 hover:to-slate-600 transition-all flex items-center justify-center gap-2 group"
-                  >
+                  <button onClick={() => { const nextGrade = showDiploma + 1; setShowDiploma(null); setChat([]); setCurrentGrade(nextGrade); setLessonProgress(1); if (nextGrade > maxReachedGrade) setMaxReachedGrade(nextGrade); setMaxReachedLesson(1); fetchGreeting(nextGrade, 1); }} className="flex-1 px-6 py-3.5 bg-gradient-to-r from-slate-800 to-slate-700 text-white font-bold rounded-xl border border-slate-600 hover:border-amber-500/50 hover:from-slate-700 hover:to-slate-600 transition-all flex items-center justify-center gap-2 group">
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                    {language === 'es' ? 'Grado ' + (showDiploma + 1) : 
-                     language === 'en' ? 'Grade ' + (showDiploma + 1) : 
-                     language === 'pt' ? 'Grau ' + (showDiploma + 1) : 'Degré ' + (showDiploma + 1)}
+                    {language === 'es' ? 'Grado ' + (showDiploma + 1) : language === 'en' ? 'Grade ' + (showDiploma + 1) : language === 'pt' ? 'Grau ' + (showDiploma + 1) : 'Degré ' + (showDiploma + 1)}
                   </button>
                 </motion.div>
               </div>
             </motion.div>
-            
-            {/* Confetti simulation */}
-            <motion.div 
-               initial={{ opacity: 0 }}
-               animate={{ opacity: 1 }}
-               className="absolute inset-0 pointer-events-none"
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="absolute inset-0 pointer-events-none">
+              {[...Array(20)].map((_, i) => (
+                <motion.div key={i} initial={{ top: -10, left: `${Math.random() * 100}%`, rotate: 0 }} animate={{ top: '105%', rotate: 360, left: `${Math.random() * 100}%` }} transition={{ duration: 3 + Math.random() * 2, repeat: Infinity, delay: Math.random() * 2 }} className="w-2 h-4 bg-amber-500 opacity-60 rounded-sm" />
+              ))}
+            </motion.div>
+          </motion.div>
+        )}
+
+        {showDiploma === 13 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[1001] flex items-center justify-center bg-[radial-gradient(ellipse_at_center,rgba(10,10,25,0.97),rgba(0,0,0,0.995))] backdrop-blur-3xl p-4 md:p-10"
+          >
+            {/* Anillos concéntricos animados */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              {[...Array(3)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, scale: 0.3 }}
+                  animate={{ opacity: [0.1, 0.2, 0.1], scale: [0.7, 1.1, 0.7], rotate: [0, 180, 360] }}
+                  transition={{ duration: 8 + i * 3, repeat: Infinity, ease: "linear", delay: i * 1.5 }}
+                  className="absolute rounded-full border border-amber-500/20"
+                  style={{ width: 500 + i * 200 + 'px', height: 500 + i * 200 + 'px' }}
+                />
+              ))}
+            </div>
+
+            {/* 13 estrellas orbitantes */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              {[...Array(13)].map((_, i) => {
+                const angle = (i / 13) * Math.PI * 2;
+                const radius = 380;
+                return (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: [0.3, 1, 0.3] }}
+                    transition={{ duration: 2 + Math.random() * 2, repeat: Infinity, delay: i * 0.3, ease: "easeInOut" }}
+                    className="absolute w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(245,158,11,0.8)]"
+                    style={{
+                      left: `calc(50% + ${Math.cos(angle) * radius}px)`,
+                      top: `calc(50% + ${Math.sin(angle) * radius}px)`,
+                    }}
+                  />
+                );
+              })}
+            </div>
+
+            {/* Lluvia dorada */}
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="absolute inset-0 pointer-events-none overflow-hidden">
+              {[...Array(40)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ top: -10, left: `${Math.random() * 100}%`, opacity: 0 }}
+                  animate={{ top: '105%', opacity: [0, 0.8, 0], left: `${Math.random() * 100}%` }}
+                  transition={{ duration: 4 + Math.random() * 5, repeat: Infinity, delay: Math.random() * 4, ease: "linear" }}
+                  className="absolute w-0.5 rounded-full"
+                  style={{ height: (Math.random() * 16 + 4) + 'px', background: Math.random() > 0.5 ? 'linear-gradient(to bottom, #f59e0b, transparent)' : 'linear-gradient(to bottom, #fbbf24, transparent)' }}
+                />
+              ))}
+            </motion.div>
+
+            <motion.div
+              initial={{ scale: 0.6, y: 80, rotateY: 90 }}
+              animate={{ scale: 1, y: 0, rotateY: 0 }}
+              exit={{ scale: 0.6, y: 80, opacity: 0 }}
+              transition={{ type: "spring", damping: 8, stiffness: 60, mass: 1.5 }}
+              className="relative max-w-2xl w-full bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 border-2 border-amber-400/60 rounded-2xl shadow-[0_0_200px_rgba(245,158,11,0.35),0_0_60px_rgba(245,158,11,0.15),0_0_100px_rgba(251,191,36,0.1)] overflow-hidden"
             >
-               {[...Array(20)].map((_, i) => (
-                 <motion.div
-                   key={i}
-                   initial={{ 
-                     top: -10, 
-                     left: `${Math.random() * 100}%`,
-                     rotate: 0 
-                   }}
-                   animate={{ 
-                     top: '105%',
-                     rotate: 360,
-                     left: `${Math.random() * 100}%`
-                   }}
-                   transition={{ 
-                     duration: 3 + Math.random() * 2, 
-                     repeat: Infinity,
-                     delay: Math.random() * 2 
-                   }}
-                   className="w-2 h-4 bg-amber-500 opacity-60 rounded-sm"
-                 />
-               ))}
+              {/* Triple borde dorado */}
+              <div className="absolute inset-2 border border-amber-500/30 rounded-xl pointer-events-none" />
+              <div className="absolute inset-4 border border-amber-400/15 rounded-lg pointer-events-none" />
+              <div className="absolute inset-6 border border-dashed border-amber-600/10 rounded-md pointer-events-none" />
+
+              {/* Emblema EMECU en fondo */}
+              <div className="absolute inset-0 opacity-[0.05] flex items-center justify-center pointer-events-none">
+                <img src="https://emecu.org.gt/wp-content/uploads/2021/03/Escudo_Emecu-PNG.webp" className="w-2/3 object-contain" alt="" />
+              </div>
+
+              {/* Halo dorado detrás de la insignia */}
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: [1, 1.3, 1], opacity: [0.4, 0.7, 0.4] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute top-14 left-1/2 -translate-x-1/2 w-40 h-40 rounded-full bg-amber-500/10 blur-2xl pointer-events-none"
+              />
+
+              <div className="relative z-10 p-8 md:p-16 flex flex-col items-center text-center">
+                {/* Escudo EMECU prominente */}
+                <motion.div
+                  initial={{ opacity: 0, y: -30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4, type: "spring", stiffness: 150 }}
+                  className="mb-2"
+                >
+                  <img
+                    src="https://emecu.org.gt/wp-content/uploads/2021/03/Escudo_Emecu-PNG.webp"
+                    className="w-28 h-28 md:w-32 md:h-32 object-contain drop-shadow-[0_0_30px_rgba(245,158,11,0.5)]"
+                    alt="EMECU"
+                  />
+                </motion.div>
+
+                {/* Título de graduación */}
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.8 }}
+                  className="text-amber-400/60 text-xs md:text-sm uppercase tracking-[0.5em] mb-3"
+                >
+                  {language === 'es' ? 'La Escuela Magnético-Espiritual de la Comuna Universal' :
+                   language === 'en' ? 'The Magnetic-Spiritual School of the Universal Commune' :
+                   language === 'pt' ? 'A Escola Magnético-Espiritual da Comuna Universal' :
+                   'L\'École Magnético-Spirituelle de la Commune Universelle'}
+                </motion.p>
+
+                <motion.h1
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 1, type: "spring", stiffness: 100 }}
+                  className="text-3xl md:text-5xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-200 mb-4 tracking-tight drop-shadow-[0_0_25px_rgba(245,158,11,0.5)]"
+                >
+                  {language === 'es' ? 'DIPLOMA DE ADHERENTE' :
+                   language === 'en' ? 'DIPLOMA OF ADHERENT' :
+                   language === 'pt' ? 'DIPLOMA DE ADERENTE' :
+                   'DIPLÔME D\'ADHÉRENT'}
+                </motion.h1>
+
+                {/* Línea divisoria decorada */}
+                <motion.div initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ delay: 1.2, duration: 1 }} className="flex items-center gap-2 w-64 mb-6">
+                  <div className="flex-1 h-0.5 bg-gradient-to-r from-transparent to-amber-500" />
+                  <div className="w-2 h-2 rounded-full bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.8)]" />
+                  <div className="flex-1 h-0.5 bg-gradient-to-l from-transparent to-amber-500" />
+                </motion.div>
+
+                <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.4 }} className="text-slate-400 text-sm md:text-base uppercase tracking-[0.3em] mb-4">
+                  {language === 'es' ? 'Se confiere el título de' :
+                   language === 'en' ? 'The title of' :
+                   language === 'pt' ? 'Confere-se o título de' :
+                   'Est conféré le titre de'}
+                </motion.p>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.6, type: "spring", stiffness: 80 }}
+                  className="relative mb-4"
+                >
+                  <h2 className="text-4xl md:text-6xl font-serif font-bold text-white tracking-tight drop-shadow-[0_0_40px_rgba(245,158,11,0.5)]">
+                    {studentProfile?.fullName}
+                  </h2>
+                  <motion.div
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    transition={{ delay: 2, duration: 0.8 }}
+                    className="h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent mt-3"
+                  />
+                </motion.div>
+
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 2.2 }}
+                  className="text-2xl md:text-3xl font-serif text-amber-300 mb-6 tracking-wide"
+                >
+                  {language === 'es' ? 'Adherente de la EMECU' :
+                   language === 'en' ? 'Adherent of the EMECU' :
+                   language === 'pt' ? 'Aderente da EMECU' :
+                   'Adhérent de l\'EMECU'}
+                </motion.p>
+
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 2.4 }}
+                  className="max-w-lg text-slate-300 text-sm md:text-base leading-relaxed mb-8"
+                >
+                  {language === 'es'
+                    ? 'Por haber culminado con excelencia los trece grados de estudio, demostrando dominio de la doctrina, rectitud de juicio y compromiso con la verdad. Este diploma acredita al portador como miembro pleno de la Comunidad Universal, con todos los derechos y deberes que la Ley de Amor confiere al espíritu consciente.'
+                    : language === 'en'
+                    ? 'For having completed with excellence the thirteen grades of study, demonstrating mastery of doctrine, sound judgment and commitment to truth. This diploma accredits the bearer as a full member of the Universal Community.'
+                    : language === 'pt'
+                    ? 'Por ter completado com excelência os treze graus de estudo, demonstrando domínio da doutrina e compromisso com a verdade. Este diploma credencia o portador como membro pleno da Comunidade Universal.'
+                    : 'Pour avoir achevé avec excellence les treize degrés d\'étude.'}
+                </motion.p>
+
+                {/* 13 puntos de honor */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 2.6 }}
+                  className="flex gap-1.5 mb-8"
+                >
+                  {[...Array(13)].map((_, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 2.6 + i * 0.08, type: "spring", stiffness: 300 }}
+                      className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 shadow-[0_0_6px_rgba(245,158,11,0.6)]"
+                    />
+                  ))}
+                </motion.div>
+
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 3 }} className="flex flex-col items-center mb-10">
+                  <div className="w-48 h-px bg-amber-500/40 mb-2" />
+                  <p className="text-amber-300/70 font-serif text-sm md:text-base">Joaquín Trincado Mateo</p>
+                  <p className="text-slate-500 text-[10px] uppercase tracking-[0.3em]">Director Fundador · EMECU 1911</p>
+                  <p className="text-slate-600 text-[9px] mt-1">«Salvar a la humanidad a costa de la muerte de las religiones»</p>
+                </motion.div>
+
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 3.2 }} className="flex flex-col sm:flex-row gap-4 w-full max-w-md">
+                  <button
+                    onClick={() => generateCertificate(13)}
+                    className="flex-1 px-8 py-4 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold rounded-xl shadow-lg shadow-amber-500/40 hover:from-amber-400 hover:to-amber-500 hover:shadow-amber-500/60 hover:scale-105 transition-all flex items-center justify-center gap-2 group"
+                  >
+                    <Download className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                    {language === 'es' ? 'Descargar Diploma' :
+                     language === 'en' ? 'Download Diploma' :
+                     language === 'pt' ? 'Baixar Diploma' : 'Télécharger le Diplôme'}
+                  </button>
+                  <button
+                    onClick={() => setShowDiploma(null)}
+                    className="flex-1 px-8 py-4 bg-gradient-to-r from-slate-800 to-slate-700 text-white font-bold rounded-xl border border-slate-600 hover:border-amber-500/50 hover:from-slate-700 hover:to-slate-600 transition-all flex items-center justify-center gap-2 group"
+                  >
+                    ✨ {language === 'es' ? 'Finalizar' : language === 'en' ? 'Finish' : language === 'pt' ? 'Finalizar' : 'Terminer'}
+                  </button>
+                </motion.div>
+              </div>
             </motion.div>
           </motion.div>
         )}
