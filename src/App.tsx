@@ -2782,12 +2782,6 @@ ${interacciones >= 15 ? '⚠ MODO VALIDACIÓN ACTIVO: A partir de ahora, haz pre
               console.log('[Validación] Modo intensivo activado para G', currentGrade, 'L', lessonProgress);
             }
 
-            // Techo de seguridad universal: forzar pass_lesson a las 15 interacciones
-            if (interacciones >= 15 && !streamedStudentUpdate?.pass_lesson) {
-              if (!streamedStudentUpdate) streamedStudentUpdate = {};
-              streamedStudentUpdate.pass_lesson = true;
-              console.log('[Techo Seguridad] ⚡ 15 interacciones alcanzadas — forzando pass_lesson para G', currentGrade, 'L', lessonProgress);
-            }
           }
         }
       }
@@ -2797,13 +2791,24 @@ ${interacciones >= 15 ? '⚠ MODO VALIDACIÓN ACTIVO: A partir de ahora, haz pre
       
       streamedStudentUpdate = result.studentUpdate || (aiDeltas && 'pass_lesson' in aiDeltas ? { pass_lesson: aiDeltas.pass_lesson } : null);
 
+      // Techo de seguridad universal: forzar pass_lesson a las 15 interacciones.
+      // Se ejecuta DESPUÉS de recibir la respuesta de Gemini para no ser pisado.
+      if (currentGrade !== 1 || lessonProgress !== 1) { // G1L1 ya tiene su propio techo
+        const interaccionesTecho = await contarInteraccionesEnLeccion(user.uid, currentGrade, lessonProgress);
+        if (interaccionesTecho >= 15 && !streamedStudentUpdate?.pass_lesson) {
+          if (!streamedStudentUpdate) streamedStudentUpdate = {} as any;
+          streamedStudentUpdate.pass_lesson = true;
+          console.log('[Techo Seguridad] ⚡ 15 interacciones alcanzadas — forzando pass_lesson para G', currentGrade, 'L', lessonProgress);
+        }
+      }
+
       // Tarea 2a: Techo de seguridad — 5 turnos máximos en el diagnóstico inicial.
       // Si el modelo no emitió pass_lesson tras 5 respuestas del estudiante en
       // Grado 1 Lección 1, se fuerza el avance para que el diagnóstico no sea infinito.
       if (currentGrade === 1 && lessonProgress === 1) {
         const userTurnsInDiagnostic = currentHistory.filter(m => m.role === 'user').length + 1;
         if (userTurnsInDiagnostic >= 5 && !streamedStudentUpdate?.pass_lesson) {
-          if (!streamedStudentUpdate) streamedStudentUpdate = {};
+          if (!streamedStudentUpdate) streamedStudentUpdate = {} as any;
           streamedStudentUpdate.pass_lesson = true;
           console.log('[Diagnóstico] Techo de 5 turnos alcanzado → pass_lesson forzado por el sistema');
         }
