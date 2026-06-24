@@ -2775,11 +2775,18 @@ ${interacciones >= 15 ? '⚠ MODO VALIDACIÓN ACTIVO: A partir de ahora, haz pre
             const interacciones = await contarInteraccionesEnLeccion(user.uid, currentGrade, lessonProgress);
             setInteraccionesEnLeccion(interacciones);
 
-            // Activar modo de validación intensiva a partir de la interacción 15
-            if (interacciones >= 15 && !streamedStudentUpdate?.pass_lesson) {
+            // Activar modo de validación intensiva a partir de la interacción 10
+            if (interacciones >= 10 && !streamedStudentUpdate?.pass_lesson) {
               await activarModoValidacionIntensiva(user.uid, currentGrade, lessonProgress);
               setModoValidacionIntensiva(true);
               console.log('[Validación] Modo intensivo activado para G', currentGrade, 'L', lessonProgress);
+            }
+
+            // Techo de seguridad universal: forzar pass_lesson a las 15 interacciones
+            if (interacciones >= 15 && !streamedStudentUpdate?.pass_lesson) {
+              if (!streamedStudentUpdate) streamedStudentUpdate = {};
+              streamedStudentUpdate.pass_lesson = true;
+              console.log('[Techo Seguridad] ⚡ 15 interacciones alcanzadas — forzando pass_lesson para G', currentGrade, 'L', lessonProgress);
             }
           }
         }

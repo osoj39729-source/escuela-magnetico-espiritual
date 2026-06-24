@@ -5,7 +5,10 @@
 
 export const VALIDATION_CONFIG = {
   // Número mínimo de interacciones antes de activar el modo de validación intensiva
-  INTERACCIONES_MINIMAS: 15,
+  INTERACCIONES_MINIMAS: 10,
+
+  // Techo de seguridad universal: fuerza pass_lesson tras este número de interacciones
+  TECHO_SEGURIDAD_UNIVERSAL: 15,
 
   // Porcentaje de asertividad requerido para aprobar la lección
   UMBRAL_APROBACION: 60,
